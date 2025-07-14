@@ -32,3 +32,7 @@ Tech Stack
 • Prometheus: Metrics monitoring 
 • Grafana: Visualization dashboards 
 • AWS CloudWatch: Log aggregation and alerting
+
+
+
+UPDATE
