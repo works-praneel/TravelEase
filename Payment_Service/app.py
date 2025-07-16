@@ -1,13 +1,13 @@
 from flask import Flask
 app = Flask(__name__)
 
-@app.route('/ping')
-def ping():
+@app.route('/')
+def home():
     return "Payment Service Active"
 
 @app.route('/pay')
 def pay():
     return "Payment Processed!"
 
-if __name__ == '_main_':
-    app.run(host='0.0.0.0', port=5001)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5003)
