@@ -10,28 +10,28 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/works-praneel/TravelEase_Internship.git'
+                git branch: 'main', url: 'https://github.com/works-praneel/TravelEase_Internship.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME ./Booking_Service'
+                sh "docker build -t ${env.IMAGE_NAME} ./Booking_Service"
             }
         }
 
         stage('Login to ECR') {
             steps {
-                sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO'
+                sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REPO}"
             }
         }
 
         stage('Tag and Push Image') {
             steps {
-                sh '''
-                docker tag $IMAGE_NAME:latest $ECR_REPO:latest
-                docker push $ECR_REPO:latest
-                '''
+                sh """
+                    docker tag ${env.IMAGE_NAME}:latest ${env.ECR_REPO}:latest
+                    docker push ${env.ECR_REPO}:latest
+                """
             }
         }
     }
