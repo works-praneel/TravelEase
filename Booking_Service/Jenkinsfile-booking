@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = 'eu-north-1'
+        IMAGE_NAME = 'booking-service'
+        ECR_REPO = '904233121598.dkr.ecr.eu-north-1.amazonaws.com/booking-service'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/works-praneel/TravelEase_Internship.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME ./Booking_Service'
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                sh 'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO'
+            }
+        }
+
+        stage('Tag and Push Image') {
+            steps {
+                sh '''
+                docker tag $IMAGE_NAME:latest $ECR_REPO:latest
+                docker push $ECR_REPO:latest
+                '''
+            }
+        }
+    }
+}
