@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = 'eu-north-1'
+        IMAGE_NAME = 'flight-service'
+        ECR_REPO = '904233121598.dkr.ecr.eu-north-1.amazonaws.com/flight-service'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/works-praneel/TravelEase_Internship.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat "docker build -t %IMAGE_NAME% ./Flight_Service"
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'BNmnx0bIy24ahJTSUi6MIEpYUVmCTV8dyMBfH6cq', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    bat """
+                    set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%
+                    set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%
+                    aws configure set aws_access_key_id %AWS_ACCESS_KEY_ID%
+                    aws configure set aws_secret_access_key %AWS_SECRET_ACCESS_KEY%
+                    aws configure set default.region %AWS_REGION%
+                    aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REPO%
+                    """
+                }
+            }
+        }
+
+        stage('Tag and Push Image') {
+            steps {
+                bat """
+                docker tag %IMAGE_NAME%:latest %ECR_REPO%:latest
+                docker push %ECR_REPO%:latest
+                """
+            }
+        }
+    }
+}
