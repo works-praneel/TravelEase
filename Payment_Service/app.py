@@ -1,11 +1,13 @@
 from flask import Flask
+
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/pay')
 def home():
     return "Payment Service Active"
 
-@app.route('/pay')
+@app.route('/payment')
+@app.route('/api/payment')
 def pay():
     return "Payment Processed!"
 

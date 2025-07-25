@@ -1,11 +1,17 @@
 from flask import Flask
+
 app = Flask(__name__)
 
-@app.route('/ping')
-def ping():
-    return "Flight Service Active"
+# This route will handle requests for the root path '/'
+# When you hit http://ALB_DNS/flight, the ALB strips '/flight',
+# so your app receives a request for '/'
+@app.route('/flight')
+def home():
+    return "Flight Service Root Path Active!"
+
 
 @app.route('/search')
+@app.route('/api/search')
 def search():
     return "Flights Found!"
 
