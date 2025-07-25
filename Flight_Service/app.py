@@ -1,14 +1,12 @@
 from flask import Flask
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 
-# This route will handle requests for the root path '/'
-# When you hit http://ALB_DNS/flight, the ALB strips '/flight',
-# so your app receives a request for '/'
 @app.route('/flight')
 def home():
     return "Flight Service Root Path Active!"
-
 
 @app.route('/search')
 @app.route('/api/search')

@@ -7,7 +7,7 @@ scrape_configs:
       - targets: ['host.docker.internal:5000']
   - job_name: 'flight'
     static_configs:
-      - targets: ['host.docker.internal:5001']
+      - targets: ['host.docker.internal:5002']
   - job_name: 'payment'
     static_configs:
-      - targets: ['host.docker.internal:5002']
+      - targets: ['host.docker.internal:5003']
