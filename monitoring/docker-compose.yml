@@ -31,3 +31,16 @@ services:
       context: ../Payment_Service
     ports:
       - "5003:5003"
+
+  cloudwatch-exporter:
+    image: prom/cloudwatch-exporter
+    container_name: cloudwatch-exporter
+    ports:
+      - "9106:9106"
+    volumes:
+      - ./cloudwatch/cloudwatch.yml:/config/cloudwatch.yml
+    command:
+      - "--config.file=/config/cloudwatch.yml"
+    environment:
+      - AWS_ACCESS_KEY_ID=your_aws_access_key
+      - AWS_SECRET_ACCESS_KEY=your_aws_secret_key
