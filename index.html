@@ -713,7 +713,7 @@
                     <button id="backToFlightsBtn" class="btn-blue-gradient py-2 px-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H16a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                        </svg>
+                            </svg>
                         <span>Back to Flights</span>
                     </button>
                     <button id="proceedToPaymentBtn" class="btn-blue-gradient py-2 px-6">
@@ -778,7 +778,7 @@
                             <span>Complete Payment</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                        </svg>
                         </button>
                     </div>
                 </form>
@@ -830,6 +830,11 @@
         let returnDate = '';
         let finalBookingPrice = 0; // To store the total price for payment summary
 
+        // Define service URLs clearly
+        const FLIGHT_SERVICE_URL = 'http://127.0.0.1:5002'; // Flight Service runs on 5002
+        const PAYMENT_SERVICE_URL = 'http://127.0.0.1:5003'; // Payment Service runs on 5003
+        const BOOKING_SERVICE_URL = 'http://127.0.0.1:5000'; // Booking Service runs on 5000
+
         // Helper function for INR formatting
         function formatINR(amount) {
             // Ensure amount is a number before formatting
@@ -859,7 +864,7 @@
         });
 
         // --- Home Page Logic ---
-        document.getElementById('searchFlightsBtn').addEventListener('click', () => {
+        document.getElementById('searchFlightsBtn').addEventListener('click', async () => {
             departureDate = document.getElementById('departureDate').value;
             returnDate = document.getElementById('returnDate').value;
 
@@ -870,6 +875,20 @@
 
             document.getElementById('displayDepartureDate').textContent = departureDate;
             document.getElementById('displayReturnDate').textContent = returnDate || 'N/A'; // Handle optional return date
+
+            // Make the fetch request to the Flight_Service backend
+            try {
+                const response = await fetch(`${FLIGHT_SERVICE_URL}/api/search`); // Correctly points to Flight Service on 5002
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+                }
+                const message = await response.text();
+                console.log('Backend message (Flight Search):', message); // "Flights Found!" from Flight_Service_App.py
+            } catch (error) {
+                console.error('Error fetching flights:', error);
+                alert('Failed to fetch flights. Please ensure the Flight Service backend is running on port 5002.');
+            }
 
             showPage(flightServicePage);
         });
@@ -896,9 +915,9 @@
 
 
         function updateSeatClassPrices() {
-            const economyPlusIncrement = 12000; // Adjusted increment
-            const businessClassIncrement = 60000; // Adjusted increment
-            const firstClassIncrement = 120000; // Adjusted increment
+            const economyPlusIncrement = 12000;
+            const businessClassIncrement = 60000;
+            const firstClassIncrement = 120000;
 
             const priceEconomySpan = document.getElementById('priceEconomy');
             const priceEconomyPlusSpan = document.getElementById('priceEconomyPlus');
@@ -941,24 +960,47 @@
             showPage(homePage);
         });
 
-        // --- Booking Service Page Logic ---
-        document.getElementById('proceedToPaymentBtn').addEventListener('click', () => {
+        // --- Booking Service Page Logic (Proceed to Payment Button) ---
+        // This button initiates the payment process, which should send a request to the Payment Service.
+        document.getElementById('proceedToPaymentBtn').addEventListener('click', async () => {
             const selectedSeatRadio = document.querySelector('input[name="seatClass"]:checked');
             if (selectedSeatRadio) {
                 selectedSeatClass = selectedSeatRadio.value; 
-                const seatClassText = selectedSeatClass.replace(/([A-Z])/g, ' $1').trim(); // Fix: Removed extra ' Class' concat
+                const seatClassText = selectedSeatClass.replace(/([A-Z])/g, ' $1').trim();
                 
-                // Dynamically determine final price based on selected class and base flight price
                 if (selectedSeatClass === 'Economy') finalBookingPrice = selectedFlightPrice;
-                else if (selectedSeatClass === 'EconomyPlus') finalBookingPrice = selectedFlightPrice + 10000; // Use selectedFlightPrice here
+                else if (selectedSeatClass === 'EconomyPlus') finalBookingPrice = selectedFlightPrice + 10000;
                 else if (selectedSeatClass === 'BusinessClass') finalBookingPrice = selectedFlightPrice + 50000;
                 else if (selectedSeatClass === 'FirstClass') finalBookingPrice = selectedFlightPrice + 100000;
 
-                // Set content for payment details page
                 document.getElementById('paymentSelectedSeatClass').textContent = `${seatClassText} Class (${formatINR(finalBookingPrice)})`; 
-                document.getElementById('paymentTotalAmount').textContent = formatINR(finalBookingPrice); // Display total amount
+                document.getElementById('paymentTotalAmount').textContent = formatINR(finalBookingPrice);
 
-                showPage(paymentDetailsPage);
+                // Make the fetch request to the Payment_Service backend
+                try {
+                    const response = await fetch(`${PAYMENT_SERVICE_URL}/api/payment`, { // Correctly points to Payment Service on 5003
+                        method: 'POST', // Payment processing typically uses POST
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        // In a real app, you'd send sensitive payment info, here we just send amount for the message
+                        body: JSON.stringify({ amount: finalBookingPrice, flightId: selectedFlight, seatClass: selectedSeatClass }),
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+                    }
+
+                    const message = await response.text();
+                    console.log('Backend message (Proceed to Payment):', message); // "Please Proceed with The Payment!!" from Payment_Service_App.py
+
+                    showPage(paymentDetailsPage); // Only navigate if payment service acknowledges receipt
+                } catch (error) {
+                    console.error('Error initiating payment:', error);
+                    alert('Failed to initiate payment. Please check the console and ensure the Payment Service backend is running on port 5003.');
+                }
+
             } else {
                 alert('Please select a seat class.');
             }
@@ -968,13 +1010,44 @@
             showPage(flightServicePage);
         });
 
-        // --- Payment Details Page Logic ---
-        document.getElementById('paymentForm').addEventListener('submit', (event) => {
-            event.preventDefault(); // Prevent actual form submission
+        // --- Payment Details Page Logic (Complete Payment Button) ---
+        // This button now triggers the Booking Service to confirm the entire booking.
+        document.getElementById('paymentForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-            // In a real application, you'd send data to your payment service here
-            // For this demo, we just simulate success
-            bookingConfirmedModal.classList.remove('hidden'); // Show the modal
+            // In a real application, you'd send final payment confirmation data here
+            // For this setup, we're simulating the final booking confirmation
+            const bookingData = {
+                flightId: selectedFlight,
+                seatClass: selectedSeatClass,
+                totalAmount: finalBookingPrice,
+                // Add passenger details from the form
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phoneNumber: document.getElementById('phoneNumber').value
+            };
+
+            try {
+                const response = await fetch(`${BOOKING_SERVICE_URL}/book`, { // Correctly points to Booking Service on 5000
+                    method: 'GET', // Or POST if it expects data
+                    // For this example, it's a GET, so no body needed, but if it were POST:
+                    // headers: { 'Content-Type': 'application/json' },
+                    // body: JSON.stringify(bookingData),
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+                }
+
+                const message = await response.text();
+                console.log('Backend message (Complete Payment / Booking):', message); // "Booking Confirmed!" from Booking_Service_App.py
+
+                bookingConfirmedModal.classList.remove('hidden'); // Show the success modal
+            } catch (error) {
+                console.error('Error completing booking:', error);
+                alert('Booking failed. Please check the console for details and ensure the Booking Service backend is running on port 5000.');
+            }
         });
 
         document.getElementById('backToBookingBtn').addEventListener('click', () => {
@@ -983,9 +1056,9 @@
 
         // --- Booking Confirmed Modal Logic ---
         document.getElementById('goToHomeBtn').addEventListener('click', () => {
-            bookingConfirmedModal.classList.add('hidden'); // Hide the modal
-            showPage(homePage); // Go back to home
-            clearAllFormData(); // Clear data after booking
+            bookingConfirmedModal.classList.add('hidden');
+            showPage(homePage);
+            clearAllFormData();
         });
 
         // Helper function to clear form data
@@ -999,7 +1072,6 @@
             document.getElementById('expiryDate').value = '';
             document.getElementById('cvv').value = '';
             
-            // Reset radio buttons (ensure economy is checked and others unchecked)
             const economyRadio = document.querySelector('input[name="seatClass"][value="Economy"]'); 
             if (economyRadio) economyRadio.checked = true;
             
@@ -1007,11 +1079,11 @@
             otherRadios.forEach(radio => radio.checked = false);
 
             selectedFlight = '';
-            selectedFlightPrice = 0; // Reset price
+            selectedFlightPrice = 0;
             selectedSeatClass = '';
             departureDate = '';
             returnDate = '';
-            finalBookingPrice = 0; // Reset final price
+            finalBookingPrice = 0;
         }
     </script>
 </body>

@@ -1,12 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+CORS(app)
 metrics = PrometheusMetrics(app)
-
-@app.route('/flight')
-def home():
-    return "Flight Service Root Path Active!"
 
 @app.route('/search')
 @app.route('/api/search')
