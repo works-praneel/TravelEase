@@ -13,8 +13,3 @@ scrape_configs:
   - job_name: 'payment'
     static_configs:
       - targets: ['payment:5003']
-
-  - job_name: 'cloudwatch'
-    metrics_path: /metrics
-    static_configs:
-      - targets: ['cloudwatch-exporter:9106']
