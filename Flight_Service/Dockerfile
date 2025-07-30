@@ -3,5 +3,5 @@ WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
 EXPOSE 5002
-CMD ["python", "app.py"]
+CMD ["python", "Flight_Service_App.py"]
 

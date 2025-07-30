@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
 EXPOSE 5003
-CMD ["python", "app.py"]
+CMD ["python", "Payment_Service_App.py"]
