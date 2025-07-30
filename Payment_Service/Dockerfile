@@ -1,5 +1,5 @@
 FROM python:3.9-slim
-WORKDIR /Payment_Service_App
+WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
 EXPOSE 5003
