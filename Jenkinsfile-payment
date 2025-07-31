@@ -28,12 +28,12 @@ pipeline {
                     passwordVariable: 'AWS_SECRET_ACCESS_KEY'
                 )]) {
                     bat '''
-                    set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%
-                    set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%
-                    aws configure set aws_access_key_id %AWS_ACCESS_KEY_ID%
-                    aws configure set aws_secret_access_key %AWS_SECRET_ACCESS_KEY%
-                    aws configure set region %AWS_REGION%
-                    aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REPO%
+                    call set AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID%
+                    call set AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY%
+                    call aws configure set aws_access_key_id %AWS_ACCESS_KEY_ID%
+                    call aws configure set aws_secret_access_key %AWS_SECRET_ACCESS_KEY%
+                    call aws configure set region %AWS_REGION%
+                    call aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REPO%
                     '''
                 }
             }
@@ -42,8 +42,9 @@ pipeline {
         stage('Tag and Push Image') {
             steps {
                 bat '''
-                docker tag %IMAGE_NAME%:latest %ECR_REPO%:latest
-                docker push %ECR_REPO%:latest
+                call set NO_PROXY=amazonaws.com
+                call docker tag %IMAGE_NAME%:latest %ECR_REPO%:latest
+                call docker push %ECR_REPO%:latest
                 '''
             }
         }
