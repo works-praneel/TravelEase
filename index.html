@@ -664,37 +664,6 @@
                                     </li>
                                     <li class="seat-class-detail">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Lounge access
-                                    </li>
-                                </ul>
-                            </div>
-                        </label>
-                        <label class="seat-class-option">
-                            <input type="radio" name="seatClass" value="FirstClass" class="form-radio">
-                            <div class="flex-grow">
-                                <p class="text-lg font-medium text-gray-800 flex justify-between items-center">
-                                    <span>First Class</span>
-                                    <span class="text-blue-600 font-bold" id="priceFirst"></span>
-                                </p>
-                                <ul class="text-gray-600 text-sm mt-2 space-y-1 list-none p-0">
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Private suite
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Personal butler
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Fine dining
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Premium amenities
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
                                         Luxury lounge access
                                     </li>
                                 </ul>
@@ -831,15 +800,19 @@
         let finalBookingPrice = 0; // To store the total price for payment summary
 
         // Define service URLs clearly
-        const FLIGHT_SERVICE_URL = 'http://127.0.0.1:5002'; // Flight Service runs on 5002
-        const PAYMENT_SERVICE_URL = 'http://127.0.0.1:5003'; // Payment Service runs on 5003
-        const BOOKING_SERVICE_URL = 'http://127.0.0.1:5000'; // Booking Service runs on 5000
+        // AB YAHAN TERE ALB KA DNS NAME AAYEGA
+         const API_BASE_URL = '__API_BASE_URL__';
+         const FLIGHT_SERVICE_URL = '__API_BASE_URL__';
+         const PAYMENT_SERVICE_URL = '__API_BASE_URL__';
+         const BOOKING_SERVICE_URL = '__API_BASE_URL__';
+
+
 
         // Helper function for INR formatting
         function formatINR(amount) {
             // Ensure amount is a number before formatting
             if (typeof amount !== 'number' || isNaN(amount)) {
-                return '₹N/A'; // Or some other indicator for invalid number
+                return '₹N/A';
             }
             return `₹${amount.toLocaleString('en-IN')}`;
         }
@@ -850,16 +823,15 @@
             flightServicePage.classList.add('hidden');
             bookingServicePage.classList.add('hidden');
             paymentDetailsPage.classList.add('hidden');
-            bookingConfirmedModal.classList.add('hidden'); // Ensure modal is hidden when navigating
+            bookingConfirmedModal.classList.add('hidden');
             
             pageToShow.classList.remove('hidden');
-            window.scrollTo(0, 0); // Scroll to top on page change
+            window.scrollTo(0, 0);
         }
 
         // --- Header Logo Home Redirection ---
         document.getElementById('travelEaseLogo').addEventListener('click', () => {
             showPage(homePage);
-            // Optionally clear all form data when going home via logo
             clearAllFormData();
         });
 
@@ -874,20 +846,20 @@
             }
 
             document.getElementById('displayDepartureDate').textContent = departureDate;
-            document.getElementById('displayReturnDate').textContent = returnDate || 'N/A'; // Handle optional return date
+            document.getElementById('displayReturnDate').textContent = returnDate || 'N/A';
 
             // Make the fetch request to the Flight_Service backend
             try {
-                const response = await fetch(`${FLIGHT_SERVICE_URL}/api/search`); // Correctly points to Flight Service on 5002
+                const response = await fetch(`${FLIGHT_SERVICE_URL}/api/search`); // Correct path
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
                 }
                 const message = await response.text();
-                console.log('Backend message (Flight Search):', message); // "Flights Found!" from Flight_Service_App.py
+                console.log('Backend message (Flight Search):', message);
             } catch (error) {
                 console.error('Error fetching flights:', error);
-                alert('Failed to fetch flights. Please ensure the Flight Service backend is running on port 5002.');
+                alert('Failed to fetch flights. Please ensure the backend service is running and accessible.');
             }
 
             showPage(flightServicePage);
@@ -978,12 +950,11 @@
 
                 // Make the fetch request to the Payment_Service backend
                 try {
-                    const response = await fetch(`${PAYMENT_SERVICE_URL}/api/payment`, { // Correctly points to Payment Service on 5003
-                        method: 'POST', // Payment processing typically uses POST
+                    const response = await fetch(`${PAYMENT_SERVICE_URL}/api/payment`, {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        // In a real app, you'd send sensitive payment info, here we just send amount for the message
                         body: JSON.stringify({ amount: finalBookingPrice, flightId: selectedFlight, seatClass: selectedSeatClass }),
                     });
 
@@ -993,14 +964,12 @@
                     }
 
                     const message = await response.text();
-                    console.log('Backend message (Proceed to Payment):', message); // "Please Proceed with The Payment!!" from Payment_Service_App.py
-
-                    showPage(paymentDetailsPage); // Only navigate if payment service acknowledges receipt
+                    console.log('Backend message (Proceed to Payment):', message);
+                    showPage(paymentDetailsPage);
                 } catch (error) {
                     console.error('Error initiating payment:', error);
-                    alert('Failed to initiate payment. Please check the console and ensure the Payment Service backend is running on port 5003.');
+                    alert('Failed to initiate payment. Please ensure the Payment Service is running and accessible.');
                 }
-
             } else {
                 alert('Please select a seat class.');
             }
@@ -1015,24 +984,18 @@
         document.getElementById('paymentForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            // In a real application, you'd send final payment confirmation data here
-            // For this setup, we're simulating the final booking confirmation
             const bookingData = {
                 flightId: selectedFlight,
                 seatClass: selectedSeatClass,
                 totalAmount: finalBookingPrice,
-                // Add passenger details from the form
                 fullName: document.getElementById('fullName').value,
                 email: document.getElementById('email').value,
                 phoneNumber: document.getElementById('phoneNumber').value
             };
 
             try {
-                const response = await fetch(`${BOOKING_SERVICE_URL}/book`, { // Correctly points to Booking Service on 5000
-                    method: 'GET', // Or POST if it expects data
-                    // For this example, it's a GET, so no body needed, but if it were POST:
-                    // headers: { 'Content-Type': 'application/json' },
-                    // body: JSON.stringify(bookingData),
+                const response = await fetch(`${BOOKING_SERVICE_URL}/book`, {
+                    method: 'GET',
                 });
 
                 if (!response.ok) {
@@ -1041,12 +1004,11 @@
                 }
 
                 const message = await response.text();
-                console.log('Backend message (Complete Payment / Booking):', message); // "Booking Confirmed!" from Booking_Service_App.py
-
-                bookingConfirmedModal.classList.remove('hidden'); // Show the success modal
+                console.log('Backend message (Complete Payment / Booking):', message);
+                bookingConfirmedModal.classList.remove('hidden');
             } catch (error) {
                 console.error('Error completing booking:', error);
-                alert('Booking failed. Please check the console for details and ensure the Booking Service backend is running on port 5000.');
+                alert('Booking failed. Please check the console for details and ensure the Booking Service is running.');
             }
         });
 

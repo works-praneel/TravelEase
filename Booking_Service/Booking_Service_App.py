@@ -6,6 +6,9 @@ app = Flask(__name__)
 CORS(app)
 metrics = PrometheusMetrics(app)
 
+@app.route('/ping')
+def ping():
+    return "OK", 200
 
 @app.route('/book')
 def book():
