@@ -81,7 +81,6 @@ resource "aws_route_table_association" "public" {
 
 # NAT Gateway (for private subnets to access internet, e.g., ECR)
 resource "aws_eip" "nat" {
-  vpc = true
   tags = {
     Name = "${var.project_name}-NAT-EIP"
   }
