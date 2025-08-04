@@ -6,6 +6,10 @@ app = Flask(__name__)
 CORS(app)
 metrics = PrometheusMetrics(app)
 
+@app.route('/flight')
+def flight_home():
+    return "Flight Service is Up!"
+
 @app.route('/search')
 @app.route('/api/search')
 def search():

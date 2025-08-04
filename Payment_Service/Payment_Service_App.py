@@ -6,6 +6,10 @@ app = Flask(__name__)
 CORS(app)
 metrics = PrometheusMetrics(app)
 
+@app.route('/pay', methods=['GET'])
+def healthcheck():
+    return "Payment Service is Running!"
+
 @app.route('/payment', methods=['POST'])
 @app.route('/api/payment', methods=['POST'])
 def payment():

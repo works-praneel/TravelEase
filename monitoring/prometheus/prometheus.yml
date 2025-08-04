@@ -1,15 +1,12 @@
-global:
-  scrape_interval: 15s
-
 scrape_configs:
   - job_name: 'booking'
     static_configs:
-      - targets: ['booking:5000']
+      - targets: ['travelease-ALB-1552174703.eu-north-1.elb.amazonaws.com/book/metrics']
 
   - job_name: 'flight'
     static_configs:
-      - targets: ['flight:5002']
+      - targets: ['travelease-ALB-1552174703.eu-north-1.elb.amazonaws.com/flight/metrics']
 
   - job_name: 'payment'
     static_configs:
-      - targets: ['payment:5003']
+      - targets: ['travelease-ALB-1552174703.eu-north-1.elb.amazonaws.com/pay/metrics']
