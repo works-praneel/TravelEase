@@ -1,6 +1,221 @@
-body { font-family: Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
-header { background-color: #0056b3; color: white; padding: 2em; text-align: center; }
-main { display: flex; justify-content: center; gap: 2em; padding: 2em; }
-.service-panel { background: white; padding: 2em; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-button { background-color: #28a745; color: white; border: none; padding: 10px 20px; font-size: 16px; cursor: pointer; border-radius: 5px; margin-top: 1em; }
-.result-box { margin-top: 1em; padding: 1em; background-color: #e9ecef; border: 1px solid #dee2e6; border-radius: 4px; min-height: 50px; text-align: left; }
+/* Custom corporate colors and gradients based on friend's design */
+:root {
+    --color-primary-blue: #3B82F6; /* Tailwind blue-500 */
+    --color-secondary-blue: #60A5FA; /* Tailwind blue-400 */
+    --color-gradient-start: #3b82f6; /* Blue for hero/buttons */
+    --color-gradient-end: #60a5fa;   /* Lighter blue for hero/buttons */
+    --color-header-bg: #1a202c; /* Dark gray, might adjust to match friend's header more closely */
+    --color-text-dark: #1f2937; /* gray-800 */
+    --color-text-light: #f9fafb; /* gray-50 */
+    --color-bg-light: #f3f4f6; /* gray-100 */
+    --color-card-bg: #ffffff;
+    --color-green-check: #10B981; /* green-500 */
+    --color-red-cancel: #EF4444; /* red-500 */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg-light);
+}
+.container {
+    max-width: 1200px;
+}
+
+/* Gradient Button & Card Backgrounds */
+.gradient-bg-blue {
+    background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+}
+.gradient-card-purple {
+    background: linear-gradient(to right top, #8B5CF6, #EC4899); /* Purple to Pink */
+}
+.gradient-card-red {
+    background: linear-gradient(to right top, #EF4444, #F59E0B); /* Red to Orange */
+}
+.gradient-card-teal {
+    background: linear-gradient(to right top, #14B8A6, #06B6D4); /* Teal to Cyan */
+}
+
+/* Header */
+.main-header {
+    background-color: var(--color-gradient-start); /* Using primary blue for header bg */
+}
+.header-text-links a {
+    color: var(--color-text-light); /* White for links */
+    transition: color 0.2s;
+}
+.header-text-links a:hover {
+    color: #bfdbfe; /* blue-200 */
+}
+
+/* Buttons */
+.btn-blue-gradient {
+    background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
+    color: #fff;
+    font-weight: bold;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(59,130,246,0.1), 0 4px 6px -4px rgba(59,130,246,0.1);
+    transition: box-shadow 0.3s;
+}
+.btn-blue-gradient:hover {
+    box-shadow: 0 20px 25px -5px rgba(59,130,246,0.15), 0 8px 10px -6px rgba(59,130,246,0.15);
+}
+.btn-modify-search { /* New button style for modify search */
+    background: #fff;
+    color: #2563eb;
+    font-weight: 600;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    transition: background-color 0.2s;
+}
+.btn-modify-search:hover {
+    background: #f3f4f6;
+}
+
+/* Card styles from friend's design */
+.feature-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.destination-card {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    color: #fff;
+}
+.destination-card h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+.flight-item-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+@media (min-width: 768px) {
+    .flight-item-card {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+.seat-class-option {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+.seat-class-option:hover {
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.15), 0 4px 6px -4px rgba(0,0,0,0.12);
+}
+.seat-class-option input[type="radio"] {
+     /* Custom radio button appearance matching friend's design */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid #a0aec0; /* gray-400 */
+    border-radius: 50%;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0; /* Prevent shrinking in flex container */
+}
+.seat-class-option input[type="radio"]:checked {
+    background-color: var(--color-primary-blue);
+    border-color: var(--color-primary-blue);
+    box-shadow: inset 0 0 0 4px white; /* Inner white circle */
+}
+.seat-class-option input[type="radio"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+.seat-class-detail {
+    color: var(--color-green-check);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.seat-class-detail svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Input Fields */
+.input-field {
+    margin-top: 0.25rem; /* mt-1 */
+    display: block; /* block */
+    width: 100%; /* w-full */
+    padding-left: 0.75rem; /* px-3 */
+    padding-right: 0.75rem;
+    padding-top: 0.5rem; /* py-2 */
+    padding-bottom: 0.5rem;
+    border: 1px solid #d1d5db; /* border-gray-300 */
+    border-radius: 0.375rem; /* rounded-md */
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); /* shadow-sm */
+}
+.input-field:focus {
+    outline: none; /* focus:outline-none */
+    border-color: #3b82f6; /* focus:border-blue-500 */
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.5); /* focus:ring-blue-500 */
+}
+/* Dark input styling for date fields (reinstated as requested) */
+input[type="date"].dark-input {
+    background-color: #1f2937; /* bg-gray-800 */
+    color: #fff; /* text-white */
+    border-color: #4b5563; /* border-gray-600 */
+    filter: invert(100%); /* Helps make calendar icon white */
+}
+
+/* Moving Banner CSS (retained but styling adjusted for new design) */
+@keyframes scroll-x {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+.scroll-container {
+    overflow: hidden;
+    width: 100%;
+}
+.scroll-content {
+    display: flex;
+    animation: scroll-x 20s linear infinite;
+    animation-play-state: running;
+}
+.scroll-content:hover {
+    animation-play-state: paused;
+}
+.scroll-item {
+    flex: 0 0 auto;
+    width: 280px; /* Adjusted width for more spacing in banner */
+    margin-right: 24px;
+}
+/* Ensure card gradient classes override default scroll-item bg-white */
+.scroll-item.card {
+    padding: 1.5rem; /* p-6 */
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* shadow-lg */
+}
