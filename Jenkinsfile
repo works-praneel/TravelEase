@@ -2,26 +2,48 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = '904233121598' // Replace with your AWS Account ID
-        AWS_REGION     = 'eu-north-1'           // Replace with your preferred region
+        AWS_ACCOUNT_ID = '904233121598'
+        AWS_REGION     = 'eu-north-1'
         ECR_REGISTRY_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
-        SERVICE_NAME   = 'PLACEHOLDER_SERVICE_NAME' // Parameterized by Jenkins job
+        ALB_DNS_NAME = ''
+        SERVICE_NAME   = '' // Parameterized by Jenkins job
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Deploy Infrastructure & Frontend') {
+            when {
+                expression { env.SERVICE_NAME == 'frontend-service' }
+            }
             steps {
                 script {
-                    checkout scm
-                    if (!env.SERVICE_NAME) {
-                        error "SERVICE_NAME parameter is not set. Aborting."
+                    dir('terraform') {
+                        sh "terraform init"
+                        def tfOutput = sh(script: "terraform apply -auto-approve", returnStdout: true).trim()
+
+                        def albDnsNameMatch = tfOutput =~ /alb_dns_name = "(.*)"/
+                        if (albDnsNameMatch) {
+                            env.ALB_DNS_NAME = albDnsNameMatch[0][1]
+                            echo "Captured ALB DNS Name: ${env.ALB_DNS_NAME}"
+                        } else {
+                            error "Could not find ALB DNS name in Terraform output."
+                        }
                     }
-                    echo "Building and deploying service: ${env.SERVICE_NAME}"
+                    def frontendImageTag = "${ECR_REGISTRY_URL}/frontend-service:${env.BUILD_NUMBER}"
+                    dir("services/frontend-service") {
+                        sh "docker build -t ${frontendImageTag} ."
+                        sh "docker tag ${frontendImageTag} ${ECR_REGISTRY_URL}/frontend-service:latest"
+                    }
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY_URL}"
+                    sh "docker push ${ECR_REGISTRY_URL}/frontend-service:${env.BUILD_NUMBER}"
+                    sh "docker push ${ECR_REGISTRY_URL}/frontend-service:latest"
                 }
             }
         }
-
-        stage('Build Docker Image') {
+        
+        stage('Deploy Backend Service') {
+            when {
+                expression { env.SERVICE_NAME != null && env.SERVICE_NAME != 'frontend-service' }
+            }
             steps {
                 script {
                     def image_tag = "${ECR_REGISTRY_URL}/${env.SERVICE_NAME}:${env.BUILD_NUMBER}"
@@ -29,34 +51,13 @@ pipeline {
                         sh "docker build -t ${image_tag} ."
                         sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${env.SERVICE_NAME}:latest"
                     }
-                }
-            }
-        }
-
-        stage('Push to ECR') {
-            steps {
-                script {
-                    // Configure AWS credentials in Jenkins. `aws ecr get-login-password` requires the AWS CLI.
-                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY_URL}"
                     sh "docker push ${ECR_REGISTRY_URL}/${env.SERVICE_NAME}:${env.BUILD_NUMBER}"
                     sh "docker push ${ECR_REGISTRY_URL}/${env.SERVICE_NAME}:latest"
-                }
-            }
-        }
 
-        stage('Deploy with Terraform') {
-            steps {
-                dir('terraform') {
-                    // This assumes the ALB DNS name is a known variable. For a full dynamic setup,
-                    // a parent Jenkins job would run Terraform once, get the output, and pass it here.
-                    // For simplicity, we assume the ALB is already created and its DNS name is available as a Jenkins variable.
-                    def backendAlbDns = "YOUR_ALB_DNS_NAME" // Replace with the actual ALB DNS name
-                    
-                    sh "terraform init"
-                    sh "terraform apply -auto-approve " +
-                       "-var='service_name=${env.SERVICE_NAME}' " +
-                       "-var='image_tag=${env.BUILD_NUMBER}' " +
-                       "-var='backend_alb_dns=${backendAlbDns}'"
+                    dir('terraform') {
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve -var='service_name=${env.SERVICE_NAME}' -var='image_tag=${env.BUILD_NUMBER}'"
+                    }
                 }
             }
         }

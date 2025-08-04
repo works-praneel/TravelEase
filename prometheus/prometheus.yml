@@ -5,15 +5,15 @@ global:
 scrape_configs:
   - job_name: 'booking-service'
     static_configs:
-      - targets: ['booking-service:8080'] # Update with ECS Service Discovery names or IP addresses
-
-  - job_name: 'payment-service'
-    static_configs:
-      - targets: ['payment-service:8080']
+      - targets: ['booking-service:8086']
 
   - job_name: 'flight-service'
     static_configs:
-      - targets: ['flight-service:8080']
+      - targets: ['flight-service:8086']
+
+  - job_name: 'payment-service'
+    static_configs:
+      - targets: ['payment-service:8086']
 
   - job_name: 'frontend-service'
     static_configs:
