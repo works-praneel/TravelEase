@@ -14,19 +14,19 @@ services:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin123
 
-  booking:
+  booking-service:
     build:
       context: ../Booking_Service
     ports:
       - "5000:5000"
 
-  flight:
+  flight-service:
     build:
       context: ../Flight_Service
     ports:
       - "5002:5002"
 
-  payment:
+  payment-service:
     build:
       context: ../Payment_Service
     ports:
