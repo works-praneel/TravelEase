@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Login to ECR') {
             steps {
-                sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY_URL}"
+                bat "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY_URL}"
             }
         }
 
@@ -23,14 +23,14 @@ pipeline {
                                 def serviceName = 'booking-service'
                                 def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
                                 dir("services/${serviceName}") {
-                                    sh "docker build -t ${image_tag} ."
-                                    sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    bat "docker build -t ${image_tag} ."
+                                    bat "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    bat "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                    bat "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
                                 }
                                 dir('terraform') {
-                                    sh "terraform init"
-                                    sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                                    bat "terraform init"
+                                    bat "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
                                 }
                             }
                         }
@@ -42,14 +42,14 @@ pipeline {
                                 def serviceName = 'flight-service'
                                 def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
                                 dir("services/${serviceName}") {
-                                    sh "docker build -t ${image_tag} ."
-                                    sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    bat "docker build -t ${image_tag} ."
+                                    bat "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    bat "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                    bat "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
                                 }
                                 dir('terraform') {
-                                    sh "terraform init"
-                                    sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                                    bat "terraform init"
+                                    bat "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
                                 }
                             }
                         }
@@ -61,14 +61,14 @@ pipeline {
                                 def serviceName = 'payment-service'
                                 def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
                                 dir("services/${serviceName}") {
-                                    sh "docker build -t ${image_tag} ."
-                                    sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    bat "docker build -t ${image_tag} ."
+                                    bat "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    bat "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                    bat "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
                                 }
                                 dir('terraform') {
-                                    sh "terraform init"
-                                    sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                                    bat "terraform init"
+                                    bat "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
                                 }
                             }
                         }
@@ -84,18 +84,18 @@ pipeline {
                     def image_tag = "${ECR_REGISTRY_URL}/${frontendService}:${env.BUILD_NUMBER}"
                     
                     dir("services/${frontendService}") {
-                        sh "docker build -t ${image_tag} ."
-                        sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${frontendService}:latest"
-                        sh "docker push ${ECR_REGISTRY_URL}/${frontendService}:${env.BUILD_NUMBER}"
-                        sh "docker push ${ECR_REGISTRY_URL}/${frontendService}:latest"
+                        bat "docker build -t ${image_tag} ."
+                        bat "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${frontendService}:latest"
+                        bat "docker push ${ECR_REGISTRY_URL}/${frontendService}:${env.BUILD_NUMBER}"
+                        bat "docker push ${ECR_REGISTRY_URL}/${frontendService}:latest"
                     }
 
                     dir('terraform') {
-                        sh "terraform init"
-                        def tfOutput = sh(script: "terraform output -raw alb_dns_name", returnStdout: true).trim()
+                        bat "terraform init"
+                        def tfOutput = bat(script: "terraform output -raw alb_dns_name", returnStdout: true).trim()
                         env.ALB_DNS_NAME = tfOutput
 
-                        sh "terraform apply -auto-approve -var='service_name=${frontendService}' -var='image_tag=${env.BUILD_NUMBER}' -var='backend_alb_dns=${env.ALB_DNS_NAME}'"
+                        bat "terraform apply -auto-approve -var='service_name=${frontendService}' -var='image_tag=${env.BUILD_NUMBER}' -var='backend_alb_dns=${env.ALB_DNS_NAME}'"
                     }
                 }
             }
