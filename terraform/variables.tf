@@ -44,3 +44,13 @@ variable "environment" {
   type    = string
   default = "dev"
 }
+
+variable "service_name" {
+  description = "The name of the service"
+  type        = string
+}
+
+variable "image_tag" {
+  description = "The image tag for the Docker image"
+  type        = string
+}
