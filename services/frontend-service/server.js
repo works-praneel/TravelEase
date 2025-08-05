@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const fs = require('fs');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const port = 80;
 
 // Serve a dynamically modified index.html
@@ -31,27 +32,27 @@ app.get('/script.js', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// Set up the reverse proxy routes
-app.use('/flight', (req, res) => {
-    const flightServiceUrl = 'http://flight-service:8086';
-    const newUrl = `${flightServiceUrl}${req.originalUrl.replace('/flight', '')}`;
-    console.log(`Proxying to: ${newUrl}`);
-    res.redirect(newUrl);
-});
+// Set up the reverse proxy for each service
+app.use('/flight', createProxyMiddleware({
+    target: 'http://travelease-flight-service-1:8086',
+    changeOrigin: true,
+    pathRewrite: { '^/flight': '' },
+    logLevel: 'debug'
+}));
 
-app.use('/payment', (req, res) => {
-    const paymentServiceUrl = 'http://payment-service:8086';
-    const newUrl = `${paymentServiceUrl}${req.originalUrl.replace('/payment', '')}`;
-    console.log(`Proxying to: ${newUrl}`);
-    res.redirect(newUrl);
-});
+app.use('/payment', createProxyMiddleware({
+    target: 'http://travelease-payment-service-1:8086',
+    changeOrigin: true,
+    pathRewrite: { '^/payment': '' },
+    logLevel: 'debug'
+}));
 
-app.use('/booking', (req, res) => {
-    const bookingServiceUrl = 'http://booking-service:8086';
-    const newUrl = `${bookingServiceUrl}${req.originalUrl.replace('/booking', '')}`;
-    console.log(`Proxying to: ${newUrl}`);
-    res.redirect(newUrl);
-});
+app.use('/booking', createProxyMiddleware({
+    target: 'http://travelease-booking-service-1:8086',
+    changeOrigin: true,
+    pathRewrite: { '^/booking': '' },
+    logLevel: 'debug'
+}));
 
 app.listen(port, () => {
     console.log(`Frontend service listening at http://localhost:${port}`);

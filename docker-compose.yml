@@ -4,40 +4,19 @@ services:
   frontend-service:
     build: ./services/frontend-service
     ports:
-      - "3000:80" # Map host port 3000 to container port 80
-    environment:
-      # For local, the frontend itself is accessed via localhost:3000,
-      # and it proxies to backend services using their Docker network names.
-      # This variable is used by server.js to replace __API_BASE_URL__ in script.js
-      - API_GATEWAY_URL=http://localhost:3000
-    depends_on:
-      - flight-service
-      - payment-service
-      - booking-service
-    networks:
-      - travelease-network
-
-  flight-service:
-    build: ./services/flight-service
-    ports:
-      - "8087:8086" # Expose for direct access if needed, but frontend uses internal network
-    networks:
-      - travelease-network
-
-  payment-service:
-    build: ./services/payment-service
-    ports:
-      - "8088:8086" # Expose for direct access if needed
-    networks:
-      - travelease-network
+      - "3000:80"
 
   booking-service:
     build: ./services/booking-service
     ports:
-      - "8089:8086" # Expose for direct access if needed
-    networks:
-      - travelease-network
+      - "8086:8086"
 
-networks:
-  travelease-network:
-    driver: bridge
+  flight-service:
+    build: ./services/flight-service
+    ports:
+      - "8087:8086"
+      
+  payment-service:
+    build: ./services/payment-service
+    ports:
+      - "8088:8086"

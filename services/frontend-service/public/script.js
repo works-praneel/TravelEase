@@ -27,6 +27,32 @@ function formatINR(amount) {
     return `₹${amount.toLocaleString('en-IN')}`;
 }
 
+// Function to log service status to console
+function logServiceStatus(serviceName, status) {
+    if (status) {
+        console.log(`✅ ${serviceName} is UP! Status: ${status}`);
+    } else {
+        console.error(`❌ ${serviceName} is DOWN!`);
+    }
+}
+
+// Function to perform a health check
+async function checkHealth(serviceName, url) {
+    try {
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            logServiceStatus(serviceName, data.status);
+        } else {
+            logServiceStatus(serviceName, null);
+        }
+    } catch (error) {
+        console.error(`Error checking ${serviceName} status:`, error);
+        logServiceStatus(serviceName, null);
+    }
+}
+
+// Function to show/hide pages
 function showPage(pageToShow) {
     homePage.classList.add('hidden');
     flightServicePage.classList.add('hidden');
@@ -44,6 +70,9 @@ document.getElementById('travelEaseLogo').addEventListener('click', () => {
 });
 
 document.getElementById('searchFlightsBtn').addEventListener('click', async () => {
+    // Perform health check and business logic in parallel
+    checkHealth('Flight Service', `${FLIGHT_SERVICE_URL}/health`);
+
     departureDate = document.getElementById('departureDate').value;
     returnDate = document.getElementById('returnDate').value;
 
@@ -73,6 +102,9 @@ document.getElementById('searchFlightsBtn').addEventListener('click', async () =
 
 document.querySelectorAll('.select-flight-btn').forEach(button => {
     button.addEventListener('click', (event) => {
+        // Perform a booking service health check here
+        checkHealth('Booking Service', `${BOOKING_SERVICE_URL}/health`);
+
         selectedFlight = event.currentTarget.dataset.flightId;
         selectedFlightPrice = parseInt(event.currentTarget.dataset.flightPrice); 
         
@@ -110,6 +142,9 @@ document.getElementById('backToHomeBtn').addEventListener('click', () => {
 });
 
 document.getElementById('proceedToPaymentBtn').addEventListener('click', async () => {
+    // Perform a payment service health check here
+    checkHealth('Payment Service', `${PAYMENT_SERVICE_URL}/health`);
+
     const selectedSeatRadio = document.querySelector('input[name="seatClass"]:checked');
     if (selectedSeatRadio) {
         selectedSeatClass = selectedSeatRadio.value; 
