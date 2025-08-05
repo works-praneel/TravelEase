@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region for deployment"
   type        = string
-  default     = "us-east-1" # Change to your desired region
+  default     = "eu-north-1" # Change to your desired region
 }
 
 variable "project_name" {
@@ -10,25 +10,36 @@ variable "project_name" {
   default     = "TravelEase"
 }
 
+variable "aws_account_id" {
+  description = "AWS Account ID for ECR image repository"
+  type        = string
+  default     = "904233121598"
+}
+
 variable "frontend_image" {
   description = "Docker image for frontend service"
   type        = string
+  default     = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/frontend-service:latest"
 }
 
 variable "flight_image" {
   description = "Docker image for flight service"
   type        = string
+  default     = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/flight-service:latest"
 }
 
 variable "payment_image" {
   description = "Docker image for payment service"
   type        = string
+  default     = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/payment-service:latest"
 }
 
 variable "booking_image" {
   description = "Docker image for booking service"
   type        = string
+  default     = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/booking-service:latest"
 }
+
 
 variable "frontend_alb_dns" {
   description = "DNS name of the Application Load Balancer for the frontend"
