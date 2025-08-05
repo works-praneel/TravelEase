@@ -76,10 +76,7 @@ resource "aws_security_group" "services" {
 }
 
 # --- Microservices (using a module-like approach for simplicity) ---
-variable "aws_account_id" {
-  description = "AWS Account ID for ECR image repository"
-  type        = string
-}
+
 
 locals {
   service_configs = {
