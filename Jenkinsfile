@@ -15,57 +15,61 @@ pipeline {
         }
 
         stage('Deploy Backend Services') {
-            parallel {
-                DeployBookingService: {
-                    steps {
-                        script {
-                            def serviceName = 'booking-service'
-                            def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                            dir("services/${serviceName}") {
-                                sh "docker build -t ${image_tag} ."
-                                sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                                sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                                sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                            }
-                            dir('terraform') {
-                                sh "terraform init"
-                                sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
-                            }
-                        }
-                    }
-                },
-                DeployFlightService: {
-                    steps {
-                        script {
-                            def serviceName = 'flight-service'
-                            def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                            dir("services/${serviceName}") {
-                                sh "docker build -t ${image_tag} ."
-                                sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                                sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                                sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                            }
-                            dir('terraform') {
-                                sh "terraform init"
-                                sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+            steps {
+                parallel {
+                    stage('Deploy Booking Service') {
+                        steps {
+                            script {
+                                def serviceName = 'booking-service'
+                                def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                dir("services/${serviceName}") {
+                                    sh "docker build -t ${image_tag} ."
+                                    sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                }
+                                dir('terraform') {
+                                    sh "terraform init"
+                                    sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                                }
                             }
                         }
                     }
-                },
-                DeployPaymentService: {
-                    steps {
-                        script {
-                            def serviceName = 'payment-service'
-                            def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                            dir("services/${serviceName}") {
-                                sh "docker build -t ${image_tag} ."
-                                sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
-                                sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
-                                sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+
+                    stage('Deploy Flight Service') {
+                        steps {
+                            script {
+                                def serviceName = 'flight-service'
+                                def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                dir("services/${serviceName}") {
+                                    sh "docker build -t ${image_tag} ."
+                                    sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                }
+                                dir('terraform') {
+                                    sh "terraform init"
+                                    sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                                }
                             }
-                            dir('terraform') {
-                                sh "terraform init"
-                                sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                        }
+                    }
+
+                    stage('Deploy Payment Service') {
+                        steps {
+                            script {
+                                def serviceName = 'payment-service'
+                                def image_tag = "${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                dir("services/${serviceName}") {
+                                    sh "docker build -t ${image_tag} ."
+                                    sh "docker tag ${image_tag} ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:${env.BUILD_NUMBER}"
+                                    sh "docker push ${ECR_REGISTRY_URL}/${serviceName}:latest"
+                                }
+                                dir('terraform') {
+                                    sh "terraform init"
+                                    sh "terraform apply -auto-approve -var='service_name=${serviceName}' -var='image_tag=${env.BUILD_NUMBER}'"
+                                }
                             }
                         }
                     }
