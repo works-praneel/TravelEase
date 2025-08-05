@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_ACCOUNT_ID = 'YOUR_AWS_ACCOUNT_ID'
-        AWS_REGION = 'us-east-1'
+        AWS_REGION = 'eu-north-1'
         ECR_REGISTRY_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     }
 
