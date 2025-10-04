@@ -10,4 +10,3 @@ resource "aws_ecr_repository" "payment_repo" {
   name = "payment-service"
 }
 
-#

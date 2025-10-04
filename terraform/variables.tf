@@ -25,4 +25,3 @@ variable "payment_image" {
   default = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/payment-service:latest"
 }
 
-#
