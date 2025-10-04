@@ -348,7 +348,7 @@
                         <p class="text-white text-xl font-extrabold mt-4">From ₹44,500</p>
                         <p class="text-gray-300 text-sm">Dates vary</p>
                     </div>
-                     <div class="destination-card gradient-card-teal">
+                    <div class="destination-card gradient-card-teal">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.707V12A6 6 0 006 12v4.707m-4 0h16.5A2.5 2.5 0 0021 14.5V10.5a2.5 2.5 0 00-2.5-2.5H6.75a2.5 2.5 0 00-2.5 2.5v4A2.5 2.5 0 006.75 16h10.907z" />
                         </svg>
@@ -370,651 +370,482 @@
             </div>
         </section>
 
-        <section id="flightServicePage" class="hidden">
-            <div class="card p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-semibold text-gray-800">Available Flights</h2>
-                    <button class="btn-modify-search inline-flex items-center gap-2" id="modifySearchBtn">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        <span>Modify Search</span>
-                    </button>
-                </div>
-                <p class="text-gray-600 mb-8">Selected Dates: <span id="displayDepartureDate"></span> to <span id="displayReturnDate"></span></p>
-
-                <div id="flightList" class="space-y-6">
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE101</p>
-                            <p class="text-gray-600 font-medium">Delhi (DEL) <span class="mx-2">&#8594;</span> Mumbai (BOM)</p>
-                            <p class="text-gray-500 text-sm">Departure: 08:00 AM | Arrival: 10:00 AM | Duration: 2h 00m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="2800">₹2,800</p>
-                            <button data-flight-id="TE101" data-flight-price="2800" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE102</p>
-                            <p class="text-gray-600 font-medium">Delhi (DEL) <span class="mx-2">&#8594;</span> Bangalore (BLR)</p>
-                            <p class="text-gray-500 text-sm">Departure: 11:00 AM | Arrival: 01:30 PM | Duration: 2h 30m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="3200">₹3,200</p>
-                            <button data-flight-id="TE102" data-flight-price="3200" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE103</p>
-                            <p class="text-gray-600 font-medium">Delhi (DEL) <span class="mx-2">&#8594;</span> Chennai (MAA)</p>
-                            <p class="text-gray-500 text-sm">Departure: 03:00 PM | Arrival: 05:45 PM | Duration: 2h 45m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="3000">₹3,000</p>
-                            <button data-flight-id="TE103" data-flight-price="3000" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                     <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE205</p>
-                            <p class="text-gray-600 font-medium">Mumbai (BOM) <span class="mx-2">&#8594;</span> Dubai (DXB)</p>
-                            <p class="text-gray-500 text-sm">Departure: 07:00 AM | Arrival: 09:30 AM | Duration: 3h 00m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="14800">₹14,800</p>
-                            <button data-flight-id="TE205" data-flight-price="14800" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE301</p>
-                            <p class="text-gray-600 font-medium">Delhi (DEL) <span class="mx-2">&#8594;</span> London (LHR)</p>
-                            <p class="text-gray-500 text-sm">Departure: 02:00 PM | Arrival: 07:00 PM | Duration: 10h 30m</p>
-                            <p class="text-red-500 text-sm font-semibold">1 Stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="48000">₹48,000</p>
-                            <button data-flight-id="TE301" data-flight-price="48000" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                     <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE400</p>
-                            <p class="text-gray-600 font-medium">Bangalore (BLR) <span class="mx-2">&#8594;</span> Tokyo (NRT)</p>
-                            <p class="text-gray-500 text-sm">Departure: 10:00 AM | Arrival: 09:00 PM | Duration: 10h 00m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="55000">₹55,000</p>
-                            <button data-flight-id="TE400" data-flight-price="55000" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE502</p>
-                            <p class="text-gray-600 font-medium">Kolkata (CCU) <span class="mx-2">&#8594;</span> Singapore (SIN)</p>
-                            <p class="text-gray-500 text-sm">Departure: 06:00 AM | Arrival: 01:00 PM | Duration: 5h 30m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="17500">₹17,500</p>
-                            <button data-flight-id="TE502" data-flight-price="17500" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE610</p>
-                            <p class="text-gray-600 font-medium">Hyderabad (HYD) <span class="mx-2">&#8594;</span> Colombo (CMB)</p>
-                            <p class="text-gray-500 text-sm">Departure: 09:00 AM | Arrival: 11:00 AM | Duration: 2h 00m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="8200">₹8,200</p>
-                            <button data-flight-id="TE610" data-flight-price="8200" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE700</p>
-                            <p class="text-gray-600 font-medium">Chennai (MAA) <span class="mx-2">&#8594;</span> Kuala Lumpur (KUL)</p>
-                            <p class="text-gray-500 text-sm">Departure: 10:00 PM | Arrival: 05:00 AM | Duration: 4h 30m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="11000">₹11,000</p>
-                            <button data-flight-id="TE700" data-flight-price="11000" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE104</p>
-                            <p class="text-gray-600 font-medium">Delhi (DEL) <span class="mx-2">&#8594;</span> Goa (GOI)</p>
-                            <p class="text-gray-500 text-sm">Departure: 09:00 AM | Arrival: 11:30 AM | Duration: 2h 30m</p>
-                            <p class="text-green-600 text-sm font-semibold">Non-stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="4500">₹4,500</p>
-                            <button data-flight-id="TE104" data-flight-price="4500" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flight-item-card">
-                        <div class="flex-grow">
-                            <p class="font-bold text-lg text-gray-800">Flight TE302</p>
-                            <p class="text-gray-600 font-medium">Mumbai (BOM) <span class="mx-2">&#8594;</span> Paris (CDG)</p>
-                            <p class="text-gray-500 text-sm">Departure: 01:00 PM | Arrival: 08:30 PM | Duration: 9h 00m</p>
-                            <p class="text-red-500 text-sm font-semibold">1 Stop</p>
-                        </div>
-                        <div class="flex flex-col items-end mt-4 md:mt-0">
-                            <p class="font-bold text-2xl text-blue-600 mb-2" data-base-price="55000">₹55,000</p>
-                            <button data-flight-id="TE302" data-flight-price="55000" class="btn-blue-gradient select-flight-btn py-2 px-6">
-                                <span>Select Flight</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <button id="backToHomeBtn" class="btn-blue-gradient mt-8 inline-flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H16a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Back to Home</span>
-                </button>
+        <section id="resultsPage" class="hidden">
+            <h3 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Flights Available: <span id="resultsCount">0</span></h3>
+            <div class="flex justify-center mb-8">
+                <button id="modifySearchBtn" class="btn-modify-search">Modify Search</button>
             </div>
+            <div id="flightList" class="space-y-4 max-w-4xl mx-auto">
+                </div>
         </section>
 
-        <section id="bookingServicePage" class="hidden">
-            <div class="card p-8 max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Select Your Seat Class</h2>
-                    <p class="text-gray-600 mb-8">Selected Flight: <span id="displaySelectedFlight" class="font-semibold text-blue-600"></span></p>
+        <section id="detailsPage" class="hidden">
+            <h3 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Complete Your Booking</h3>
 
-                    <div class="space-y-4">
-                        <label class="seat-class-option">
-                            <input type="radio" name="seatClass" value="Economy" class="form-radio" checked>
-                            <div class="flex-grow">
-                                <p class="text-lg font-medium text-gray-800 flex justify-between items-center">
-                                    <span>Economy Class</span>
-                                    <span class="text-blue-600 font-bold" id="priceEconomy"></span>
-                                </p>
-                                <ul class="text-gray-600 text-sm mt-2 space-y-1 list-none p-0">
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Standard seat
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Meal included
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Entertainment system
-                                    </li>
-                                </ul>
-                            </div>
-                        </label>
-                        <label class="seat-class-option">
-                            <input type="radio" name="seatClass" value="EconomyPlus" class="form-radio">
-                            <div class="flex-grow">
-                                <p class="text-lg font-medium text-gray-800 flex justify-between items-center">
-                                    <span>Economy Plus</span>
-                                    <span class="text-blue-600 font-bold" id="priceEconomyPlus"></span>
-                                </p>
-                                <ul class="text-gray-600 text-sm mt-2 space-y-1 list-none p-0">
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Extra legroom
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Priority boarding
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Premium meal
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Entertainment system
-                                    </li>
-                                </ul>
-                            </div>
-                        </label>
-                        <label class="seat-class-option">
-                            <input type="radio" name="seatClass" value="BusinessClass" class="form-radio">
-                            <div class="flex-grow">
-                                <p class="text-lg font-medium text-gray-800 flex justify-between items-center">
-                                    <span>Business Class</span>
-                                    <span class="text-blue-600 font-bold" id="priceBusiness"></span>
-                                </p>
-                                <ul class="text-gray-600 text-sm mt-2 space-y-1 list-none p-0">
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Lie-flat seat
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Priority check-in
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Gourmet dining
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Premium entertainment
-                                    </li>
-                                    <li class="seat-class-detail">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                                        Luxury lounge access
-                                    </li>
-                                </ul>
-                            </div>
-                        </label>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 p-6 bg-white rounded-xl shadow-lg h-fit sticky top-8">
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">Booking Summary</h4>
+                    <p class="text-md font-semibold text-blue-600 mb-4" id="summaryFlightName"></p>
+                    
+                    <div class="space-y-2 text-gray-700 border-b pb-4 mb-4">
+                        <div class="flex justify-between">
+                            <span class="font-medium">Departure Date:</span>
+                            <span id="summaryDepartureDate"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Return Date:</span>
+                            <span id="summaryReturnDate"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="font-medium">Selected Class:</span>
+                            <span id="summarySeatClass">Economy</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center text-lg font-bold text-gray-800 pt-4">
+                        <span>Total Price:</span>
+                        <span id="summaryFinalPrice" class="text-2xl text-red-600">₹0</span>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-center bg-gray-100 rounded-xl p-8">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                </div>
+                <div class="lg:col-span-2 space-y-8">
+                    <div class="p-6 bg-white rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Passenger Details</h4>
+                        <form id="passengerForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="fullName" class="block text-sm font-semibold text-gray-700">Full Name</label>
+                                <input type="text" id="fullName" class="input-field" placeholder="John Doe" required>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-semibold text-gray-700">Email Address</label>
+                                <input type="email" id="email" class="input-field" placeholder="john.doe@example.com" required>
+                            </div>
+                            <div>
+                                <label for="phoneNumber" class="block text-sm font-semibold text-gray-700">Phone Number</label>
+                                <input type="tel" id="phoneNumber" class="input-field" placeholder="+91 98765 43210" required>
+                            </div>
+                            <div>
+                                <label for="nationality" class="block text-sm font-semibold text-gray-700">Nationality</label>
+                                <input type="text" id="nationality" class="input-field" value="India" required>
+                            </div>
+                        </form>
+                    </div>
 
-                <div class="col-span-1 lg:col-span-2 flex justify-between mt-8">
-                    <button id="backToFlightsBtn" class="btn-blue-gradient py-2 px-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H16a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    <div class="p-6 bg-white rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Select Seat Class</h4>
+                        <div id="seatClassOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            </div>
+                    </div>
+
+                    <div class="p-6 bg-white rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Payment Details</h4>
+                        <form id="paymentForm" class="space-y-4">
+                            <div>
+                                <label for="cardNumber" class="block text-sm font-semibold text-gray-700">Card Number (16 Digits)</label>
+                                <input type="text" id="cardNumber" class="input-field" placeholder="XXXX XXXX XXXX XXXX" maxlength="16" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="expiryDate" class="block text-sm font-semibold text-gray-700">Expiry Date (MM/YY)</label>
+                                    <input type="text" id="expiryDate" class="input-field" placeholder="01/25" maxlength="5" required>
+                                </div>
+                                <div>
+                                    <label for="cvv" class="block text-sm font-semibold text-gray-700">CVV</label>
+                                    <input type="password" id="cvv" class="input-field" placeholder="123" maxlength="3" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-8">
+                        <div id="paymentStatus" class="p-4 rounded-lg font-bold mb-4 hidden"></div>
+                        <button id="completeBookingBtn" class="btn-blue-gradient w-full py-4 text-xl flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                             </svg>
-                        <span>Back to Flights</span>
-                    </button>
-                    <button id="proceedToPaymentBtn" class="btn-blue-gradient py-2 px-6">
-                        <span>Proceed to Payment</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section id="paymentDetailsPage" class="hidden">
-            <div class="card p-8 max-w-2xl mx-auto">
-                <h2 class="text-3xl font-semibold text-gray-800 mb-6">Your Details & Payment</h2>
-                <div class="bg-gray-100 p-6 rounded-lg mb-8 shadow-sm">
-                    <p class="text-gray-700 font-semibold mb-2">Flight: <span id="paymentSelectedFlight" class="font-normal text-gray-900"></span></p>
-                    <p class="text-gray-700 font-semibold mb-4">Seat Class: <span id="paymentSelectedSeatClass" class="font-normal text-gray-900"></span></p>
-                    <p class="text-blue-600 text-2xl font-extrabold">Total: <span id="paymentTotalAmount">₹0</span></p>
-                </div>
-
-                <form id="paymentForm" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="fullName" class="block text-gray-700 text-sm font-semibold mb-2">Full Name</label>
-                            <input type="text" id="fullName" class="input-field" placeholder="John Doe" required>
-                        </div>
-                        <div>
-                            <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
-                            <input type="email" id="email" class="input-field" placeholder="john.doe@example.com" required>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="phoneNumber" class="block text-gray-700 text-sm font-semibold mb-2">Phone Number</label>
-                        <input type="tel" id="phoneNumber" class="input-field" placeholder="+91-XXXXXXXXXX">
-                    </div>
-
-                    <h3 class="text-2xl font-semibold text-gray-800 mt-10 mb-4">Payment Information</h3>
-                    <div>
-                        <label for="cardNumber" class="block text-gray-700 text-sm font-semibold mb-2">Card Number</label>
-                        <input type="text" id="cardNumber" class="input-field" placeholder="XXXX XXXX XXXX XXXX" required>
-                    </div>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label for="expiryDate" class="block text-gray-700 text-sm font-semibold mb-2">Expiry Date (MM/YY)</label>
-                            <input type="text" id="expiryDate" class="input-field" placeholder="MM/YY" required>
-                        </div>
-                        <div>
-                            <label for="cvv" class="block text-gray-700 text-sm font-semibold mb-2">CVV</label>
-                            <input type="text" id="cvv" class="input-field" placeholder="XXX" required>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between mt-10">
-                        <button id="backToBookingBtn" type="button" class="btn-blue-gradient py-2 px-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H16a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                            </svg>
-                            <span>Back to Seat Selection</span>
-                        </button>
-                        <button type="submit" class="btn-blue-gradient py-2 px-6">
-                            <span>Complete Payment</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H4a1 1 0 110-2h10.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
+                            <span id="finalBookingText">Pay ₹0 and Complete Booking</span>
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </section>
 
-       <section id="bookingConfirmedModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 hidden">
 
-    <div class="bg-white rounded-xl shadow-2xl p-8 text-center max-w-md w-full mx-4">
-        <h2 class="text-4xl font-bold text-green-600 mb-4">Booking Confirmed!</h2>
-       <p class="text-lg text-gray-700 mb-2">
-    Your flight booking has been successfully processed.
-</p>
-<p class="text-md text-gray-600 mb-2">
-    A confirmation email has been sent to your provided address.
-</p>
+        <div id="loadingModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+                <svg class="animate-spin h-10 w-10 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p id="loadingMessage" class="text-gray-700 font-semibold">Searching for flights...</p>
+            </div>
+        </div>
 
-<button id="goToHomeBtn" class="bg-gradient-to-r from-blue-500 to-blue-400 text-white font-bold text-lg px-12 py-2 rounded-full shadow-lg mt-2">
-    Return to Home
-</button>
-
-
-    </div>
-</section>
-
-
+        <div id="bookingConfirmedModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-green-500 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h4 class="text-3xl font-bold text-gray-800 mb-4">Booking Confirmed!</h4>
+                <p class="text-gray-600 mb-6">Your flight booking has been successfully confirmed. A detailed e-ticket has been sent to your email.</p>
+                <div class="text-left bg-gray-100 p-4 rounded-lg mb-6">
+                    <p class="font-semibold text-gray-700 mb-1">Transaction ID: <span id="confirmedTransactionId" class="font-normal text-blue-600"></span></p>
+                    <p class="font-semibold text-gray-700">Total Paid: <span id="confirmedTotalPrice" class="font-normal text-red-600"></span></p>
+                </div>
+                <button id="goToHomeBtn" class="btn-blue-gradient">Start New Search</button>
+            </div>
+        </div>
 
     </main>
 
-    <footer class="bg-gray-800 text-white py-4 px-8 text-center mt-auto">
-        <div class="container mx-auto flex justify-between items-center text-sm">
-            <p>&copy; 2025 TravelEase. All rights reserved. | Secure, Fast, Reliable</p>
-            <p><a href="mailto:contact@travelease.com" class="hover:underline text-blue-300">Contact Us</a></p>
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="container mx-auto px-8 text-center text-sm">
+            &copy; 2024 TravelEase. All rights reserved. | <a href="#" class="hover:text-blue-400">Privacy Policy</a> | <a href="#" class="hover:text-blue-400">Terms of Service</a>
         </div>
     </footer>
 
-    <script>
-        const homePage = document.getElementById('homePage');
-        const flightServicePage = document.getElementById('flightServicePage');
-        const bookingServicePage = document.getElementById('bookingServicePage');
-        const paymentDetailsPage = document.getElementById('paymentDetailsPage');
-        const bookingConfirmedModal = document.getElementById('bookingConfirmedModal');
 
-        // Global state for selected items
+    <script>
+        // --- API Configuration ---
+        const IS_LOCAL_MODE = true; // Set to true for local testing, false for cloud deployment
+        const CLOUD_API_BASE_URL = "http://YOUR_ACTUAL_ALB_DNS_HERE"; // Replace with actual AWS ALB DNS
+
+        // <<< FIX APPLIED HERE: This function now correctly routes paths to the right ports >>>
+        function getApiUrl(path) {
+            if (IS_LOCAL_MODE) {
+                // Determine the port based on the path prefix
+                if (path.startsWith('/api/search')) {
+                    return `http://127.0.0.1:5002${path}`; // Flight Service (5002)
+                } else if (path.startsWith('/api/payment')) {
+                    return `http://127.0.0.1:5003${path}`; // Payment Service (5003) <-- FIXED PORT
+                } else if (path.startsWith('/book')) {
+                    return `http://127.0.0.1:5000${path}`; // Booking Service (5000)
+                }
+            }
+            // Cloud mode or fallback (uses the single ALB DNS)
+            return `${CLOUD_API_BASE_URL}${path}`;
+        }
+        
+        // --- Global State ---
         let selectedFlight = '';
-        let selectedFlightPrice = 0; // Stores the base price of the selected flight
-        let selectedSeatClass = '';
+        let selectedFlightPrice = 0;
+        let selectedSeatClass = 'Economy'; // Default seat class
         let departureDate = '';
         let returnDate = '';
-        let finalBookingPrice = 0; // To store the total price for payment summary
+        let finalBookingPrice = 0; 
+        
+        // --- DOM Elements ---
+        const homePage = document.getElementById('homePage');
+        const resultsPage = document.getElementById('resultsPage');
+        const detailsPage = document.getElementById('detailsPage');
+        const loadingModal = document.getElementById('loadingModal');
+        const bookingConfirmedModal = document.getElementById('bookingConfirmedModal');
 
-        // Define service URLs clearly
-        // AB YAHAN TERE ALB KA DNS NAME AAYEGA
-         const API_BASE_URL = '__API_BASE_URL__';
-         const FLIGHT_SERVICE_URL = '__API_BASE_URL__';
-         const PAYMENT_SERVICE_URL = '__API_BASE_URL__';
-         const BOOKING_SERVICE_URL = '__API_BASE_URL__';
-
-
-
-        // Helper function for INR formatting
-        function formatINR(amount) {
-            // Ensure amount is a number before formatting
-            if (typeof amount !== 'number' || isNaN(amount)) {
-                return '₹N/A';
-            }
-            return `₹${amount.toLocaleString('en-IN')}`;
-        }
-
-        // Function to show/hide pages
-        function showPage(pageToShow) {
-            homePage.classList.add('hidden');
-            flightServicePage.classList.add('hidden');
-            bookingServicePage.classList.add('hidden');
-            paymentDetailsPage.classList.add('hidden');
-            bookingConfirmedModal.classList.add('hidden');
-            
-            pageToShow.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        }
-
-        // --- Header Logo Home Redirection ---
+        // --- Event Listeners ---
         document.getElementById('travelEaseLogo').addEventListener('click', () => {
             showPage(homePage);
             clearAllFormData();
         });
+        document.getElementById('searchFlightsBtn').addEventListener('click', searchFlights);
+        document.getElementById('modifySearchBtn').addEventListener('click', () => showPage(homePage));
+        document.getElementById('completeBookingBtn').addEventListener('click', completePayment);
+        
+        // --- Core Functions ---
 
-        // --- Home Page Logic ---
-        document.getElementById('searchFlightsBtn').addEventListener('click', async () => {
-            departureDate = document.getElementById('departureDate').value;
-            returnDate = document.getElementById('returnDate').value;
-
-            if (!departureDate) {
-                alert('Please select a departure date.');
-                return;
-            }
-
-            document.getElementById('displayDepartureDate').textContent = departureDate;
-            document.getElementById('displayReturnDate').textContent = returnDate || 'N/A';
-
-            // Make the fetch request to the Flight_Service backend
-            try {
-                const response = await fetch(`${FLIGHT_SERVICE_URL}/api/search`); // Correct path
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
-                }
-                const message = await response.text();
-                console.log('Backend message (Flight Search):', message);
-            } catch (error) {
-                console.error('Error fetching flights:', error);
-                alert('Failed to fetch flights. Please ensure the backend service is running and accessible.');
-            }
-
-            showPage(flightServicePage);
-        });
-
-        // --- Flight Service Page Logic ---
-        document.querySelectorAll('.select-flight-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                selectedFlight = event.currentTarget.dataset.flightId;
-                selectedFlightPrice = parseInt(event.currentTarget.dataset.flightPrice); 
-                
-                document.getElementById('displaySelectedFlight').textContent = selectedFlight;
-                document.getElementById('paymentSelectedFlight').textContent = selectedFlight; 
-                
-                updateSeatClassPrices();
-
-                showPage(bookingServicePage);
+        function showPage(pageToShow) {
+            [homePage, resultsPage, detailsPage].forEach(page => {
+                page.classList.add('hidden');
             });
-        });
+            pageToShow.classList.remove('hidden');
+            window.scrollTo(0, 0); // Scroll to top on page change
+        }
 
-        // --- Modify Search Button Logic ---
-        document.getElementById('modifySearchBtn').addEventListener('click', () => {
-            showPage(homePage);
-        });
+        function showLoading(message) {
+            document.getElementById('loadingMessage').textContent = message;
+            loadingModal.classList.remove('hidden');
+        }
 
+        function hideLoading() {
+            loadingModal.classList.add('hidden');
+        }
 
-        function updateSeatClassPrices() {
-            const economyPlusIncrement = 12000;
-            const businessClassIncrement = 60000;
-            const firstClassIncrement = 120000;
-
-            const priceEconomySpan = document.getElementById('priceEconomy');
-            const priceEconomyPlusSpan = document.getElementById('priceEconomyPlus');
-            const priceBusinessSpan = document.getElementById('priceBusiness');
-            const priceFirstSpan = document.getElementById('priceFirst');
-
-            if (priceEconomySpan) {
-                priceEconomySpan.textContent = formatINR(selectedFlightPrice);
-            } else {
-                console.error("Error: Element with ID 'priceEconomy' not found.");
-            }
-            
-            if (priceEconomyPlusSpan) {
-                priceEconomyPlusSpan.textContent = formatINR(selectedFlightPrice + economyPlusIncrement);
-            } else {
-                console.error("Error: Element with ID 'priceEconomyPlus' not found.");
-            }
-
-            if (priceBusinessSpan) {
-                priceBusinessSpan.textContent = formatINR(selectedFlightPrice + businessClassIncrement);
-            } else {
-                console.error("Error: Element with ID 'priceBusiness' not found.");
-            }
-
-            if (priceFirstSpan) {
-                priceFirstSpan.textContent = formatINR(selectedFlightPrice + firstClassIncrement);
-            } else {
-                console.error("Error: Element with ID 'priceFirst' not found.");
-            }
-
-            const economyRadio = document.querySelector('input[name="seatClass"][value="Economy"]');
-            if (economyRadio) {
-                economyRadio.checked = true;
-            } else {
-                console.error("Error: Economy radio button (input[name='seatClass'][value='Economy']) not found.");
+        function getSeatClassPrice(basePrice, seatClass) {
+            switch(seatClass) {
+                case 'Business': return basePrice + 15000;
+                case 'First': return basePrice + 35000;
+                case 'Economy':
+                default: return basePrice;
             }
         }
 
-        document.getElementById('backToHomeBtn').addEventListener('click', () => {
-            showPage(homePage);
-        });
+        function updateSummary() {
+            const basePrice = selectedFlightPrice;
+            finalBookingPrice = getSeatClassPrice(basePrice, selectedSeatClass);
 
-        // --- Booking Service Page Logic (Proceed to Payment Button) ---
-        // This button initiates the payment process, which should send a request to the Payment Service.
-        document.getElementById('proceedToPaymentBtn').addEventListener('click', async () => {
-            const selectedSeatRadio = document.querySelector('input[name="seatClass"]:checked');
-            if (selectedSeatRadio) {
-                selectedSeatClass = selectedSeatRadio.value; 
-                const seatClassText = selectedSeatClass.replace(/([A-Z])/g, ' $1').trim();
-                
-                if (selectedSeatClass === 'Economy') finalBookingPrice = selectedFlightPrice;
-                else if (selectedSeatClass === 'EconomyPlus') finalBookingPrice = selectedFlightPrice + 10000;
-                else if (selectedSeatClass === 'BusinessClass') finalBookingPrice = selectedFlightPrice + 50000;
-                else if (selectedSeatClass === 'FirstClass') finalBookingPrice = selectedFlightPrice + 100000;
+            document.getElementById('summaryFlightName').textContent = selectedFlight || 'N/A';
+            document.getElementById('summaryDepartureDate').textContent = departureDate || 'N/A';
+            document.getElementById('summaryReturnDate').textContent = returnDate || 'One Way';
+            document.getElementById('summarySeatClass').textContent = selectedSeatClass;
+            document.getElementById('summaryFinalPrice').textContent = `₹${finalBookingPrice.toLocaleString('en-IN')}`;
+            document.getElementById('finalBookingText').textContent = `Pay ₹${finalBookingPrice.toLocaleString('en-IN')} and Complete Booking`;
 
-                document.getElementById('paymentSelectedSeatClass').textContent = `${seatClassText} Class (${formatINR(finalBookingPrice)})`; 
-                document.getElementById('paymentTotalAmount').textContent = formatINR(finalBookingPrice);
-
-                // Make the fetch request to the Payment_Service backend
-                try {
-                    const response = await fetch(`${PAYMENT_SERVICE_URL}/api/payment`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ amount: finalBookingPrice, flightId: selectedFlight, seatClass: selectedSeatClass }),
-                    });
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
-                    }
-
-                    const message = await response.text();
-                    console.log('Backend message (Proceed to Payment):', message);
-                    showPage(paymentDetailsPage);
-                } catch (error) {
-                    console.error('Error initiating payment:', error);
-                    alert('Failed to initiate payment. Please ensure the Payment Service is running and accessible.');
+            // Update radio button prices
+            document.querySelectorAll('.seat-class-option').forEach(option => {
+                const radio = option.querySelector('input[name="seatClass"]');
+                const priceSpan = option.querySelector('.seat-price');
+                if (radio && priceSpan) {
+                    const classType = radio.value;
+                    const classPrice = getSeatClassPrice(basePrice, classType);
+                    priceSpan.textContent = `₹${classPrice.toLocaleString('en-IN')}`;
                 }
-            } else {
-                alert('Please select a seat class.');
+            });
+        }
+        
+        function selectFlight(flightName, price) {
+            selectedFlight = flightName;
+            selectedFlightPrice = price;
+            // Reset to default class when new flight is selected
+            selectedSeatClass = 'Economy'; 
+            
+            // Populate seat class options dynamically (assuming static data here, but can be dynamic)
+            const seatClassOptions = document.getElementById('seatClassOptions');
+            seatClassOptions.innerHTML = `
+                <label class="seat-class-option" onclick="document.getElementById('classEconomy').checked = true; updateSeatClass('Economy')">
+                    <input type="radio" name="seatClass" id="classEconomy" value="Economy" checked>
+                    <div>
+                        <p class="font-bold text-gray-800">Economy Class</p>
+                        <p class="text-sm text-gray-600">Standard seating with essential services.</p>
+                        <div class="seat-class-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                            <span class="seat-price font-extrabold">₹0</span>
+                        </div>
+                    </div>
+                </label>
+                <label class="seat-class-option" onclick="document.getElementById('classBusiness').checked = true; updateSeatClass('Business')">
+                    <input type="radio" name="seatClass" id="classBusiness" value="Business">
+                    <div>
+                        <p class="font-bold text-gray-800">Business Class</p>
+                        <p class="text-sm text-gray-600">Wider seats, priority boarding, and premium meals.</p>
+                        <div class="seat-class-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                            <span class="seat-price font-extrabold">₹0</span>
+                        </div>
+                    </div>
+                </label>
+                <label class="seat-class-option" onclick="document.getElementById('classFirst').checked = true; updateSeatClass('First')">
+                    <input type="radio" name="seatClass" id="classFirst" value="First">
+                    <div>
+                        <p class="font-bold text-gray-800">First Class</p>
+                        <p class="text-sm text-gray-600">Ultimate comfort, private suites, and gourmet dining.</p>
+                        <div class="seat-class-detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                            <span class="seat-price font-extrabold">₹0</span>
+                        </div>
+                    </div>
+                </label>
+            `;
+
+            updateSummary(); // Initial summary update
+            showPage(detailsPage);
+        }
+
+        function updateSeatClass(classType) {
+            selectedSeatClass = classType;
+            updateSummary();
+        }
+
+        // --- API Calls ---
+        async function searchFlights() {
+            departureDate = document.getElementById('departureDate').value;
+            returnDate = document.getElementById('returnDate').value;
+            
+            if (!departureDate) {
+                alert("Please select a departure date.");
+                return;
             }
-        });
 
-        document.getElementById('backToFlightsBtn').addEventListener('click', () => {
-            showPage(flightServicePage);
-        });
+            const searchParams = new URLSearchParams({ 
+                departure: 'DEL', 
+                arrival: 'BOM', 
+                date: departureDate 
+            });
 
-        // --- Payment Details Page Logic (Complete Payment Button) ---
-        // This button now triggers the Booking Service to confirm the entire booking.
-        document.getElementById('paymentForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            const bookingData = {
-                flightId: selectedFlight,
-                seatClass: selectedSeatClass,
-                totalAmount: finalBookingPrice,
-                fullName: document.getElementById('fullName').value,
-                email: document.getElementById('email').value,
-                phoneNumber: document.getElementById('phoneNumber').value
-            };
+            showLoading('Searching for flights (Flight Service 5002)...');
 
             try {
-                const response = await fetch(`${BOOKING_SERVICE_URL}/book`, {
-                    method: 'GET',
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+                // Call Flight Search Microservice (Port 5002)
+                const searchResponse = await fetch(getApiUrl('/api/search') + '?' + searchParams.toString());
+                
+                if (!searchResponse.ok) {
+                    throw new Error(`HTTP error! status: ${searchResponse.status}`);
                 }
 
-                const message = await response.text();
-                console.log('Backend message (Complete Payment / Booking):', message);
-                bookingConfirmedModal.classList.remove('hidden');
-            } catch (error) {
-                console.error('Error completing booking:', error);
-                alert('Booking failed. Please check the console for details and ensure the Booking Service is running.');
-            }
-        });
+                const data = await searchResponse.json();
+                
+                // Simulate results display based on dummy data
+                const flights = [
+                    { name: "Air India AI-345", price: 12500, departure: "09:00", arrival: "11:00", duration: "2h 0m" },
+                    { name: "IndiGo 6E-789", price: 10800, departure: "14:30", arrival: "16:45", duration: "2h 15m" },
+                    { name: "Vistara UK-901", price: 14200, departure: "20:00", arrival: "22:10", duration: "2h 10m" },
+                    { name: "SpiceJet SG-123", price: 9500, departure: "06:00", arrival: "08:00", duration: "2h 0m" }
+                ];
 
-        document.getElementById('backToBookingBtn').addEventListener('click', () => {
-            showPage(bookingServicePage);
-        });
+                renderFlights(flights);
+
+            } catch (error) {
+                alert(`Flight search failed! Please ensure Flight Service (Port 5002) is running. Error: ${error.message}`);
+                console.error("Flight search error:", error);
+                renderFlights([]);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function completePayment() {
+            // 1. Validate Passenger Details
+            if (!document.getElementById('passengerForm').reportValidity()) {
+                alert("Please fill in all passenger details.");
+                return;
+            }
+
+            // 2. Validate Payment Details
+            if (!document.getElementById('paymentForm').reportValidity()) {
+                alert("Please fill in all payment details.");
+                return;
+            }
+
+            const cardNumber = document.getElementById('cardNumber').value;
+            const passengerName = document.getElementById('fullName').value;
+            const paymentStatusElement = document.getElementById('paymentStatus');
+            
+            if (finalBookingPrice <= 0) {
+                 alert("Invalid price for booking.");
+                return;
+            }
+
+            showLoading('Processing payment (Payment Service 5003)...');
+
+            try {
+                // Call Payment Microservice (Port 5003)
+                const paymentResponse = await fetch(getApiUrl('/api/payment'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        card_number: cardNumber,
+                        amount: finalBookingPrice,
+                        name: passengerName
+                    })
+                });
+
+                const paymentData = await paymentResponse.json();
+
+                if (!paymentResponse.ok) {
+                    paymentStatusElement.textContent = `Payment Failed: ${paymentData.message}`;
+                    paymentStatusElement.className = 'p-4 bg-red-100 text-red-700 rounded-lg font-bold mb-4';
+                    paymentStatusElement.classList.remove('hidden');
+                    throw new Error(paymentData.message || `Payment service error with status: ${paymentResponse.status}`);
+                }
+
+                // Payment Success: Now proceed to Booking
+                paymentStatusElement.textContent = paymentData.message; // "Payment successful!"
+                paymentStatusElement.className = 'p-4 bg-green-100 text-green-700 rounded-lg font-bold mb-4';
+                paymentStatusElement.classList.remove('hidden');
+
+                const transactionId = paymentData.transaction_id;
+
+                await finalizeBooking(transactionId);
+
+
+            } catch (error) {
+                // Error handled inside the function, just hide loading
+                console.error("Payment flow failed:", error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+
+        async function finalizeBooking(transactionId) {
+            showLoading('Finalizing booking (Booking Service 5000)...');
+
+            try {
+                // Call Booking Microservice (Port 5000)
+                const bookingResponse = await fetch(getApiUrl('/book'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        flight: selectedFlight,
+                        price: finalBookingPrice,
+                        class: selectedSeatClass,
+                        transaction_id: transactionId
+                    })
+                });
+                
+                const bookingData = await bookingResponse.json();
+                
+                if (!bookingResponse.ok) {
+                    throw new Error(bookingData.message || `Booking service error with status: ${bookingResponse.status}`);
+                }
+
+                // Final Success: Show Confirmation Modal
+                document.getElementById('confirmedTransactionId').textContent = transactionId;
+                document.getElementById('confirmedTotalPrice').textContent = `₹${finalBookingPrice.toLocaleString('en-IN')}`;
+                bookingConfirmedModal.classList.remove('hidden');
+                
+            } catch (error) {
+                 alert(`Booking Failed! Please ensure Booking Service (Port 5000) is running. Error: ${error.message}`);
+                 console.error("Booking error:", error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+
+        // --- Rendering Functions ---
+        function renderFlights(flights) {
+            const flightList = document.getElementById('flightList');
+            flightList.innerHTML = '';
+            document.getElementById('resultsCount').textContent = flights.length;
+
+            if (flights.length === 0) {
+                flightList.innerHTML = `<div class="p-6 bg-yellow-100 text-yellow-700 rounded-lg shadow-lg text-center font-semibold">No flights found for the selected date. Please modify your search.</div>`;
+                showPage(resultsPage);
+                return;
+            }
+
+            flights.forEach(flight => {
+                const flightItem = document.createElement('div');
+                flightItem.className = 'flight-item-card hover:shadow-xl transition-shadow duration-300';
+                flightItem.innerHTML = `
+                    <div class="flex items-center space-x-6 w-full md:w-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                        <div>
+                            <p class="font-bold text-lg text-gray-900">${flight.name}</p>
+                            <p class="text-sm text-gray-600">${flight.departure} - ${flight.arrival} (${flight.duration})</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 md:mt-0 flex items-center justify-between w-full md:w-auto md:space-x-8">
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500 font-medium">Starting Price</p>
+                            <p class="text-2xl font-extrabold text-red-600">₹${flight.price.toLocaleString('en-IN')}</p>
+                        </div>
+                        <button class="btn-blue-gradient py-2 px-6" onclick="selectFlight('${flight.name}', ${flight.price})">
+                            Book Now
+                        </button>
+                    </div>
+                `;
+                flightList.appendChild(flightItem);
+            });
+
+            showPage(resultsPage);
+        }
 
         // --- Booking Confirmed Modal Logic ---
         document.getElementById('goToHomeBtn').addEventListener('click', () => {
@@ -1042,10 +873,14 @@
 
             selectedFlight = '';
             selectedFlightPrice = 0;
-            selectedSeatClass = '';
+            selectedSeatClass = 'Economy';
             departureDate = '';
             returnDate = '';
             finalBookingPrice = 0;
+
+            const paymentStatusElement = document.getElementById('paymentStatus');
+            paymentStatusElement.classList.add('hidden');
+            paymentStatusElement.textContent = '';
         }
     </script>
 </body>
