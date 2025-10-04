@@ -18,21 +18,30 @@ def ping():
 @app.route('/payment', methods=['POST']) 
 @app.route('/api/payment', methods=['POST'])
 def payment():
-    # FIX: request.get_json() MUST be called inside the function
     try:
-        data = request.get_json() # Frontend payment data is read here
+        data = request.get_json() 
     except Exception:
         data = {} 
         
     # Simulate payment processing logic 
     amount = data.get('amount', 0)
+    card_number = data.get('card_number', '')
+    
+    # Email ID ko frontend se receive karo
+    user_email = data.get('email', 'email_missing@example.com') 
 
-    if amount > 0 and len(data.get('card_number', '')) >= 16:
+    if amount > 0 and len(card_number) >= 16:
         # Payment successful
-        return jsonify({"message": "Payment successful!", "transaction_id": "TXN" + data['card_number'][-4:]}), 200
+        return jsonify({
+            "message": "Payment successful!", 
+            "transaction_id": "TXN" + card_number[-4:],
+            "user_email": user_email # Email ID ko Booking Service ke liye forward karo
+        }), 200
     else:
         # Payment failed (e.g., invalid data)
         return jsonify({"message": "Payment failed: Invalid card details or amount."}), 400
     
+# 🛑🛑🛑 YAHI PART MISSING THA! 🛑🛑🛑
 if __name__ == '__main__':
+    # Yeh app ko 0.0.0.0 IP par port 5003 par chalayega.
     app.run(host='0.0.0.0', port=5003)

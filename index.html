@@ -259,7 +259,7 @@
 
     <main class="flex-grow container mx-auto pb-8">
 
-       <section class="gradient-bg-blue rounded-xl shadow-xl text-white py-16 px-8 mb-12 flex flex-col items-center justify-center text-center mt-10 relative z-10">
+       <section id="heroBanner" class="gradient-bg-blue rounded-xl shadow-xl text-white py-16 px-8 mb-12 flex flex-col items-center justify-center text-center mt-10 relative z-10">
 
             <h2 class="text-5xl font-extrabold mb-4">TravelEase</h2>
             <p class="text-xl mb-8">Your Journey Starts Here - Effortless Flight Booking & Secure Payments</p>
@@ -286,7 +286,7 @@
         </section>
 
         <section id="homePage" class="current-page">
-            <div class="card text-center mb-12">
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center mb-12">
                 <h3 class="text-3xl font-semibold text-gray-800 mb-6">Find Your Perfect Flight</h3>
                 <p class="text-md text-gray-600 mb-8">Choose your dates and discover amazing destinations</p>
 
@@ -322,530 +322,483 @@
                         <p class="text-gray-300 text-sm">Dates vary</p>
                     </div>
                     <div class="destination-card gradient-card-red">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
                         </svg>
-                        <h4 class="font-bold">Paris</h4>
-                        <p class="text-gray-200 text-sm">City of love and lights</p>
-                        <p class="text-white text-xl font-extrabold mt-4">From ₹54,700</p>
-                        <p class="text-gray-300 text-sm">Dates vary</p>
-                    </div>
-                    <div class="destination-card gradient-card-teal">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.707V12A6 6 0 006 12v4.707m-4 0h16.5A2.5 2.5 0 0021 14.5V10.5a2.5 2.5 0 00-2.5-2.5H6.75a2.5 2.5 0 00-2.5 2.5v4A2.5 2.5 0 006.75 16h10.907z" />
-                        </svg>
-                        <h4 class="font-bold">Tokyo</h4>
-                        <p class="text-gray-200 text-sm">Modern meets traditional</p>
-                        <p class="text-white text-xl font-extrabold mt-4">From ₹49,900</p>
-                        <p class="text-gray-300 text-sm">Dates vary</p>
-                    </div>
-                    <div class="destination-card gradient-card-red">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 009-9H3a9 9 0 009 9z" />
-                        </svg>
                         <h4 class="font-bold">London</h4>
-                        <p class="text-gray-200 text-sm">History and innovation</p>
-                        <p class="text-white text-xl font-extrabold mt-4">From ₹44,500</p>
+                        <p class="text-gray-200 text-sm">Where history meets modern life</p>
+                        <p class="text-white text-xl font-extrabold mt-4">From ₹58,000</p>
                         <p class="text-gray-300 text-sm">Dates vary</p>
                     </div>
                     <div class="destination-card gradient-card-teal">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.707V12A6 6 0 006 12v4.707m-4 0h16.5A2.5 2.5 0 0021 14.5V10.5a2.5 2.5 0 00-2.5-2.5H6.75a2.5 2.5 0 00-2.5 2.5v4A2.5 2.5 0 006.75 16h10.907z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h-2M5 21h2m0 0h10" />
                         </svg>
                         <h4 class="font-bold">Dubai</h4>
-                        <p class="text-gray-200 text-sm">The city of gold</p>
-                        <p class="text-white text-xl font-extrabold mt-4">From ₹14,800</p>
-                        <p class="text-gray-300 text-sm">Dates vary</p>
-                    </div>
-                    <div class="destination-card gradient-card-purple">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253" />
-                        </svg>
-                        <h4 class="font-bold">Goa, India</h4>
-                        <p class="text-gray-200 text-sm">Sun, Sand, and Sea</p>
-                        <p class="text-white text-xl font-extrabold mt-4">From ₹3,900</p>
+                        <p class="text-gray-200 text-sm">Desert oasis of luxury</p>
+                        <p class="text-white text-xl font-extrabold mt-4">From ₹45,500</p>
                         <p class="text-gray-300 text-sm">Dates vary</p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <section id="resultsPage" class="hidden">
-            <h3 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Flights Available: <span id="resultsCount">0</span></h3>
-            <div class="flex justify-center mb-8">
-                <button id="modifySearchBtn" class="btn-modify-search">Modify Search</button>
+            <div class="scroll-container mt-16 bg-gray-200 py-6 rounded-xl shadow-inner">
+                <div class="scroll-content flex">
+                    <div class="scroll-item card gradient-card-purple mx-3 flex-shrink-0">
+                        <h5 class="text-xl font-bold text-white mb-2">Exclusive Offer</h5>
+                        <p class="text-gray-100">Save up to 30% on all Business Class tickets this month!</p>
+                    </div>
+                    <div class="scroll-item card gradient-card-red mx-3 flex-shrink-0">
+                        <h5 class="text-xl font-bold text-white mb-2">New Routes</h5>
+                        <p class="text-gray-100">Direct flights to Tokyo and Sydney now available. Book now!</p>
+                    </div>
+                    <div class="scroll-item card gradient-card-teal mx-3 flex-shrink-0">
+                        <h5 class="text-xl font-bold text-white mb-2">Weekend Getaways</h5>
+                        <p class="text-gray-100">Special prices on short trips to Goa and Bangkok.</p>
+                    </div>
+                    <div class="scroll-item card gradient-card-purple mx-3 flex-shrink-0">
+                        <h5 class="text-xl font-bold text-white mb-2">Exclusive Offer</h5>
+                        <p class="text-gray-100">Save up to 30% on all Business Class tickets this month!</p>
+                    </div>
+                    <div class="scroll-item card gradient-card-red mx-3 flex-shrink-0">
+                        <h5 class="text-xl font-bold text-white mb-2">New Routes</h5>
+                        <p class="text-gray-100">Direct flights to Tokyo and Sydney now available. Book now!</p>
+                    </div>
+                    <div class="scroll-item card gradient-card-teal mx-3 flex-shrink-0">
+                        <h5 class="text-xl font-bold text-white mb-2">Weekend Getaways</h5>
+                        <p class="text-gray-100">Special prices on short trips to Goa and Bangkok.</p>
+                    </div>
+                </div>
             </div>
-            <div id="flightList" class="space-y-4 max-w-4xl mx-auto">
+            </section>
+        
+        <section id="flightSelectionPage" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-3xl font-bold text-gray-800">Available Flights</h3>
+                <button id="modifySearchBtn" class="btn-modify-search">
+                    Modify Search
+                </button>
+            </div>
+            <p id="flightSearchSummary" class="text-lg text-gray-600 mb-8"></p>
+
+            <div id="flightsList" class="space-y-6">
                 </div>
         </section>
 
-        <section id="detailsPage" class="hidden">
-            <h3 class="text-3xl font-semibold text-gray-800 mb-8 text-center">Complete Your Booking</h3>
-
-            <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 p-6 bg-white rounded-xl shadow-lg h-fit sticky top-8">
-                    <h4 class="text-xl font-bold text-gray-800 mb-4">Booking Summary</h4>
-                    <p class="text-md font-semibold text-blue-600 mb-4" id="summaryFlightName"></p>
-                    
-                    <div class="space-y-2 text-gray-700 border-b pb-4 mb-4">
-                        <div class="flex justify-between">
-                            <span class="font-medium">Departure Date:</span>
-                            <span id="summaryDepartureDate"></span>
+        <section id="paymentServicePage" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-3xl font-bold text-gray-800">Review & Payment</h3>
+                <button id="backToFlightsBtn" class="btn-modify-search">
+                    Back to Flights
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1">
+                    <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-200">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-3">Your Flight Summary</h4>
+                        <div class="space-y-3">
+                            <p class="flex justify-between items-center text-gray-700">
+                                <span>Flight:</span>
+                                <span id="summaryFlight" class="font-semibold text-blue-600"></span>
+                            </p>
+                            <p class="flex justify-between items-center text-gray-700">
+                                <span>Date:</span>
+                                <span id="summaryDate" class="font-semibold text-blue-600"></span>
+                            </p>
+                            <p class="flex justify-between items-center text-gray-700">
+                                <span>Class:</span>
+                                <span id="summaryClass" class="font-semibold text-blue-600"></span>
+                            </p>
+                            <p class="flex justify-between items-center text-gray-700">
+                                <span>Base Price:</span>
+                                <span id="summaryBasePrice" class="font-semibold"></span>
+                            </p>
+                            <p class="flex justify-between items-center text-gray-700 border-t pt-3 font-bold text-xl mt-4">
+                                <span>Total Price:</span>
+                                <span id="summaryTotalPrice" class="text-red-500"></span>
+                            </p>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="font-medium">Return Date:</span>
-                            <span id="summaryReturnDate"></span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="font-medium">Selected Class:</span>
-                            <span id="summarySeatClass">Economy</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center text-lg font-bold text-gray-800 pt-4">
-                        <span>Total Price:</span>
-                        <span id="summaryFinalPrice" class="text-2xl text-red-600">₹0</span>
                     </div>
                 </div>
 
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="p-6 bg-white rounded-xl shadow-lg">
-                        <h4 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Passenger Details</h4>
-                        <form id="passengerForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">Passenger Details</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="fullName" class="block text-sm font-semibold text-gray-700">Full Name</label>
+                                <label for="fullName" class="block text-gray-700 text-sm font-semibold mb-2">Full Name</label>
                                 <input type="text" id="fullName" class="input-field" placeholder="John Doe" required>
                             </div>
                             <div>
-                                <label for="email" class="block text-sm font-semibold text-gray-700">Email Address</label>
-                                <input type="email" id="email" class="input-field" placeholder="john.doe@example.com" required>
+                                <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                                <input type="email" id="email" class="input-field" placeholder="johndoe@example.com" required>
                             </div>
                             <div>
-                                <label for="phoneNumber" class="block text-sm font-semibold text-gray-700">Phone Number</label>
-                                <input type="tel" id="phoneNumber" class="input-field" placeholder="+91 98765 43210" required>
+                                <label for="phoneNumber" class="block text-gray-700 text-sm font-semibold mb-2">Phone Number</label>
+                                <input type="tel" id="phoneNumber" class="input-field" placeholder="+91 98765 43210">
                             </div>
-                            <div>
-                                <label for="nationality" class="block text-sm font-semibold text-gray-700">Nationality</label>
-                                <input type="text" id="nationality" class="input-field" value="India" required>
-                            </div>
-                        </form>
+                        </div>
                     </div>
 
-                    <div class="p-6 bg-white rounded-xl shadow-lg">
-                        <h4 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Select Seat Class</h4>
-                        <div id="seatClassOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">Select Seat Class</h4>
+                        <div id="seatClassOptions" class="space-y-4">
                             </div>
                     </div>
 
-                    <div class="p-6 bg-white rounded-xl shadow-lg">
-                        <h4 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Payment Details</h4>
-                        <form id="paymentForm" class="space-y-4">
+                    <div class="bg-white p-8 rounded-xl shadow-lg">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">Payment Details</h4>
+                        <div class="space-y-6">
                             <div>
-                                <label for="cardNumber" class="block text-sm font-semibold text-gray-700">Card Number (16 Digits)</label>
+                                <label for="cardNumber" class="block text-gray-700 text-sm font-semibold mb-2">Card Number</label>
                                 <input type="text" id="cardNumber" class="input-field" placeholder="XXXX XXXX XXXX XXXX" maxlength="16" required>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div>
-                                    <label for="expiryDate" class="block text-sm font-semibold text-gray-700">Expiry Date (MM/YY)</label>
-                                    <input type="text" id="expiryDate" class="input-field" placeholder="01/25" maxlength="5" required>
+                                    <label for="expiryDate" class="block text-gray-700 text-sm font-semibold mb-2">Expiry Date (MM/YY)</label>
+                                    <input type="text" id="expiryDate" class="input-field" placeholder="MM/YY" maxlength="5" required>
                                 </div>
                                 <div>
-                                    <label for="cvv" class="block text-sm font-semibold text-gray-700">CVV</label>
-                                    <input type="password" id="cvv" class="input-field" placeholder="123" maxlength="3" required>
+                                    <label for="cvv" class="block text-gray-700 text-sm font-semibold mb-2">CVV</label>
+                                    <input type="text" id="cvv" class="input-field" placeholder="123" maxlength="4" required>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
 
-                    <div class="mt-8">
-                        <div id="paymentStatus" class="p-4 rounded-lg font-bold mb-4 hidden"></div>
-                        <button id="completeBookingBtn" class="btn-blue-gradient w-full py-4 text-xl flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                            </svg>
-                            <span id="finalBookingText">Pay ₹0 and Complete Booking</span>
+                        <div id="paymentStatus" class="mt-6 text-center text-lg font-semibold hidden"></div>
+
+                        <button id="finalizeBookingBtn" class="btn-blue-gradient w-full mt-8">
+                            Finalize Booking & Pay <span id="paymentAmountDisplay"></span>
                         </button>
                     </div>
                 </div>
             </div>
         </section>
 
-
-        <div id="loadingModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
-                <svg class="animate-spin h-10 w-10 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <p id="loadingMessage" class="text-gray-700 font-semibold">Searching for flights...</p>
-            </div>
-        </div>
-
-        <div id="bookingConfirmedModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center z-50">
-            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-green-500 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <div id="bookingConfirmedModal" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center p-4 hidden z-50">
+            <div class="bg-white p-10 rounded-xl shadow-2xl max-w-lg w-full text-center transform transition-all scale-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-500 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <h4 class="text-3xl font-bold text-gray-800 mb-4">Booking Confirmed!</h4>
-                <p class="text-gray-600 mb-6">Your flight booking has been successfully confirmed. A detailed e-ticket has been sent to your email.</p>
-                <div class="text-left bg-gray-100 p-4 rounded-lg mb-6">
-                    <p class="font-semibold text-gray-700 mb-1">Transaction ID: <span id="confirmedTransactionId" class="font-normal text-blue-600"></span></p>
-                    <p class="font-semibold text-gray-700">Total Paid: <span id="confirmedTotalPrice" class="font-normal text-red-600"></span></p>
+                <h4 class="text-3xl font-extrabold text-green-600 mb-3">Booking Confirmed!</h4>
+                <p class="text-gray-700 text-lg mb-6">Aapki yatra safaltapoorvak book ho gayi hai. Details niche hain:</p>
+
+                <div class="bg-gray-100 p-6 rounded-lg text-left space-y-3 mb-8">
+                    <p class="text-gray-700"><strong>Flight:</strong> <span id="confFlight" class="font-semibold text-gray-900"></span></p>
+                    <p class="text-gray-700"><strong>Booking Reference:</strong> <span id="confRef" class="font-semibold text-blue-600"></span></p>
+                    <p class="text-gray-700"><strong>Total Paid:</strong> <span id="confPrice" class="font-semibold text-red-500"></span></p>
+                    <p class="text-gray-700"><strong>Email Status:</strong> <span id="confEmailStatus" class="font-semibold text-green-500"></span></p>
                 </div>
-                <button id="goToHomeBtn" class="btn-blue-gradient">Start New Search</button>
+
+                <button id="goToHomeBtn" class="btn-blue-gradient">
+                    Go to Home
+                </button>
             </div>
         </div>
 
     </main>
-
-    <footer class="bg-gray-800 text-white py-6 mt-12">
-        <div class="container mx-auto px-8 text-center text-sm">
-            &copy; 2024 TravelEase. All rights reserved. | <a href="#" class="hover:text-blue-400">Privacy Policy</a> | <a href="#" class="hover:text-blue-400">Terms of Service</a>
+    
+    <footer class="main-header text-white py-4 px-8 mt-auto">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2025 TravelEase. All rights reserved. | Microservices Demo App</p>
         </div>
     </footer>
 
-
     <script>
-        // --- API Configuration ---
-        const IS_LOCAL_MODE = true; // Set to true for local testing, false for cloud deployment
-        const CLOUD_API_BASE_URL = "http://YOUR_ACTUAL_ALB_DNS_HERE"; // Replace with actual AWS ALB DNS
-
-        // <<< FIX APPLIED HERE: This function now correctly routes paths to the right ports >>>
-        function getApiUrl(path) {
-            if (IS_LOCAL_MODE) {
-                // Determine the port based on the path prefix
-                if (path.startsWith('/api/search')) {
-                    return `http://127.0.0.1:5002${path}`; // Flight Service (5002)
-                } else if (path.startsWith('/api/payment')) {
-                    return `http://127.0.0.1:5003${path}`; // Payment Service (5003) <-- FIXED PORT
-                } else if (path.startsWith('/book')) {
-                    return `http://127.0.0.1:5000${path}`; // Booking Service (5000)
-                }
-            }
-            // Cloud mode or fallback (uses the single ALB DNS)
-            return `${CLOUD_API_BASE_URL}${path}`;
-        }
-        
-        // --- Global State ---
+        // --- Global State Variables ---
         let selectedFlight = '';
         let selectedFlightPrice = 0;
-        let selectedSeatClass = 'Economy'; // Default seat class
+        let selectedSeatClass = 'Economy'; // Default to Economy
         let departureDate = '';
         let returnDate = '';
-        let finalBookingPrice = 0; 
+        let finalBookingPrice = 0;
+
+        // --- Helper Functions ---
+
+        function getApiUrl(path, port) {
+            // Using localhost for all services
+            return `http://127.0.0.1:${port}${path}`;
+        }
+
+        function showPage(pageElement) {
+            // Hide all pages
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('flightSelectionPage').classList.add('hidden');
+            document.getElementById('paymentServicePage').classList.add('hidden');
+            
+            // Show the requested page
+            pageElement.classList.remove('hidden');
+        }
+
+        function formatPrice(price) {
+            return `₹${price.toLocaleString('en-IN')}`;
+        }
+
+        function calculateFinalPrice(basePrice, seatClass) {
+            let multiplier = 1.0;
+            switch (seatClass) {
+                case 'Business':
+                    multiplier = 1.5;
+                    break;
+                case 'First':
+                    multiplier = 2.0;
+                    break;
+                case 'Economy':
+                default:
+                    multiplier = 1.0;
+                    break;
+            }
+            return Math.round(basePrice * multiplier);
+        }
         
-        // --- DOM Elements ---
+        // --- Main App Logic ---
+
+        // 1. Initial Setup and Navigation
         const homePage = document.getElementById('homePage');
-        const resultsPage = document.getElementById('resultsPage');
-        const detailsPage = document.getElementById('detailsPage');
-        const loadingModal = document.getElementById('loadingModal');
+        const flightSelectionPage = document.getElementById('flightSelectionPage');
+        const paymentServicePage = document.getElementById('paymentServicePage');
         const bookingConfirmedModal = document.getElementById('bookingConfirmedModal');
 
-        // --- Event Listeners ---
         document.getElementById('travelEaseLogo').addEventListener('click', () => {
             showPage(homePage);
             clearAllFormData();
         });
+
+        // 2. Flight Search
         document.getElementById('searchFlightsBtn').addEventListener('click', searchFlights);
-        document.getElementById('modifySearchBtn').addEventListener('click', () => showPage(homePage));
-        document.getElementById('completeBookingBtn').addEventListener('click', completePayment);
         
-        // --- Core Functions ---
-
-        function showPage(pageToShow) {
-            [homePage, resultsPage, detailsPage].forEach(page => {
-                page.classList.add('hidden');
-            });
-            pageToShow.classList.remove('hidden');
-            window.scrollTo(0, 0); // Scroll to top on page change
-        }
-
-        function showLoading(message) {
-            document.getElementById('loadingMessage').textContent = message;
-            loadingModal.classList.remove('hidden');
-        }
-
-        function hideLoading() {
-            loadingModal.classList.add('hidden');
-        }
-
-        function getSeatClassPrice(basePrice, seatClass) {
-            switch(seatClass) {
-                case 'Business': return basePrice + 15000;
-                case 'First': return basePrice + 35000;
-                case 'Economy':
-                default: return basePrice;
-            }
-        }
-
-        function updateSummary() {
-            const basePrice = selectedFlightPrice;
-            finalBookingPrice = getSeatClassPrice(basePrice, selectedSeatClass);
-
-            document.getElementById('summaryFlightName').textContent = selectedFlight || 'N/A';
-            document.getElementById('summaryDepartureDate').textContent = departureDate || 'N/A';
-            document.getElementById('summaryReturnDate').textContent = returnDate || 'One Way';
-            document.getElementById('summarySeatClass').textContent = selectedSeatClass;
-            document.getElementById('summaryFinalPrice').textContent = `₹${finalBookingPrice.toLocaleString('en-IN')}`;
-            document.getElementById('finalBookingText').textContent = `Pay ₹${finalBookingPrice.toLocaleString('en-IN')} and Complete Booking`;
-
-            // Update radio button prices
-            document.querySelectorAll('.seat-class-option').forEach(option => {
-                const radio = option.querySelector('input[name="seatClass"]');
-                const priceSpan = option.querySelector('.seat-price');
-                if (radio && priceSpan) {
-                    const classType = radio.value;
-                    const classPrice = getSeatClassPrice(basePrice, classType);
-                    priceSpan.textContent = `₹${classPrice.toLocaleString('en-IN')}`;
-                }
-            });
-        }
-        
-        function selectFlight(flightName, price) {
-            selectedFlight = flightName;
-            selectedFlightPrice = price;
-            // Reset to default class when new flight is selected
-            selectedSeatClass = 'Economy'; 
-            
-            // Populate seat class options dynamically (assuming static data here, but can be dynamic)
-            const seatClassOptions = document.getElementById('seatClassOptions');
-            seatClassOptions.innerHTML = `
-                <label class="seat-class-option" onclick="document.getElementById('classEconomy').checked = true; updateSeatClass('Economy')">
-                    <input type="radio" name="seatClass" id="classEconomy" value="Economy" checked>
-                    <div>
-                        <p class="font-bold text-gray-800">Economy Class</p>
-                        <p class="text-sm text-gray-600">Standard seating with essential services.</p>
-                        <div class="seat-class-detail">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                            <span class="seat-price font-extrabold">₹0</span>
-                        </div>
-                    </div>
-                </label>
-                <label class="seat-class-option" onclick="document.getElementById('classBusiness').checked = true; updateSeatClass('Business')">
-                    <input type="radio" name="seatClass" id="classBusiness" value="Business">
-                    <div>
-                        <p class="font-bold text-gray-800">Business Class</p>
-                        <p class="text-sm text-gray-600">Wider seats, priority boarding, and premium meals.</p>
-                        <div class="seat-class-detail">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                            <span class="seat-price font-extrabold">₹0</span>
-                        </div>
-                    </div>
-                </label>
-                <label class="seat-class-option" onclick="document.getElementById('classFirst').checked = true; updateSeatClass('First')">
-                    <input type="radio" name="seatClass" id="classFirst" value="First">
-                    <div>
-                        <p class="font-bold text-gray-800">First Class</p>
-                        <p class="text-sm text-gray-600">Ultimate comfort, private suites, and gourmet dining.</p>
-                        <div class="seat-class-detail">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                            <span class="seat-price font-extrabold">₹0</span>
-                        </div>
-                    </div>
-                </label>
-            `;
-
-            updateSummary(); // Initial summary update
-            showPage(detailsPage);
-        }
-
-        function updateSeatClass(classType) {
-            selectedSeatClass = classType;
-            updateSummary();
-        }
-
-        // --- API Calls ---
-        async function searchFlights() {
+        function searchFlights() {
             departureDate = document.getElementById('departureDate').value;
             returnDate = document.getElementById('returnDate').value;
-            
+
             if (!departureDate) {
-                alert("Please select a departure date.");
+                alert("Kripya Departure Date chunein.");
                 return;
             }
 
-            const searchParams = new URLSearchParams({ 
-                departure: 'DEL', 
-                arrival: 'BOM', 
-                date: departureDate 
-            });
+            // Call Flight Service (Port 5002)
+            const flightApiUrl = getApiUrl('/api/flights', 5002);
+            const flightsList = document.getElementById('flightsList');
+            flightsList.innerHTML = '<p class="text-center text-xl text-blue-600 font-semibold">Flights khoje ja rahe hain... ✈️</p>';
 
-            showLoading('Searching for flights (Flight Service 5002)...');
+            fetch(flightApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    flightsList.innerHTML = '';
+                    document.getElementById('flightSearchSummary').textContent = 
+                        `Flights for: ${new Date(departureDate).toDateString()} ${returnDate ? ' to ' + new Date(returnDate).toDateString() : ''}`;
 
-            try {
-                // Call Flight Search Microservice (Port 5002)
-                const searchResponse = await fetch(getApiUrl('/api/search') + '?' + searchParams.toString());
-                
-                if (!searchResponse.ok) {
-                    throw new Error(`HTTP error! status: ${searchResponse.status}`);
-                }
-
-                const data = await searchResponse.json();
-                
-                // Simulate results display based on dummy data
-                const flights = [
-                    { name: "Air India AI-345", price: 12500, departure: "09:00", arrival: "11:00", duration: "2h 0m" },
-                    { name: "IndiGo 6E-789", price: 10800, departure: "14:30", arrival: "16:45", duration: "2h 15m" },
-                    { name: "Vistara UK-901", price: 14200, departure: "20:00", arrival: "22:10", duration: "2h 10m" },
-                    { name: "SpiceJet SG-123", price: 9500, departure: "06:00", arrival: "08:00", duration: "2h 0m" }
-                ];
-
-                renderFlights(flights);
-
-            } catch (error) {
-                alert(`Flight search failed! Please ensure Flight Service (Port 5002) is running. Error: ${error.message}`);
-                console.error("Flight search error:", error);
-                renderFlights([]);
-            } finally {
-                hideLoading();
-            }
-        }
-
-        async function completePayment() {
-            // 1. Validate Passenger Details
-            if (!document.getElementById('passengerForm').reportValidity()) {
-                alert("Please fill in all passenger details.");
-                return;
-            }
-
-            // 2. Validate Payment Details
-            if (!document.getElementById('paymentForm').reportValidity()) {
-                alert("Please fill in all payment details.");
-                return;
-            }
-
-            const cardNumber = document.getElementById('cardNumber').value;
-            const passengerName = document.getElementById('fullName').value;
-            const paymentStatusElement = document.getElementById('paymentStatus');
-            
-            if (finalBookingPrice <= 0) {
-                 alert("Invalid price for booking.");
-                return;
-            }
-
-            showLoading('Processing payment (Payment Service 5003)...');
-
-            try {
-                // Call Payment Microservice (Port 5003)
-                const paymentResponse = await fetch(getApiUrl('/api/payment'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        card_number: cardNumber,
-                        amount: finalBookingPrice,
-                        name: passengerName
-                    })
+                    if (data.flights && data.flights.length > 0) {
+                        data.flights.forEach(flight => {
+                            const flightCard = createFlightCard(flight);
+                            flightsList.appendChild(flightCard);
+                        });
+                    } else {
+                        flightsList.innerHTML = '<p class="text-center text-xl text-red-500 font-semibold">Koi flights nahi mili. Kripya doosri dates chunein.</p>';
+                    }
+                    showPage(flightSelectionPage);
+                })
+                .catch(error => {
+                    console.error('Error fetching flights:', error);
+                    flightsList.innerHTML = '<p class="text-center text-xl text-red-500 font-semibold">Server error: Flight Service (5002) is down or unreachable.</p>';
+                    showPage(flightSelectionPage); // Still show the page to display error
                 });
-
-                const paymentData = await paymentResponse.json();
-
-                if (!paymentResponse.ok) {
-                    paymentStatusElement.textContent = `Payment Failed: ${paymentData.message}`;
-                    paymentStatusElement.className = 'p-4 bg-red-100 text-red-700 rounded-lg font-bold mb-4';
-                    paymentStatusElement.classList.remove('hidden');
-                    throw new Error(paymentData.message || `Payment service error with status: ${paymentResponse.status}`);
-                }
-
-                // Payment Success: Now proceed to Booking
-                paymentStatusElement.textContent = paymentData.message; // "Payment successful!"
-                paymentStatusElement.className = 'p-4 bg-green-100 text-green-700 rounded-lg font-bold mb-4';
-                paymentStatusElement.classList.remove('hidden');
-
-                const transactionId = paymentData.transaction_id;
-
-                await finalizeBooking(transactionId);
-
-
-            } catch (error) {
-                // Error handled inside the function, just hide loading
-                console.error("Payment flow failed:", error);
-            } finally {
-                hideLoading();
-            }
         }
 
-
-        async function finalizeBooking(transactionId) {
-            showLoading('Finalizing booking (Booking Service 5000)...');
-
-            try {
-                // Call Booking Microservice (Port 5000)
-                const bookingResponse = await fetch(getApiUrl('/book'), {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        flight: selectedFlight,
-                        price: finalBookingPrice,
-                        class: selectedSeatClass,
-                        transaction_id: transactionId
-                    })
-                });
-                
-                const bookingData = await bookingResponse.json();
-                
-                if (!bookingResponse.ok) {
-                    throw new Error(bookingData.message || `Booking service error with status: ${bookingResponse.status}`);
-                }
-
-                // Final Success: Show Confirmation Modal
-                document.getElementById('confirmedTransactionId').textContent = transactionId;
-                document.getElementById('confirmedTotalPrice').textContent = `₹${finalBookingPrice.toLocaleString('en-IN')}`;
-                bookingConfirmedModal.classList.remove('hidden');
-                
-            } catch (error) {
-                 alert(`Booking Failed! Please ensure Booking Service (Port 5000) is running. Error: ${error.message}`);
-                 console.error("Booking error:", error);
-            } finally {
-                hideLoading();
-            }
-        }
-
-
-        // --- Rendering Functions ---
-        function renderFlights(flights) {
-            const flightList = document.getElementById('flightList');
-            flightList.innerHTML = '';
-            document.getElementById('resultsCount').textContent = flights.length;
-
-            if (flights.length === 0) {
-                flightList.innerHTML = `<div class="p-6 bg-yellow-100 text-yellow-700 rounded-lg shadow-lg text-center font-semibold">No flights found for the selected date. Please modify your search.</div>`;
-                showPage(resultsPage);
-                return;
-            }
-
-            flights.forEach(flight => {
-                const flightItem = document.createElement('div');
-                flightItem.className = 'flight-item-card hover:shadow-xl transition-shadow duration-300';
-                flightItem.innerHTML = `
-                    <div class="flex items-center space-x-6 w-full md:w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        <div>
-                            <p class="font-bold text-lg text-gray-900">${flight.name}</p>
-                            <p class="text-sm text-gray-600">${flight.departure} - ${flight.arrival} (${flight.duration})</p>
-                        </div>
+        function createFlightCard(flight) {
+            const card = document.createElement('div');
+            card.className = 'flight-item-card';
+            card.innerHTML = `
+                <div class="flex items-center space-x-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    <div>
+                        <h4 class="text-xl font-bold text-gray-800">${flight.name} - ${flight.flightNumber}</h4>
+                        <p class="text-gray-600">${flight.route} | Duration: ${flight.duration}</p>
                     </div>
-                    
-                    <div class="mt-4 md:mt-0 flex items-center justify-between w-full md:w-auto md:space-x-8">
-                        <div class="text-center">
-                            <p class="text-xs text-gray-500 font-medium">Starting Price</p>
-                            <p class="text-2xl font-extrabold text-red-600">₹${flight.price.toLocaleString('en-IN')}</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex items-center space-x-6">
+                    <div class="text-right">
+                        <p class="text-2xl font-extrabold text-red-500">${formatPrice(flight.price)}</p>
+                        <p class="text-sm text-gray-500">Base Price (Economy)</p>
+                    </div>
+                    <button data-flight-name="${flight.name}" data-flight-price="${flight.price}" 
+                            class="btn-blue-gradient text-sm md:text-base px-6 py-2 select-flight-btn">
+                        Book Now
+                    </button>
+                </div>
+            `;
+            // Attach event listener using event delegation or directly (direct for simplicity here)
+            card.querySelector('.select-flight-btn').addEventListener('click', handleSelectFlight);
+            return card;
+        }
+
+        // 3. Flight Selection and Navigation to Payment
+        function handleSelectFlight(event) {
+            selectedFlight = event.currentTarget.dataset.flightName;
+            selectedFlightPrice = parseInt(event.currentTarget.dataset.flightPrice);
+            selectedSeatClass = 'Economy'; // Reset to default upon new selection
+
+            // Show payment page with initial summary
+            updatePaymentSummary();
+            showPage(paymentServicePage);
+        }
+
+        document.getElementById('modifySearchBtn').addEventListener('click', () => showPage(homePage));
+        document.getElementById('backToFlightsBtn').addEventListener('click', () => showPage(flightSelectionPage));
+        document.getElementById('finalizeBookingBtn').addEventListener('click', finalizeBooking);
+
+
+        // 4. Payment Page Logic (Seat Class & Summary)
+        const seatClassOptionsData = [
+            { name: 'Economy', multiplier: 1.0, features: ['20kg baggage', 'Free water'] },
+            { name: 'Business', multiplier: 1.5, features: ['30kg baggage', 'Lounge access', 'Premium meal'] },
+            { name: 'First', multiplier: 2.0, features: ['40kg baggage', 'Dedicated cabin', 'Unlimited drinks', 'Priority check-in'] }
+        ];
+
+        function renderSeatClassOptions() {
+            const optionsContainer = document.getElementById('seatClassOptions');
+            optionsContainer.innerHTML = '';
+            
+            seatClassOptionsData.forEach(option => {
+                const isChecked = option.name === selectedSeatClass;
+                const optionDiv = document.createElement('label');
+                optionDiv.className = 'seat-class-option';
+                optionDiv.innerHTML = `
+                    <input type="radio" name="seatClass" value="${option.name}" ${isChecked ? 'checked' : ''} />
+                    <div class="flex-grow">
+                        <h5 class="text-xl font-bold text-gray-800">${option.name} (${option.multiplier}x Base Price)</h5>
+                        <p class="text-gray-600 mb-2">Final Price: <span class="font-bold text-red-500">${formatPrice(calculateFinalPrice(selectedFlightPrice, option.name))}</span></p>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                            ${option.features.map(f => `<span class="seat-class-detail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>${f}</span>`).join('')}
                         </div>
-                        <button class="btn-blue-gradient py-2 px-6" onclick="selectFlight('${flight.name}', ${flight.price})">
-                            Book Now
-                        </button>
                     </div>
                 `;
-                flightList.appendChild(flightItem);
-            });
+                optionsContainer.appendChild(optionDiv);
 
-            showPage(resultsPage);
+                // Add change listener to update summary immediately
+                optionDiv.querySelector('input[type="radio"]').addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedSeatClass = e.target.value;
+                        updatePaymentSummary();
+                    }
+                });
+            });
         }
+
+        function updatePaymentSummary() {
+            finalBookingPrice = calculateFinalPrice(selectedFlightPrice, selectedSeatClass);
+
+            document.getElementById('summaryFlight').textContent = selectedFlight;
+            document.getElementById('summaryDate').textContent = new Date(departureDate).toDateString();
+            document.getElementById('summaryClass').textContent = selectedSeatClass;
+            document.getElementById('summaryBasePrice').textContent = formatPrice(selectedFlightPrice);
+            document.getElementById('summaryTotalPrice').textContent = formatPrice(finalBookingPrice);
+            document.getElementById('paymentAmountDisplay').textContent = formatPrice(finalBookingPrice);
+            
+            // Re-render options to update final price display
+            renderSeatClassOptions();
+        }
+
+        // 5. Finalize Booking (Payment and Booking Service Calls)
+        function finalizeBooking() {
+            // 1. Validation (for simplicity, only checking key fields)
+            const fullName = document.getElementById('fullName').value;
+            const userEmail = document.getElementById('email').value; // <--- Email ID yahan se li
+            const cardNumber = document.getElementById('cardNumber').value;
+
+            if (!fullName || !userEmail || !cardNumber || cardNumber.length < 16) {
+                alert('Pura naam, sahi email, aur poora card number daalo.');
+                return;
+            }
+
+            // Prepare data for Payment Service (Port 5003)
+            const paymentData = {
+                amount: finalBookingPrice,
+                card_number: cardNumber,
+                expiry_date: document.getElementById('expiryDate').value,
+                cvv: document.getElementById('cvv').value,
+                email: userEmail // 🛑 FINAL FIX: Email field yahan add kar diya
+            };
+
+            const paymentStatusElement = document.getElementById('paymentStatus');
+            paymentStatusElement.classList.remove('hidden', 'text-red-500', 'text-green-500');
+            paymentStatusElement.classList.add('text-gray-600');
+            paymentStatusElement.textContent = '💳 Payment processing... Please wait.';
+
+            // 2. Call Payment Service (Port 5003)
+            fetch(getApiUrl('/api/payment', 5003), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(paymentData) // Ab email ID payment service ko jayegi
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Check if it's a JSON response to get the error message
+                    return response.json().then(err => { throw new Error(err.message || `Payment failed with status: ${response.status}`); });
+                }
+                return response.json();
+            })
+            .then(paymentResult => {
+                if (paymentResult.message && paymentResult.message.includes('successful')) {
+                    paymentStatusElement.textContent = `✅ Payment Successful! Transaction ID: ${paymentResult.transaction_id}`;
+                    paymentStatusElement.classList.remove('text-gray-600');
+                    paymentStatusElement.classList.add('text-green-500');
+
+                    // Prepare data for Booking Service (Port 5000)
+                    const bookingData = {
+                        flight: selectedFlight,
+                        price: finalBookingPrice,
+                        transaction_id: paymentResult.transaction_id,
+                        // 🛑 FINAL FIX: Payment Service se aayi hui user_email ko uthaya
+                        user_email: paymentResult.user_email 
+                    };
+
+                    // 3. Call Booking Service (Port 5000)
+                    return fetch(getApiUrl('/book', 5000), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(bookingData) // Ab email ID Booking Service ko jayegi
+                    });
+                } else {
+                    throw new Error(paymentResult.message || 'Payment processing failed.');
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.message || `Booking failed with status: ${response.status}`); });
+                }
+                return response.json();
+            })
+            .then(bookingResult => {
+                // 4. Booking success - Show Confirmation Modal
+                paymentStatusElement.textContent = `✅ Booking Confirmed! Ref: ${bookingResult.booking_reference}`;
+                paymentStatusElement.classList.remove('text-gray-600');
+                paymentStatusElement.classList.add('text-green-500');
+
+                document.getElementById('confFlight').textContent = selectedFlight;
+                document.getElementById('confRef').textContent = bookingResult.booking_reference;
+                document.getElementById('confPrice').textContent = formatPrice(finalBookingPrice);
+                document.getElementById('confEmailStatus').textContent = bookingResult.email_status;
+
+                // Show modal and hide payment page
+                document.getElementById('bookingConfirmedModal').classList.remove('hidden');
+                document.getElementById('paymentServicePage').classList.add('hidden');
+            })
+            .catch(error => {
+                console.error('Finalization Error:', error);
+                paymentStatusElement.textContent = `❌ Booking Failed: ${error.message}.`;
+                paymentStatusElement.classList.remove('text-gray-600', 'text-green-500');
+                paymentStatusElement.classList.add('text-red-500');
+            });
+        }
+
+        // --- Event Listeners and Modal Logic ---
+        window.addEventListener('load', () => {
+            showPage(homePage);
+        });
 
         // --- Booking Confirmed Modal Logic ---
         document.getElementById('goToHomeBtn').addEventListener('click', () => {
