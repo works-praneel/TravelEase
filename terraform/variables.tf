@@ -24,3 +24,5 @@ variable "payment_image" {
   type    = string
   default = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/payment-service:latest"
 }
+
+#

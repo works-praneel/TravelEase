@@ -46,3 +46,4 @@ resource "aws_ecs_service" "payment_service" {
 
   depends_on = [aws_lb_listener.http]
 }
+#
