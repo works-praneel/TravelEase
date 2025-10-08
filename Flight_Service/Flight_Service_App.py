@@ -1,113 +1,112 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import random
+from itertools import permutations
+import datetime
 
 app = Flask(__name__)
 # CORS fix for local mode: Allow all origins
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# --- Comprehensive Database of All Flights ---
-ALL_FLIGHTS = [
-    # --- Domestic Flights (India) ---
-    # Delhi <=> Mumbai
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-2021", "route": "DEL - BOM", "price": 4800, "duration": "2h 5m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-990", "route": "DEL - BOM", "price": 5200, "duration": "2h 10m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-805", "route": "DEL - BOM", "price": 5000, "duration": "2h 15m"},
-    {"type": "domestic", "name": "SpiceJet", "flightNumber": "SG-871", "route": "DEL - BOM", "price": 4600, "duration": "2h 20m"},
-    {"type": "domestic", "name": "Akasa Air", "flightNumber": "QP-1101", "route": "DEL - BOM", "price": 4750, "duration": "2h 5m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-809", "route": "BOM - DEL", "price": 4950, "duration": "2h 5m"},
-    {"type": "domestic", "name": "SpiceJet", "flightNumber": "SG-817", "route": "BOM - DEL", "price": 4700, "duration": "2h 15m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-2022", "route": "BOM - DEL", "price": 4850, "duration": "2h 10m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-991", "route": "BOM - DEL", "price": 5300, "duration": "2h 5m"},
-    {"type": "domestic", "name": "Akasa Air", "flightNumber": "QP-1102", "route": "BOM - DEL", "price": 4800, "duration": "2h 10m"},
+# --- Data for Flight Generation ---
+DOMESTIC_AIRLINES = ["IndiGo", "Vistara", "Air India", "SpiceJet", "Akasa Air", "AirAsia India"]
+INTERNATIONAL_AIRLINES = {
+    "HKT": ["Thai Airways", "IndiGo", "SpiceJet", "Go First"],
+    "SUB": ["Garuda Indonesia", "Batik Air", "Singapore Airlines", "Malaysia Airlines"],
+    "NRT": ["Japan Airlines", "ANA", "Air India", "Vistara", "Singapore Airlines"],
+    "HND": ["Japan Airlines", "ANA", "Vistara"],
+    "DXB": ["Emirates", "Flydubai", "Air India Express", "IndiGo", "Vistara", "SpiceJet"],
+    "SYD": ["Qantas", "Air India", "Singapore Airlines", "Thai Airways"],
+    "MEL": ["Qantas", "Air India", "Malaysia Airlines", "Cathay Pacific"],
+    "AKL": ["Air New Zealand", "Singapore Airlines", "Qantas", "Emirates", "Malaysia Airlines"]
+}
+DOMESTIC_HUBS = ["DEL", "BOM", "CCU", "MAA", "HYD", "GOI"]
+INTERNATIONAL_HUBS = ["HKT", "SUB", "NRT", "HND", "DXB", "SYD", "MEL", "AKL"]
 
-    # Delhi <=> Kolkata
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-632", "route": "DEL - CCU", "price": 5500, "duration": "2h 20m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-774", "route": "DEL - CCU", "price": 5600, "duration": "2h 15m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-763", "route": "DEL - CCU", "price": 5400, "duration": "2h 25m"},
-    {"type": "domestic", "name": "SpiceJet", "flightNumber": "SG-451", "route": "DEL - CCU", "price": 5300, "duration": "2h 30m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-633", "route": "CCU - DEL", "price": 5550, "duration": "2h 20m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-775", "route": "CCU - DEL", "price": 5650, "duration": "2h 15m"},
+# (price, duration_in_minutes)
+GENERIC_ROUTE_PROFILES = {
+    "domestic_short": (4000, 100),
+    "domestic_medium": (6000, 140),
+    "international_short": (18000, 240),
+    "international_medium": (25000, 420),
+    "international_long": (45000, 750),
+    "international_xl": (65000, 950)
+}
 
-    # Mumbai <=> Chennai
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-765", "route": "BOM - MAA", "price": 3800, "duration": "1h 50m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-555", "route": "BOM - MAA", "price": 3900, "duration": "1h 55m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-821", "route": "BOM - MAA", "price": 4100, "duration": "1h 45m"},
-    {"type": "domestic", "name": "SpiceJet", "flightNumber": "SG-331", "route": "BOM - MAA", "price": 3700, "duration": "2h 0m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-556", "route": "MAA - BOM", "price": 3950, "duration": "1h 55m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-766", "route": "MAA - BOM", "price": 3850, "duration": "1h 50m"},
-
-    # Delhi <=> Goa
-    {"type": "domestic", "name": "SpiceJet", "flightNumber": "SG-301", "route": "DEL - GOI", "price": 6200, "duration": "2h 35m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-123", "route": "DEL - GOI", "price": 6300, "duration": "2h 40m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-847", "route": "DEL - GOI", "price": 6500, "duration": "2h 30m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-887", "route": "DEL - GOI", "price": 6400, "duration": "2h 45m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-124", "route": "GOI - DEL", "price": 6350, "duration": "2h 40m"},
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-848", "route": "GOI - DEL", "price": 6550, "duration": "2h 30m"},
+# --- Flight Generation Function ---
+def generate_flights(flight_type, route_key, num_flights=10):
+    flights = []
+    origin, dest = route_key.split('-')
     
-    # Hyderabad <=> Mumbai
-    {"type": "domestic", "name": "Vistara", "flightNumber": "UK-850", "route": "HYD - BOM", "price": 3100, "duration": "1h 25m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-560", "route": "HYD - BOM", "price": 3200, "duration": "1h 30m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-876", "route": "HYD - BOM", "price": 3000, "duration": "1h 20m"},
-    {"type": "domestic", "name": "IndiGo", "flightNumber": "6E-877", "route": "BOM - HYD", "price": 3050, "duration": "1h 20m"},
-    {"type": "domestic", "name": "Air India", "flightNumber": "AI-561", "route": "BOM - HYD", "price": 3250, "duration": "1h 30m"},
+    profile_key = "domestic_medium"
+    if flight_type == "domestic":
+        if {origin, dest} in [{"BOM", "HYD"}, {"BOM", "GOI"}, {"MAA", "HYD"}]:
+            profile_key = "domestic_short"
+    else:
+        intl_hub = dest if dest in INTERNATIONAL_HUBS else origin
+        if intl_hub in ["DXB"]: profile_key = "international_short"
+        elif intl_hub in ["HKT", "SUB"]: profile_key = "international_medium"
+        elif intl_hub in ["SYD", "MEL", "NRT", "HND"]: profile_key = "international_long"
+        elif intl_hub in ["AKL"]: profile_key = "international_xl"
 
-    # --- International Flights ---
-    # India <=> Thailand (Phuket - HKT)
-    {"type": "international", "name": "Thai Airways", "flightNumber": "TG-316", "route": "DEL - HKT", "price": 22000, "duration": "4h 15m"},
-    {"type": "international", "name": "IndiGo", "flightNumber": "6E-1051", "route": "DEL - HKT", "price": 21000, "duration": "4h 25m"},
-    {"type": "international", "name": "Vistara", "flightNumber": "UK-121", "route": "BOM - HKT", "price": 23000, "duration": "4h 40m"},
-    {"type": "international", "name": "SpiceJet", "flightNumber": "SG-88", "route": "BOM - HKT", "price": 20500, "duration": "4h 45m"},
-    {"type": "international", "name": "Go First", "flightNumber": "G8-31", "route": "CCU - HKT", "price": 19800, "duration": "3h 50m"},
-    {"type": "international", "name": "Thai Smile", "flightNumber": "WE-334", "route": "CCU - HKT", "price": 21200, "duration": "3h 55m"},
+    base_price, base_duration = GENERIC_ROUTE_PROFILES[profile_key]
 
-    # India <=> Indonesia (Juanda - SUB)
-    {"type": "international", "name": "Garuda Indonesia", "flightNumber": "GA-841", "route": "BOM - SUB", "price": 28000, "duration": "7h 10m"},
-    {"type": "international", "name": "Singapore Airlines", "flightNumber": "SQ-529", "route": "MAA - SUB", "price": 27500, "duration": "6h 55m"},
-    {"type": "international", "name": "Batik Air", "flightNumber": "ID-6014", "route": "DEL - SUB", "price": 26000, "duration": "8h 20m"},
-    {"type": "international", "name": "Malaysia Airlines", "flightNumber": "MH-191", "route": "DEL - SUB", "price": 29000, "duration": "8h 5m"},
-    {"type": "international", "name": "Thai Airways", "flightNumber": "TG-413", "route": "CCU - SUB", "price": 28500, "duration": "7h 40m"},
+    for _ in range(num_flights):
+        if flight_type == "domestic":
+            airline = random.choice(DOMESTIC_AIRLINES)
+        else:
+            intl_hub = dest if dest in INTERNATIONAL_HUBS else origin
+            airline = random.choice(INTERNATIONAL_AIRLINES.get(intl_hub, ["Intl. Airline"]))
+        
+        flight_prefix = airline.split(' ')[0][:2].upper()
 
-    # India <=> Japan (Tokyo - NRT/HND)
-    {"type": "international", "name": "Japan Airlines", "flightNumber": "JL-740", "route": "DEL - NRT", "price": 45000, "duration": "7h 45m"},
-    {"type": "international", "name": "ANA", "flightNumber": "NH-838", "route": "DEL - HND", "price": 46000, "duration": "7h 30m"},
-    {"type": "international", "name": "Air India", "flightNumber": "AI-306", "route": "DEL - NRT", "price": 44000, "duration": "7h 50m"},
-    {"type": "international", "name": "Vistara", "flightNumber": "UK-78", "route": "BOM - HND", "price": 47000, "duration": "8h 15m"},
-    {"type": "international", "name": "Singapore Airlines", "flightNumber": "SQ-615", "route": "CCU - NRT", "price": 48000, "duration": "9h 20m"},
-    
-    # India <=> Dubai (DXB)
-    {"type": "international", "name": "Emirates", "flightNumber": "EK-511", "route": "DEL - DXB", "price": 18500, "duration": "3h 45m"},
-    {"type": "international", "name": "Vistara", "flightNumber": "UK-201", "route": "BOM - DXB", "price": 17500, "duration": "4h 0m"},
-    {"type": "international", "name": "IndiGo", "flightNumber": "6E-1461", "route": "HYD - DXB", "price": 16900, "duration": "4h 10m"},
-    {"type": "international", "name": "Flydubai", "flightNumber": "FZ-436", "route": "MAA - DXB", "price": 17800, "duration": "4h 25m"},
-    {"type": "international", "name": "Air India Express", "flightNumber": "IX-194", "route": "GOI - DXB", "price": 16500, "duration": "4h 5m"},
-    {"type": "international", "name": "Emirates", "flightNumber": "EK-571", "route": "CCU - DXB", "price": 19000, "duration": "4h 30m"},
+        price_variation = random.randint(-2000, 2000)
+        duration_variation = random.randint(-30, 30)
+        
+        final_price = base_price + price_variation
+        final_duration_min = base_duration + duration_variation
+        hours, minutes = divmod(final_duration_min, 60)
 
-    # India <=> Australia (SYD/MEL)
-    {"type": "international", "name": "Qantas", "flightNumber": "QF-68", "route": "DEL - SYD", "price": 55000, "duration": "12h 30m"},
-    {"type": "international", "name": "Air India", "flightNumber": "AI-302", "route": "DEL - MEL", "price": 54000, "duration": "12h 15m"},
-    {"type": "international", "name": "Singapore Airlines", "flightNumber": "SQ-423", "route": "BOM - SYD", "price": 58000, "duration": "14h 5m"},
-    {"type": "international", "name": "Malaysia Airlines", "flightNumber": "MH-174", "route": "BOM - MEL", "price": 57000, "duration": "13h 45m"},
-    {"type": "international", "name": "Thai Airways", "flightNumber": "TG-335", "route": "CCU - SYD", "price": 56500, "duration": "13h 10m"},
-    {"type": "international", "name": "Cathay Pacific", "flightNumber": "CX-618", "route": "CCU - MEL", "price": 59000, "duration": "14h 20m"},
+        # --- NEW: Generate Timings ---
+        departure_hour = random.randint(0, 23)
+        departure_minute = random.choice([0, 15, 30, 45])
+        departure_time = datetime.datetime(2025, 1, 1, departure_hour, departure_minute)
+        arrival_time = departure_time + datetime.timedelta(minutes=final_duration_min)
+        
+        flight = {
+            "type": flight_type,
+            "name": airline,
+            "flightNumber": f"{flight_prefix}-{random.randint(100, 9999)}",
+            "route": f"{origin}-{dest}",
+            "price": final_price,
+            "duration": f"{hours}h {minutes}m",
+            "departureTime": departure_time.strftime("%H:%M"),
+            "arrivalTime": arrival_time.strftime("%H:%M")
+        }
+        flights.append(flight)
+    return flights
 
-    # India <=> New Zealand (AKL)
-    {"type": "international", "name": "Air New Zealand", "flightNumber": "NZ-283", "route": "BOM - AKL", "price": 62000, "duration": "15h 45m"},
-    {"type": "international", "name": "Singapore Airlines", "flightNumber": "SQ-401", "route": "DEL - AKL", "price": 63000, "duration": "16h 10m"},
-    {"type": "international", "name": "Qantas", "flightNumber": "QF-122", "route": "DEL - AKL", "price": 65000, "duration": "17h 5m"},
-    {"type": "international", "name": "Emirates", "flightNumber": "EK-570", "route": "HYD - AKL", "price": 68000, "duration": "18h 30m"},
-    {"type": "international", "name": "Malaysia Airlines", "flightNumber": "MH-150", "route": "CCU - AKL", "price": 66000, "duration": "17h 50m"},
-]
+# --- Generate the Full Flight List ---
+ALL_FLIGHTS = []
+# 1. Domestic
+for origin, dest in permutations(DOMESTIC_HUBS, 2):
+    ALL_FLIGHTS.extend(generate_flights("domestic", f"{origin}-{dest}", 10))
+# 2. International (To)
+for origin in DOMESTIC_HUBS:
+    for dest in INTERNATIONAL_HUBS:
+        ALL_FLIGHTS.extend(generate_flights("international", f"{origin}-{dest}", 10))
+# 3. International (From)
+for origin in INTERNATIONAL_HUBS:
+    for dest in DOMESTIC_HUBS:
+        ALL_FLIGHTS.extend(generate_flights("international", f"{origin}-{dest}", 10))
 
-# Default routes
+
+# --- API Endpoints ---
 @app.route('/')
-def home():
-    return "Flight Service is running."
-
+def home(): return "Flight Service is running."
 @app.route('/ping')
-def ping():
-    return "OK", 200
+def ping(): return "OK", 200
 
-# API endpoint for searching flights
 @app.route('/api/flights', methods=['GET'])
 def search_flights():
     flight_type = request.args.get('type')
@@ -115,18 +114,15 @@ def search_flights():
     to_dest = request.args.get('to')
 
     if not all([flight_type, from_dest, to_dest]):
-        return jsonify({"error": "Missing required query parameters: type, from, to"}), 400
+        return jsonify({"error": "Missing required query parameters"}), 400
 
-    route_str = f"{from_dest} - {to_dest}"
+    route_str = f"{from_dest}-{to_dest}"
+    results = [f for f in ALL_FLIGHTS if f['type'] == flight_type and f['route'] == route_str]
     
-    # Filter flights based on type and route
-    results = [
-        flight for flight in ALL_FLIGHTS
-        if flight['type'] == flight_type and flight['route'] == route_str
-    ]
-    
+    if not results: print(f"No flights found for route: {route_str}")
     return jsonify({"flights": results})
 
-# Application entry point
+# --- Main Execution ---
 if __name__ == '__main__':
+    print(f"Generated a total of {len(ALL_FLIGHTS)} flights.")
     app.run(host='0.0.0.0', port=5002)
