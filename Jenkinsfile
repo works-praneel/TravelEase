@@ -25,26 +25,33 @@ pipeline {
                     aws configure set aws_access_key_id %AWS_ACCESS_KEY_ID%
                     aws configure set aws_secret_access_key %AWS_SECRET_ACCESS_KEY%
                     aws configure set region %AWS_REGION%
-                    aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %ECR_REGISTRY%
+                    aws ecr get-login-password --region %AWS_REGION% |
+                    docker login --username AWS --password-stdin %ECR_REGISTRY%
                     """
                 }
             }
         }
         
+        // --- FIX 3: YEH STAGE UPDATE HUA HAI ---
         stage('Build, Tag, and Push Images') {
             steps {
                 script {
-                    def services = ['flight-service', 'booking-service', 'payment-service']
+                    // FIX: Humne service directory ke naam ko hardcode karne ke liye Map ka istemaal kiya hai,
+                    // kyunki purana logic [serviceName.replace('-service', '_Service')] galat tha.
+                    def services = [
+                        'flight-service': 'Flight_Service',
+                        'booking-service': 'Booking_Service',
+                        'payment-service': 'Payment_Service'
+                    ]
                     
-                    for (int i = 0; i < services.size(); i++) {
-                        def serviceName = services[i]
-                        def serviceDirectory = serviceName.replace('-service', '_Service')
+                    // Ab hum purane for loop ki jagah Map par loop karenge
+                    services.each { serviceName, serviceDirectory ->
                         
                         echo "Building and pushing image for service: ${serviceName}"
-                        
-                        // Build the Docker image
+    
+                        // Build the Docker image (sahi serviceDirectory variable ke saath)
                         bat "docker build -t ${serviceName} ./${serviceDirectory}"
-                        
+                       
                         // Tag the image
                         bat "docker tag ${serviceName}:latest ${ECR_REGISTRY}/${serviceName}:latest"
                         
@@ -54,10 +61,12 @@ pipeline {
                 }
             }
         }
+        // --- END OF FIX ---
         
         stage('Deploy to Fargate') {
             steps {
                 script {
+                    // Yeh stage pehle jaisa hi hai aur sahi kaam karega
                     def services = ['flight-service', 'booking-service', 'payment-service']
                     
                     for (int i = 0; i < services.size(); i++) {

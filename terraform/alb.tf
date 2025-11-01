@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "booking_tg" {
   target_type = "ip"
 
   health_check {
-    path                = "/ping"
+    path                = "/ping" # Sahi health check
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "flight_tg" {
   target_type = "ip"
 
   health_check {
-    path                = "/flight"
+    path                = "/ping" # FIX 1: Health check /ping par set
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -52,7 +52,7 @@ resource "aws_lb_target_group" "payment_tg" {
   target_type = "ip"
 
   health_check {
-    path                = "/pay"
+    path                = "/ping" # FIX 2: Health check /ping par set
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -111,7 +111,8 @@ resource "aws_lb_listener_rule" "flight_rule" {
 
   condition {
     path_pattern {
-      values = ["/flight*", "/search*"]
+      # FIX 3: /api/flights* ko add kiya gaya hai
+      values = ["/flight*", "/search*", "/api/flights*"]
     }
   }
 }
@@ -127,7 +128,8 @@ resource "aws_lb_listener_rule" "payment_rule" {
 
   condition {
     path_pattern {
-      values = ["/pay*", "/payment*"]
+      # FIX 4: /api/payment* ko add kiya gaya hai
+      values = ["/pay*", "/payment*", "/api/payment*"]
     }
   }
 }
