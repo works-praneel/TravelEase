@@ -156,9 +156,9 @@
                     <div id="seatSelectionContainer" class="bg-white p-8 rounded-xl shadow-lg">
                         <h4 class="text-2xl font-bold mb-4">Select Your Seat</h4>
                         <div class="flex justify-center gap-4 mb-4 text-sm">
-                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-fef9c3 border border-yellow-400"></div> Business</span>
-                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-d1fae5 border border-green-400"></div> Premium</span>
-                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-dbeafe border border-blue-400"></div> Economy</span>
+                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#fef9c3] border border-yellow-400"></div> Business</span>
+                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#d1fae5] border border-green-400"></div> Premium</span>
+                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#dbeafe] border border-blue-400"></div> Economy</span>
                         </div>
                         <div id="seatMap" class="flex flex-col items-center gap-4"></div>
                         <button id="confirmSeatBtn" class="btn-blue-gradient w-full mt-6">Confirm Seat</button>
@@ -205,9 +205,19 @@
         let from, to, departureDate, returnDate, tripType, flightType;
         const seatFees = { business: 1500, premium: 600, economy: 250 };
         const destinations = { domestic: [ { code: 'DEL', name: 'Delhi' }, { code: 'BOM', name: 'Mumbai' }, { code: 'CCU', name: 'Kolkata' }, { code: 'MAA', name: 'Chennai' }, { code: 'GOI', name: 'Goa' }, { code: 'HYD', name: 'Hyderabad' }], international: [ { code: 'HKT', name: 'Phuket' }, { code: 'SUB', name: 'Juanda' }, { code: 'NRT', name: 'Narita' }, { code: 'HND', name: 'Haneda' }, { code: 'DXB', name: 'Dubai' }, { code: 'SYD', name: 'Sydney' }, { code: 'MEL', name: 'Melbourne' }, { code: 'AKL', name: 'Auckland' }] };
-        function getApiUrl(path, port) { return `http://127.0.0.1:${port}${path}`; }
+        
+        // --- YEH FUNCTION AB SAHI HAI ---
+        function getApiUrl(path, port) { 
+            // 'port' parameter ko ignore karein, kyunki ALB sab handle kar raha hai.
+            // Humne ` (backtick) add kiya hai taaki yeh JavaScript string ban jaaye.
+            return `http://travelease-ALB-117801644.eu-north-1.elb.amazonaws.com${path}`; 
+        }
+
         function showPage(pageId) { ['homePage', 'flightSelectionPage', 'paymentServicePage'].forEach(id => document.getElementById(id).classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); }
+        
+        // --- YEH FUNCTION AB SAHI HAI ---
         function formatPrice(price) { return `₹${price.toLocaleString('en-IN')}`; }
+        
         function updateDestinationDropdowns() {
             flightType = document.querySelector('input[name="flightType"]:checked').value;
             const fromDd = document.getElementById('fromDestination'), toDd = document.getElementById('toDestination'); fromDd.innerHTML = ''; toDd.innerHTML = '';
@@ -215,7 +225,10 @@
             if (flightType === 'domestic') { populateDropdown(fromDd, destinations.domestic); populateDropdown(toDd, destinations.domestic); } 
             else { populateDropdown(fromDd, allDests); populateDropdown(toDd, allDests); }
         }
+        
+        // --- YEH FUNCTION AB SAHI HAI ---
         function populateDropdown(dd, opts) { opts.forEach(o => { const el = document.createElement('option'); el.value = o.code; el.textContent = `${o.name} (${o.code})`; dd.appendChild(el); }); }
+        
         function searchFlights(isReturn = false) {
             flightType = document.querySelector('input[name="flightType"]:checked').value; tripType = document.querySelector('input[name="tripType"]:checked').value;
             if (!isReturn) {
@@ -228,8 +241,12 @@
             }
             const searchFrom = isReturn ? to : from, searchTo = isReturn ? from : to;
             document.getElementById('flightSelectionTitle').textContent = isReturn ? "Select Your Return Flight" : "Select Your Departure Flight";
+            
+            // --- YEH FUNCTION AB SAHI HAI ---
             const apiUrl = `${getApiUrl('/api/flights', 5002)}?type=${flightType}&from=${searchFrom}&to=${searchTo}`;
-            const flightsList = document.getElementById('flightsList'); flightsList.innerHTML = `<p class="text-center text-xl text-blue-600">Searching...</p>`;
+            const flightsList = document.getElementById('flightsList'); 
+            flightsList.innerHTML = `<p class="text-center text-xl text-blue-600">Searching...</p>`;
+            
             fetch(apiUrl).then(res => res.json()).then(data => { allFetchedFlights = data.flights || []; renderFlights(allFetchedFlights); if (!isReturn) showPage('flightSelectionPage'); }).catch(err => { console.error(err); flightsList.innerHTML = `<p class="text-center text-xl text-red-500">Server error.</p>`; });
         }
         function renderFlights(flights) {
@@ -240,13 +257,17 @@
         }
         function createFlightCard(flight) {
             const card = document.createElement('div'); card.className = 'flight-item-card'; const flightData = JSON.stringify(flight).replace(/"/g, '&quot;');
+            // --- YEH FUNCTION AB SAHI HAI ---
             card.innerHTML = `<div><h4 class="text-xl font-bold">${flight.name} - ${flight.flightNumber}</h4><p class="font-semibold">${flight.departureTime} → ${flight.arrivalTime} (${flight.duration})</p><p class="text-sm text-gray-500">${flight.route}</p></div><div class="mt-4 md:mt-0 text-right"><p class="text-2xl font-extrabold text-red-500">${formatPrice(flight.price)}</p><button data-flight='${flightData}' class="btn-blue-gradient mt-2 select-flight-btn">Select</button></div>`;
             card.querySelector('.select-flight-btn').addEventListener('click', handleFlightSelection); return card;
         }
         function handleFlightSelection(event) {
             const flight = JSON.parse(event.currentTarget.dataset.flight);
             if (tripType === 'oneWay') { selectedDepartureFlight = flight; } 
-            else { if (!selectedDepartureFlight) { selectedDepartureFlight = flight; const summaryDiv = document.getElementById('departureFlightSummary'); summaryDiv.innerHTML = `<strong>Departure:</strong> ${flight.name} for ${formatPrice(flight.price)}`; summaryDiv.classList.remove('hidden'); searchFlights(true); return; } 
+            else { if (!selectedDepartureFlight) { selectedDepartureFlight = flight; const summaryDiv = document.getElementById('departureFlightSummary'); 
+            // --- YEH FUNCTION AB SAHI HAI ---
+            summaryDiv.innerHTML = `<strong>Departure:</strong> ${flight.name} for ${formatPrice(flight.price)}`; 
+            summaryDiv.classList.remove('hidden'); searchFlights(true); return; } 
             else { selectedReturnFlight = flight; } }
             updatePaymentSummary(); renderSeatMap(); resetPaymentPage(); showPage('paymentServicePage');
         }
@@ -262,6 +283,7 @@
                     const row = document.createElement('div'); row.className = 'seat-row';
                     section.layout.forEach(letter => {
                         if (letter === '') { const aisle = document.createElement('div'); aisle.className = 'aisle'; row.appendChild(aisle); return; }
+                        // --- YEH FUNCTION AB SAHI HAI ---
                         const seat = document.createElement('div'); const seatId = `${rowNum}${letter}`;
                         seat.id = `seat-${seatId}`; seat.textContent = seatId;
                         const isUnavailable = Math.random() > 0.85;
@@ -275,9 +297,11 @@
         }
         function selectSeat(seatId, seatClass, seatPrice) {
             if (selectedSeat) {
+                // --- YEH FUNCTION AB SAHI HAI ---
                 const oldSeatEl = document.getElementById(`seat-${selectedSeat.id}`);
                 if (oldSeatEl) { oldSeatEl.classList.remove('selected'); oldSeatEl.classList.add(selectedSeat.class); }
             }
+            // --- YEH FUNCTION AB SAHI HAI ---
             const newSeatEl = document.getElementById(`seat-${seatId}`);
             newSeatEl.classList.remove(seatClass);
             newSeatEl.classList.add('selected');
@@ -285,6 +309,7 @@
         }
         function updatePaymentSummary() {
             let totalPrice = 0; const depSection = document.getElementById('summaryDepartureSection'), retSection = document.getElementById('summaryReturnSection'), seatSection = document.getElementById('summarySeatSection');
+            // --- YEH FUNCTION AB SAHI HAI ---
             if (selectedDepartureFlight) { totalPrice += selectedDepartureFlight.price; depSection.innerHTML = `<h5 class="font-bold">Departure</h5><p class="flex justify-between"><span>${selectedDepartureFlight.name} (${selectedDepartureFlight.route})</span><span class="font-semibold">${formatPrice(selectedDepartureFlight.price)}</span></p>`; }
             if (selectedReturnFlight) { totalPrice += selectedReturnFlight.price; retSection.innerHTML = `<h5 class="font-bold">Return</h5><p class="flex justify-between"><span>${selectedReturnFlight.name} (${selectedReturnFlight.route})</span><span class="font-semibold">${formatPrice(selectedReturnFlight.price)}</span></p>`; retSection.classList.remove('hidden'); } 
             else { retSection.innerHTML = ''; retSection.classList.add('hidden'); }
@@ -300,8 +325,10 @@
             const fullName = document.getElementById('fullName').value, email = document.getElementById('email').value;
             if (!fullName || !email) { alert('Please fill passenger details.'); return; }
             let totalPrice = selectedDepartureFlight.price + (selectedReturnFlight ? selectedReturnFlight.price : 0) + (selectedSeat ? selectedSeat.price : 0);
+            // --- YEH FUNCTION AB SAHI HAI ---
             let flightDetails = `${selectedDepartureFlight.name} (${selectedDepartureFlight.route})`;
             if(selectedReturnFlight) { flightDetails += ` & ${selectedReturnFlight.name} (${selectedReturnFlight.route})`; }
+            
             const paymentData = { amount: totalPrice, card_number: document.getElementById('cardNumber').value, email: email };
             const paymentStatusEl = document.getElementById('paymentStatus');
             paymentStatusEl.textContent = 'Processing...'; paymentStatusEl.classList.remove('hidden');
@@ -315,7 +342,11 @@
                     document.getElementById('confFlights').textContent = flightDetails; document.getElementById('confSeat').textContent = selectedSeat ? selectedSeat.id : 'Not Selected';
                     document.getElementById('confRef').textContent = bookingResult.booking_reference; document.getElementById('confPrice').textContent = formatPrice(totalPrice);
                     document.getElementById('confEmailStatus').textContent = bookingResult.email_status; document.getElementById('bookingConfirmedModal').classList.remove('hidden');
-                }).catch(err => { console.error(err); paymentStatusEl.textContent = `Error: ${err}.`; });
+                }).catch(err => { 
+                    console.error(err); 
+                    // --- YEH FUNCTION AB SAHI HAI ---
+                    paymentStatusEl.textContent = `Error: ${err}.`; 
+                });
         }
         document.addEventListener('DOMContentLoaded', () => {
             updateDestinationDropdowns();
@@ -331,4 +362,3 @@
     </script>
 </body>
 </html>
-
