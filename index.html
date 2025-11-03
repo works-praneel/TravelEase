@@ -94,16 +94,35 @@
                 <div class="flex justify-center gap-6 mb-8">
                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="flightType" value="domestic" checked class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">Domestic</span></label>
                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="flightType" value="international" class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">International</span></label>
+
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                     <div><label for="fromDestination" class="block text-left text-sm font-semibold mb-2">From</label><select id="fromDestination" class="input-field"></select></div>
-                    <div><label for="toDestination" class="block text-left text-sm font-semibold mb-2">To</label><select id="toDestination" class="input-field"></select></div>
+                    <div><label for="toDestination" class_id="block text-left text-sm font-semibold mb-2">To</label><select id="toDestination" class="input-field"></select></div>
+                    
+                    <div>
+                        <label for="searchEmail" class="block text-left text-sm font-semibold mb-2">Your Email</label>
+                        <input type="email" id="searchEmail" class="input-field" placeholder="dynoc845@gmail.com" required>
+                    </div>
                     <div><label for="departureDate" class="block text-left text-sm font-semibold mb-2">Departure Date</label><input type="date" id="departureDate" class="input-field dark-input" required></div>
                     <div id="returnDateContainer"><label for="returnDate" class="block text-left text-sm font-semibold mb-2">Return Date</label><input type="date" id="returnDate" class="input-field dark-input"></div>
                 </div>
-                <button id="searchFlightsBtn" class="btn-blue-gradient mt-10">Search Flights</button>
+
+                <div class="flex justify-center gap-4 mt-10">
+                    <button id="searchFlightsBtn" class="btn-blue-gradient">Search Flights</button>
+                    
+                    <button type="button" id="smart-trip-button" 
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-shadow duration-300">
+                        ✨ Get Smart Trip Ideas!
+                    </button>
+                    </div>
             </div>
-            
+
+            <div id="smart-trip-recommendations" class="hidden mt-6 p-6 bg-white rounded-xl shadow-lg max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Your Smart Trip Suggestions!</h3>
+                <ul id="recommendations-list" class="list-disc pl-5 space-y-3">
+                    </ul>
+            </div>
             <div class="mt-12 text-center text-gray-700">
                 <h3 class="text-3xl font-semibold mb-4">Featured Destinations</h3>
                 <p class="text-md mb-8">Discover amazing places with our specially curated flight offers</p>
@@ -210,7 +229,7 @@
         function getApiUrl(path, port) { 
             // 'port' parameter ko ignore karein, kyunki ALB sab handle kar raha hai.
             // Humne ` (backtick) add kiya hai taaki yeh JavaScript string ban jaaye.
-            return `http://travelease-ALB-117801644.eu-north-1.elb.amazonaws.com${path}`; 
+            return `http://travelease-ALB-1382098556.eu-north-1.elb.amazonaws.com${path}`; 
         }
 
         function showPage(pageId) { ['homePage', 'flightSelectionPage', 'paymentServicePage'].forEach(id => document.getElementById(id).classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); }
@@ -348,7 +367,79 @@
                     paymentStatusEl.textContent = `Error: ${err}.`; 
                 });
         }
-        document.addEventListener('DOMContentLoaded', () => {
+        
+        // // 8. Yeh helper function data ko HTML mein badalta hai
+        function displayRecommendations(recommendations) {
+            const list = document.getElementById('recommendations-list');
+            const box = document.getElementById('smart-trip-recommendations');
+            list.innerHTML = ''; // Purane results saaf karo
+
+            if (recommendations && recommendations.length > 0) {
+                recommendations.forEach(rec => {
+                    const li = document.createElement('li');
+                    li.className = 'text-gray-700'; // Tailwind class
+                    
+                    // Yeh fields aapke models.py aur API response se match karte hain
+                    li.textContent = `[${rec.suggestion_type}] ${rec.name}: ${rec.description} (Approx: ₹${rec.price})`;
+                    list.appendChild(li);
+                });
+                box.classList.remove('hidden'); // Results box ko dikhao
+            } else {
+                // Agar koi recs nahi mile
+                list.innerHTML = '<li>No special recommendations found for this trip.</li>';
+                box.classList.remove('hidden');
+            }
+        }
+
+        async function fetchSmartTripRecommendations() {
+            console.log("Smart Trip button clicked!");
+
+            // 4. Form se saari values uthao
+            const destination = document.getElementById('toDestination').value;
+            const user_email = document.getElementById('searchEmail').value; // Naye email field se
+            const start_date = document.getElementById('departureDate').value;
+            const end_date = document.getElementById('returnDate').value;
+            
+            // Check if email is filled
+            if (!user_email) {
+                alert('Please enter your email address to get smart recommendations.');
+                return;
+            }
+
+            // 5. Aapka ALB (Load Balancer) URL
+            const apiUrl = getApiUrl('/smart-trip'); // getApiUrl function use kiya
+
+            // 6. API Call
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        destination: destination,
+                        user_email: user_email, // Yeh 'user_email' backend se 100% match hona chahiye
+                        start_date: start_date || null, // Agar khaali hai toh null bhejo
+                        end_date: end_date || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Agar backend 400 ya 500 error de
+                    alert('Error: ' + data.message);
+                    return;
+                }
+                
+                // 7. Success! Results ko dikhao
+                displayRecommendations(data.recommendations);
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('Could not connect to the server. Check console.');
+            }
+        }
+        
+        // document.addEventListener('DOMContentLoaded', () => {
             updateDestinationDropdowns();
             document.querySelectorAll('input[name="flightType"]').forEach(r => r.addEventListener('change', updateDestinationDropdowns));
             document.querySelectorAll('input[name="tripType"]').forEach(r => r.addEventListener('change', () => { document.getElementById('returnDateContainer').style.display = document.querySelector('input[name="tripType"]:checked').value === 'roundTrip' ? 'block' : 'none'; }));
@@ -358,7 +449,9 @@
             document.getElementById('finalizeBookingBtn').addEventListener('click', finalizeBooking);
             document.getElementById('goToHomeBtn').addEventListener('click', () => { document.getElementById('bookingConfirmedModal').classList.add('hidden'); showPage('homePage'); });
             document.getElementById('travelEaseLogo').addEventListener('click', (e) => { e.preventDefault(); showPage('homePage'); });
-        });
+            
+            // document.getElementById('smart-trip-button').addEventListener('click', fetchSmartTripRecommendations);
+            // });
     </script>
 </body>
 </html>

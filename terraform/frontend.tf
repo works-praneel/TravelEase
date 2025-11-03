@@ -47,24 +47,24 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
   })
 }
 
-resource "aws_s3_object" "frontend_files" {
-  for_each = fileset("${path.module}/..", "index.html")
+#resource "aws_s3_object" "frontend_files" {
+ # for_each = fileset("${path.module}/..", "index.html")
 
-  bucket       = aws_s3_bucket.frontend_bucket.id
-  key          = each.value
-  source       = "${path.module}/../${each.value}"
-  etag         = filemd5("${path.module}/../${each.value}")
+  #bucket       = aws_s3_bucket.frontend_bucket.id
+  #key          = each.value
+  #source       = "${path.module}/../${each.value}"
+  #etag         = filemd5("${path.module}/../${each.value}")
 
-  content_type = lookup({
-    html = "text/html"
-    css  = "text/css"
-    js   = "application/javascript"
-    json = "application/json"
-    png  = "image/png"
-    jpg  = "image/jpeg"
-    svg  = "image/svg+xml"
-  }, lower(split(".", each.value)[length(split(".", each.value)) - 1]), "application/octet-stream")
-}
+  #content_type = lookup({
+   # html = "text/html"
+    #css  = "text/css"
+    #js   = "application/javascript"
+    #json = "application/json"
+    #png  = "image/png"
+    #jpg  = "image/jpeg"
+    #svg  = "image/svg+xml"
+#  }, lower(split(".", each.value)[length(split(".", each.value)) - 1]), "application/octet-stream")
+#}
 
 output "frontend_website_url" {
   value = aws_s3_bucket_website_configuration.frontend_site.website_endpoint
