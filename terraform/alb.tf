@@ -95,7 +95,8 @@ resource "aws_lb_listener_rule" "booking_rule" {
 
   condition {
     path_pattern {
-      values = ["/book*", "/ping"]
+      # UPDATED: Naye paths add kiye gaye hain
+      values = ["/book*", "/ping", "/cancel*", "/api/get_seats*"]
     }
   }
 }
