@@ -3,12 +3,19 @@ resource "aws_security_group" "ecs_sg" {
   description = "Allow HTTP traffic to ECS tasks from ALB"
   vpc_id      = aws_vpc.main.id
 
-  # Allow HTTP from anywhere (Simple setup)
-  # Production mein ise sirf ALB ke Security Group se allow karna chahiye
+  # Allow all traffic from within the VPC (for simplicity)
   ingress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1" # Allow all ports internally for health checks
+    protocol    = "-1"
+    cidr_blocks = [aws_vpc.main.cidr_block]
+  }
+
+  # Allow HTTP from anywhere (for ALB health checks and traffic)
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

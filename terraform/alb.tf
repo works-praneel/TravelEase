@@ -12,13 +12,13 @@ resource "aws_lb" "alb" {
 
 resource "aws_lb_target_group" "booking_tg" {
   name        = "booking-tg"
-  port        = 80
+  port        = 5000 # App port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
   health_check {
-    path                = "/ping" # Sahi health check
+    path                = "/ping"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -29,13 +29,13 @@ resource "aws_lb_target_group" "booking_tg" {
 
 resource "aws_lb_target_group" "flight_tg" {
   name        = "flight-tg"
-  port        = 80
+  port        = 5002 # App port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
   health_check {
-    path                = "/ping" # FIX 1: Health check /ping par set
+    path                = "/ping"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -46,13 +46,13 @@ resource "aws_lb_target_group" "flight_tg" {
 
 resource "aws_lb_target_group" "payment_tg" {
   name        = "payment-tg"
-  port        = 80
+  port        = 5003 # App port
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
 
   health_check {
-    path                = "/ping" # FIX 2: Health check /ping par set
+    path                = "/ping"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
@@ -112,8 +112,7 @@ resource "aws_lb_listener_rule" "flight_rule" {
 
   condition {
     path_pattern {
-      # FIX 3: /api/flights* ko add kiya gaya hai
-      values = ["/flight*", "/search*", "/api/flights*"]
+      values = ["/api/flights*"]
     }
   }
 }
@@ -129,8 +128,7 @@ resource "aws_lb_listener_rule" "payment_rule" {
 
   condition {
     path_pattern {
-      # FIX 4: /api/payment* ko add kiya gaya hai
-      values = ["/pay*", "/payment*", "/api/payment*"]
+      values = ["/api/payment*"]
     }
   }
 }
