@@ -293,10 +293,15 @@
         // 'port' parameter ko ignore karein, kyunki ALB sab handle kar raha hai.
         // Humne ` (backtick) add kiya hai taaki yeh JavaScript string ban jaaye.
         // **Correction**: Keeping port for local testing as user is running locally.
+<<<<<<< HEAD
         const ALB_DNS_NAME = "http://travelease-ALB-984077717.eu-north-1.elb.amazonaws.com";
         function getApiUrl(path, port) {
             // Port ki zaroorat nahi, ALB routing handle karega
             return `${ALB_DNS_NAME}${path}`;
+=======
+        function getApiUrl(path, port) { 
+            return `http://127.0.0.1:${port}${path}`; 
+>>>>>>> c33b53a303ebe37b57e8ba9b48e2f6ecea3efc92
         }
 
         function showPage(pageId) { 
