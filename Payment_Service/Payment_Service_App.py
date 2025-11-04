@@ -27,15 +27,25 @@ def payment():
     amount = data.get('amount', 0)
     card_number = data.get('card_number', '')
     
-    # Email ID ko frontend se receive karo
+    # --- 🛑 NAYA: Frontend se saari details receive karo ---
     user_email = data.get('email', 'email_missing@example.com') 
+    flight_name = data.get('flight', 'N/A')
+    flight_date = data.get('flight_date', 'N/A')
+    seat_number = data.get('seat_number', 'N/A')
+    # --- End Naya ---
 
     if amount > 0 and len(card_number) >= 16:
         # Payment successful
         return jsonify({
             "message": "Payment successful!", 
             "transaction_id": "TXN" + card_number[-4:],
-            "user_email": user_email # Email ID ko Booking Service ke liye forward karo
+            
+            # --- 🛑 NAYA: Saari details ko Booking Service ke liye forward karo ---
+            "user_email": user_email,
+            "flight": flight_name,
+            "flight_date": flight_date,
+            "seat_number": seat_number
+            # --- End Naya ---
         }), 200
     else:
         # Payment failed (e.g., invalid data)

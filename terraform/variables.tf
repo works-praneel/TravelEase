@@ -1,27 +1,17 @@
 variable "project_name" {
-  default = "travelease"
+  description = "The name of the project"
+  type        = string
+  default     = "travelease"
 }
 
 variable "aws_region" {
-  default = "eu-north-1"
+  description = "The AWS region to deploy to"
+  type        = string
+  default     = "eu-north-1" # Aapke provider.tf se match
 }
 
 variable "aws_account_id" {
-  default = "904233121598"
+  description = "Your AWS Account ID"
+  type        = string
+  default     = "904233121598" # Aapki file se
 }
-
-variable "booking_image" {
-  type    = string
-  default = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/booking-service:latest"
-}
-
-variable "flight_image" {
-  type    = string
-  default = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/flight-service:latest"
-}
-
-variable "payment_image" {
-  type    = string
-  default = "904233121598.dkr.ecr.eu-north-1.amazonaws.com/payment-service:latest"
-}
-
