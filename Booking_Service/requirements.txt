@@ -1,3 +1,6 @@
 flask 
 prometheus_flask_exporter
 flask_cors
+Flask
+flask-cors
+boto3

@@ -29,7 +29,18 @@
             background: linear-gradient(to right, var(--color-gradient-start), var(--color-gradient-end));
             color: #fff; font-weight: bold; padding: 0.75rem 2rem; border-radius: 9999px;
             box-shadow: 0 10px 15px -3px rgba(59,130,246,0.1), 0 4px 6px -4px rgba(59,130,246,0.1);
-            transition: box-shadow 0.3s;
+            transition: all 0.3s;
+        }
+        .btn-blue-gradient:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+         /* NAYA: Cancel Button */
+         .btn-red-gradient {
+            background: linear-gradient(to right, #EF4444, #F59E0B);
+            color: #fff; font-weight: bold; padding: 0.75rem 2rem; border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(239,68,68,0.1), 0 4px 6px -4px rgba(239,68,68,0.1);
+            transition: all 0.3s;
         }
         .flight-item-card {
             background: #fff; padding: 1.5rem; border-radius: 0.75rem;
@@ -56,7 +67,8 @@
         .seat.premium { background-color: #d1fae5; color: #065f46; }
         .seat.business { background-color: #fef9c3; color: #854d0e; }
         .seat.selected { background-color: #2563eb; color: white; border-color: #1d4ed8; transform: scale(1.1); }
-        .seat.unavailable { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; border-color: #d1d5db; }
+        /* UPDATED: Renamed 'unavailable' to 'booked' */
+        .seat.booked { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; border-color: #d1d5db; }
         .seat-row { display: flex; gap: 8px; justify-content: center; }
         .seat-row .aisle { width: 24px; }
         .destination-card {
@@ -65,6 +77,29 @@
             color: #fff;
         }
         .destination-card h4 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+         /* NAYA: Message Box Styles */
+        .message-box {
+            display: none; /* hidden by default */
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+        .message-success {
+            background-color: #d1fae5; /* green-100 */
+            color: #065f46; /* green-800 */
+            border: 1px solid #6ee7b7; /* green-300 */
+        }
+        .message-error {
+            background-color: #fee2e2; /* red-100 */
+            color: #991b1b; /* red-800 */
+            border: 1px solid #fca5a5; /* red-300 */
+        }
+         .message-info {
+            background-color: #dbeafe; /* blue-100 */
+            color: #1e40af; /* blue-800 */
+            border: 1px solid #93c5fd; /* blue-300 */
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -73,7 +108,8 @@
     <header class="main-header text-white py-4 px-8 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#" id="travelEaseLogo" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity duration-200">
-                <img src="images/travelease_logo.png" alt="TravelEase Logo" class="h-10">
+                <!-- UPDATED: Placeholder logo, original path 'images/travelease_logo.png' might not work -->
+                <img src="https://placehold.co/100x40/ffffff/3B82F6?text=TravelEase&font=inter" alt="TravelEase Logo" class="h-10 rounded">
                 <span class="text-3xl font-bold">TravelEase</span>
             </a>
             <nav class="text-sm font-semibold space-x-6">
@@ -84,24 +120,48 @@
     </header>
 
     <main class="flex-grow container mx-auto pb-8">
+        <!-- NAYA: Message box for alerts -->
+        <div id="messageBox" class="message-box max-w-4xl mx-auto"></div>
+
         <section id="homePage" class="current-page">
             <div class="bg-white p-8 rounded-xl shadow-lg text-center mb-12 mt-10">
                 <h3 class="text-3xl font-semibold text-gray-800 mb-6">Find Your Perfect Flight</h3>
+                
+                <!-- UPDATED: Removed Round Trip radio button -->
                 <div class="flex justify-center gap-4 mb-6">
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="tripType" value="oneWay" class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">One Way</span></label>
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="tripType" value="roundTrip" checked class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">Round Trip</span></label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="tripType" value="oneWay" class="form-radio h-5 w-5 text-blue-600" checked readonly> <span class="text-lg">One Way</span></label>
                 </div>
+                
                 <div class="flex justify-center gap-6 mb-8">
                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="flightType" value="domestic" checked class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">Domestic</span></label>
                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="flightType" value="international" class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">International</span></label>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+
+                <!-- UPDATED: Removed Return Date Container -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
                     <div><label for="fromDestination" class="block text-left text-sm font-semibold mb-2">From</label><select id="fromDestination" class="input-field"></select></div>
                     <div><label for="toDestination" class="block text-left text-sm font-semibold mb-2">To</label><select id="toDestination" class="input-field"></select></div>
                     <div><label for="departureDate" class="block text-left text-sm font-semibold mb-2">Departure Date</label><input type="date" id="departureDate" class="input-field dark-input" required></div>
-                    <div id="returnDateContainer"><label for="returnDate" class="block text-left text-sm font-semibold mb-2">Return Date</label><input type="date" id="returnDate" class="input-field dark-input"></div>
                 </div>
                 <button id="searchFlightsBtn" class="btn-blue-gradient mt-10">Search Flights</button>
+            </div>
+            
+            <!-- NAYA: Cancellation Card -->
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center mb-12">
+                <h3 class="text-3xl font-semibold text-gray-800 mb-6">Cancel a Booking?</h3>
+                <form id="cancelForm" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+                    <div>
+                        <label for="cancelBookingRef" class="block text-left text-sm font-semibold mb-2">Booking Reference</label>
+                        <input type="text" id="cancelBookingRef" class="input-field" placeholder="BOOK-..." required>
+                    </div>
+                    <div>
+                        <label for="cancelEmail" class="block text-left text-sm font-semibold mb-2">Your Email</label>
+                        <input type="email" id="cancelEmail" class="input-field" placeholder="you@example.com" required>
+                    </div>
+                    <div class="md:mt-7">
+                        <button type="submit" id="cancelBookingBtn" class="btn-red-gradient w-full">Cancel Booking</button>
+                    </div>
+                </form>
             </div>
             
             <div class="mt-12 text-center text-gray-700">
@@ -127,9 +187,9 @@
         <section id="flightSelectionPage" class="hidden">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="flightSelectionTitle" class="text-3xl font-bold text-gray-800">Available Flights</h3>
-                <button id="modifySearchBtn" class="btn-modify-search">Modify Search</button>
+                <button id="modifySearchBtn" class="btn-blue-gradient">Modify Search</button>
             </div>
-            <div id="departureFlightSummary" class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mb-6 hidden"></div>
+            <!-- Removed departureFlightSummary -->
             <div id="flightsList" class="space-y-6"></div>
         </section>
 
@@ -140,7 +200,7 @@
                     <div class="bg-white p-6 rounded-xl shadow-lg">
                         <h4 class="text-2xl font-bold mb-4 border-b pb-3">Your Trip Summary</h4>
                         <div id="summaryDepartureSection" class="space-y-2"></div>
-                        <div id="summaryReturnSection" class="space-y-2 mt-4 border-t pt-4"></div>
+                        <!-- Removed summaryReturnSection -->
                         <div id="summarySeatSection" class="space-y-2 mt-4 border-t pt-4"></div>
                         <p class="flex justify-between items-center border-t pt-3 font-bold text-xl mt-4"><span>Total Price:</span><span id="summaryTotalPrice" class="text-red-500"></span></p>
                     </div>
@@ -159,8 +219,19 @@
                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#fef9c3] border border-yellow-400"></div> Business</span>
                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#d1fae5] border border-green-400"></div> Premium</span>
                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#dbeafe] border border-blue-400"></div> Economy</span>
+                             <!-- NAYA: Booked Legend -->
+                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#e5e7eb] border border-gray-400"></div> Booked</span>
                         </div>
-                        <div id="seatMap" class="flex flex-col items-center gap-4"></div>
+                        <div id="seatMap" class="flex flex-col items-center gap-4">
+                            <!-- NAYA: Loading spinner -->
+                            <div id="seatMapSpinner" class="text-center p-4">
+                                <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="mt-2 text-blue-600 font-medium">Loading available seats...</p>
+                            </div>
+                        </div>
                         <button id="confirmSeatBtn" class="btn-blue-gradient w-full mt-6">Confirm Seat</button>
                     </div>
                     <div id="paymentDetailsContainer" class="bg-white p-8 rounded-xl shadow-lg hidden">
@@ -201,22 +272,39 @@
 
     <script>
         document.addEventListener('mousemove', e => { document.documentElement.style.setProperty('--mouse-x', (e.clientX / window.innerWidth) * 100 + '%'); document.documentElement.style.setProperty('--mouse-y', (e.clientY / window.innerHeight) * 100 + '%'); });
-        let allFetchedFlights = [], selectedDepartureFlight = null, selectedReturnFlight = null, selectedSeat = null;
-        let from, to, departureDate, returnDate, tripType, flightType;
+        
+        // --- Service URLs (Localhost) ---
+        const BOOKING_SERVICE_URL = 'http://127.0.0.1:5000';
+        const FLIGHT_SERVICE_URL = 'http://127.0.0.1:5002';
+        const PAYMENT_SERVICE_URL = 'http://127.0.0.1:5003';
+        
+        // --- Global State (Simplified for One-Way) ---
+        let allFetchedFlights = [], selectedDepartureFlight = null, selectedSeat = null;
+        let from, to, departureDate, flightType;
+        
         const seatFees = { business: 1500, premium: 600, economy: 250 };
         const destinations = { domestic: [ { code: 'DEL', name: 'Delhi' }, { code: 'BOM', name: 'Mumbai' }, { code: 'CCU', name: 'Kolkata' }, { code: 'MAA', name: 'Chennai' }, { code: 'GOI', name: 'Goa' }, { code: 'HYD', name: 'Hyderabad' }], international: [ { code: 'HKT', name: 'Phuket' }, { code: 'SUB', name: 'Juanda' }, { code: 'NRT', name: 'Narita' }, { code: 'HND', name: 'Haneda' }, { code: 'DXB', name: 'Dubai' }, { code: 'SYD', name: 'Sydney' }, { code: 'MEL', name: 'Melbourne' }, { code: 'AKL', name: 'Auckland' }] };
         
-        // --- YEH FUNCTION AB SAHI HAI ---
+        // --- NAYA: DOM Elements ---
+        const messageBox = document.getElementById('messageBox');
+        const cancelForm = document.getElementById('cancelForm');
+
+        // --- UPDATED: getApiUrl (Bug Fix) ---
+        // 'port' parameter ko ignore karein, kyunki ALB sab handle kar raha hai.
+        // Humne ` (backtick) add kiya hai taaki yeh JavaScript string ban jaaye.
+        // **Correction**: Keeping port for local testing as user is running locally.
         function getApiUrl(path, port) { 
-            // 'port' parameter ko ignore karein, kyunki ALB sab handle kar raha hai.
-            // Humne ` (backtick) add kiya hai taaki yeh JavaScript string ban jaaye.
-            return `http://travelease-ALB-117801644.eu-north-1.elb.amazonaws.com${path}`; 
+            return `http://127.0.0.1:${port}${path}`; 
         }
 
-        function showPage(pageId) { ['homePage', 'flightSelectionPage', 'paymentServicePage'].forEach(id => document.getElementById(id).classList.add('hidden')); document.getElementById(pageId).classList.remove('hidden'); }
+        function showPage(pageId) { 
+            ['homePage', 'flightSelectionPage', 'paymentServicePage'].forEach(id => document.getElementById(id).classList.add('hidden')); 
+            document.getElementById(pageId).classList.remove('hidden'); 
+            window.scrollTo(0, 0);
+            hideMessage(); // NAYA: Hide messages on page change
+        }
         
-        // --- YEH FUNCTION AB SAHI HAI ---
-        function formatPrice(price) { return `₹${price.toLocaleString('en-IN')}`; }
+        function formatPrice(price) { return `₹${Number(price).toLocaleString('en-IN')}`; }
         
         function updateDestinationDropdowns() {
             flightType = document.querySelector('input[name="flightType"]:checked').value;
@@ -226,139 +314,385 @@
             else { populateDropdown(fromDd, allDests); populateDropdown(toDd, allDests); }
         }
         
-        // --- YEH FUNCTION AB SAHI HAI ---
         function populateDropdown(dd, opts) { opts.forEach(o => { const el = document.createElement('option'); el.value = o.code; el.textContent = `${o.name} (${o.code})`; dd.appendChild(el); }); }
         
-        function searchFlights(isReturn = false) {
-            flightType = document.querySelector('input[name="flightType"]:checked').value; tripType = document.querySelector('input[name="tripType"]:checked').value;
-            if (!isReturn) {
-                from = document.getElementById('fromDestination').value; to = document.getElementById('toDestination').value;
-                departureDate = document.getElementById('departureDate').value; returnDate = tripType === 'roundTrip' ? document.getElementById('returnDate').value : '';
-                selectedDepartureFlight = null; selectedReturnFlight = null; selectedSeat = null;
-                if (!departureDate) { alert("Please select a Departure Date."); return; }
-                if (tripType === 'roundTrip' && !returnDate) { alert("Please select a Return Date."); return; }
-                document.getElementById('departureFlightSummary').classList.add('hidden');
-            }
-            const searchFrom = isReturn ? to : from, searchTo = isReturn ? from : to;
-            document.getElementById('flightSelectionTitle').textContent = isReturn ? "Select Your Return Flight" : "Select Your Departure Flight";
+        // --- UPDATED: searchFlights (Simplified) ---
+        function searchFlights() {
+            flightType = document.querySelector('input[name="flightType"]:checked').value;
+            from = document.getElementById('fromDestination').value; 
+            to = document.getElementById('toDestination').value;
+            departureDate = document.getElementById('departureDate').value; // NAYA: Must get date
             
-            // --- YEH FUNCTION AB SAHI HAI ---
-            const apiUrl = `${getApiUrl('/api/flights', 5002)}?type=${flightType}&from=${searchFrom}&to=${searchTo}`;
+            selectedDepartureFlight = null; 
+            selectedSeat = null;
+            
+            if (!departureDate) { 
+                showMessage('Please select a Departure Date.', 'error'); 
+                return; 
+            }
+
+            document.getElementById('flightSelectionTitle').textContent = "Select Your Departure Flight";
+            
+            const apiUrl = `${getApiUrl('/api/flights', 5002)}?type=${flightType}&from=${from}&to=${to}`;
             const flightsList = document.getElementById('flightsList'); 
             flightsList.innerHTML = `<p class="text-center text-xl text-blue-600">Searching...</p>`;
             
-            fetch(apiUrl).then(res => res.json()).then(data => { allFetchedFlights = data.flights || []; renderFlights(allFetchedFlights); if (!isReturn) showPage('flightSelectionPage'); }).catch(err => { console.error(err); flightsList.innerHTML = `<p class="text-center text-xl text-red-500">Server error.</p>`; });
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(data => { 
+                    allFetchedFlights = data.flights || []; 
+                    renderFlights(allFetchedFlights); 
+                    showPage('flightSelectionPage'); 
+                })
+                .catch(err => { 
+                    console.error(err); 
+                    flightsList.innerHTML = `<p class="text-center text-xl text-red-500">Server error. Please check if services are running.</p>`; 
+                });
         }
+        
         function renderFlights(flights) {
             const flightsList = document.getElementById('flightsList');
             flightsList.innerHTML = '';
             if (flights.length === 0) { flightsList.innerHTML = '<p class="text-center text-lg text-gray-500">No flights found.</p>'; return; }
             flights.forEach(flight => flightsList.appendChild(createFlightCard(flight)));
         }
+        
         function createFlightCard(flight) {
-            const card = document.createElement('div'); card.className = 'flight-item-card'; const flightData = JSON.stringify(flight).replace(/"/g, '&quot;');
-            // --- YEH FUNCTION AB SAHI HAI ---
+            const card = document.createElement('div'); card.className = 'flight-item-card'; 
+            const flightData = JSON.stringify(flight).replace(/"/g, '&quot;');
             card.innerHTML = `<div><h4 class="text-xl font-bold">${flight.name} - ${flight.flightNumber}</h4><p class="font-semibold">${flight.departureTime} → ${flight.arrivalTime} (${flight.duration})</p><p class="text-sm text-gray-500">${flight.route}</p></div><div class="mt-4 md:mt-0 text-right"><p class="text-2xl font-extrabold text-red-500">${formatPrice(flight.price)}</p><button data-flight='${flightData}' class="btn-blue-gradient mt-2 select-flight-btn">Select</button></div>`;
             card.querySelector('.select-flight-btn').addEventListener('click', handleFlightSelection); return card;
         }
+        
+        // --- UPDATED: handleFlightSelection (Simplified) ---
         function handleFlightSelection(event) {
-            const flight = JSON.parse(event.currentTarget.dataset.flight);
-            if (tripType === 'oneWay') { selectedDepartureFlight = flight; } 
-            else { if (!selectedDepartureFlight) { selectedDepartureFlight = flight; const summaryDiv = document.getElementById('departureFlightSummary'); 
-            // --- YEH FUNCTION AB SAHI HAI ---
-            summaryDiv.innerHTML = `<strong>Departure:</strong> ${flight.name} for ${formatPrice(flight.price)}`; 
-            summaryDiv.classList.remove('hidden'); searchFlights(true); return; } 
-            else { selectedReturnFlight = flight; } }
-            updatePaymentSummary(); renderSeatMap(); resetPaymentPage(); showPage('paymentServicePage');
+            selectedDepartureFlight = JSON.parse(event.currentTarget.dataset.flight);
+            
+            updatePaymentSummary(); // Update summary
+            renderSeatMap(); // Start rendering seat map (it's async now)
+            resetPaymentPage(); // Reset payment page UI
+            showPage('paymentServicePage'); // Show the page
         }
-        function renderSeatMap() {
-            const seatMap = document.getElementById('seatMap'); seatMap.innerHTML = '';
+        
+        // --- UPDATED: renderSeatMap (Now fetches booked seats) ---
+        async function renderSeatMap() {
+            const seatMap = document.getElementById('seatMap');
+            const spinner = document.getElementById('seatMapSpinner');
+            seatMap.innerHTML = ''; // Clear map
+            spinner.style.display = 'block'; // Show spinner
+            
+            // NAYA: Create flight_id to check booked seats
+            // We use flight.name (e.g., "IndiGo") not flight.flightNumber
+            const flight_id = `${selectedDepartureFlight.name}_${departureDate}`;
+            let bookedSeats = [];
+
+            try {
+                // NAYA: Call /api/get_seats from Booking Service
+                const response = await fetch(`${getApiUrl('/api/get_seats', 5000)}?flight_id=${flight_id}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    bookedSeats = data.booked_seats || [];
+                    console.log("Booked seats for " + flight_id + ":", bookedSeats);
+                } else {
+                    console.error("Could not fetch booked seats.");
+                    showMessage("Could not load seat map. Please try again.", "error");
+                }
+            } catch (e) {
+                console.error("Error fetching seats:", e);
+                showMessage("Could not load seat map. Please try again.", "error");
+            }
+            
+            spinner.style.display = 'none'; // Hide spinner
+
             const seatLayout = [
                 { rows: [1, 2], layout: ['A', 'B', '', 'C', 'D'], class: 'business' },
                 { rows: [3, 4, 5], layout: ['A', 'B', 'C', '', 'D', 'E', 'F'], class: 'premium' },
                 { rows: [6, 7, 8, 9, 10, 11, 12], layout: ['A', 'B', 'C', '', 'D', 'E', 'F'], class: 'economy' }
             ];
+            
             seatLayout.forEach(section => {
                 section.rows.forEach(rowNum => {
                     const row = document.createElement('div'); row.className = 'seat-row';
                     section.layout.forEach(letter => {
                         if (letter === '') { const aisle = document.createElement('div'); aisle.className = 'aisle'; row.appendChild(aisle); return; }
-                        // --- YEH FUNCTION AB SAHI HAI ---
-                        const seat = document.createElement('div'); const seatId = `${rowNum}${letter}`;
+                        
+                        const seat = document.createElement('div'); 
+                        const seatId = `${rowNum}${letter}`;
                         seat.id = `seat-${seatId}`; seat.textContent = seatId;
-                        const isUnavailable = Math.random() > 0.85;
-                        seat.className = isUnavailable ? `seat unavailable` : `seat ${section.class}`;
-                        if (!isUnavailable) { seat.dataset.seatId = seatId; seat.dataset.seatClass = section.class; seat.dataset.seatPrice = seatFees[section.class]; seat.addEventListener('click', () => selectSeat(seatId, section.class, seatFees[section.class])); }
+                        
+                        // NAYA: Check if seat is in the bookedSeats array
+                        const isBooked = bookedSeats.includes(seatId);
+                        
+                        // Use 'booked' class if unavailable, else regular class
+                        seat.className = isBooked ? `seat booked` : `seat ${section.class}`;
+                        
+                        if (!isBooked) { 
+                            seat.dataset.seatId = seatId; 
+                            seat.dataset.seatClass = section.class; 
+                            seat.dataset.seatPrice = seatFees[section.class]; 
+                            seat.addEventListener('click', () => selectSeat(seatId, section.class, seatFees[section.class])); 
+                        }
                         row.appendChild(seat);
                     });
                     seatMap.appendChild(row);
                 });
             });
         }
+        
         function selectSeat(seatId, seatClass, seatPrice) {
+            // Deselect old seat
             if (selectedSeat) {
-                // --- YEH FUNCTION AB SAHI HAI ---
                 const oldSeatEl = document.getElementById(`seat-${selectedSeat.id}`);
                 if (oldSeatEl) { oldSeatEl.classList.remove('selected'); oldSeatEl.classList.add(selectedSeat.class); }
             }
-            // --- YEH FUNCTION AB SAHI HAI ---
+            // Select new seat
             const newSeatEl = document.getElementById(`seat-${seatId}`);
             newSeatEl.classList.remove(seatClass);
             newSeatEl.classList.add('selected');
             selectedSeat = { id: seatId, class: seatClass, price: seatPrice };
+            console.log("Selected seat:", selectedSeat);
         }
+        
+        // --- UPDATED: updatePaymentSummary (Simplified) ---
         function updatePaymentSummary() {
-            let totalPrice = 0; const depSection = document.getElementById('summaryDepartureSection'), retSection = document.getElementById('summaryReturnSection'), seatSection = document.getElementById('summarySeatSection');
-            // --- YEH FUNCTION AB SAHI HAI ---
-            if (selectedDepartureFlight) { totalPrice += selectedDepartureFlight.price; depSection.innerHTML = `<h5 class="font-bold">Departure</h5><p class="flex justify-between"><span>${selectedDepartureFlight.name} (${selectedDepartureFlight.route})</span><span class="font-semibold">${formatPrice(selectedDepartureFlight.price)}</span></p>`; }
-            if (selectedReturnFlight) { totalPrice += selectedReturnFlight.price; retSection.innerHTML = `<h5 class="font-bold">Return</h5><p class="flex justify-between"><span>${selectedReturnFlight.name} (${selectedReturnFlight.route})</span><span class="font-semibold">${formatPrice(selectedReturnFlight.price)}</span></p>`; retSection.classList.remove('hidden'); } 
-            else { retSection.innerHTML = ''; retSection.classList.add('hidden'); }
-            if (selectedSeat) { totalPrice += selectedSeat.price; seatSection.innerHTML = `<h5 class="font-bold">Seat Selection</h5><p class="flex justify-between"><span>Seat ${selectedSeat.id} (${selectedSeat.class})</span><span class="font-semibold">${formatPrice(selectedSeat.price)}</span></p>`; seatSection.classList.remove('hidden'); } 
-            else { seatSection.innerHTML = ''; seatSection.classList.add('hidden'); }
-            document.getElementById('summaryTotalPrice').textContent = formatPrice(totalPrice); document.getElementById('paymentAmountDisplay').textContent = formatPrice(totalPrice);
+            let totalPrice = 0; 
+            const depSection = document.getElementById('summaryDepartureSection');
+            const seatSection = document.getElementById('summarySeatSection');
+            
+            // Removed return flight logic
+            if (selectedDepartureFlight) { 
+                totalPrice += selectedDepartureFlight.price; 
+                depSection.innerHTML = `<h5 class="font-bold">Departure</h5><p class="flex justify-between"><span>${selectedDepartureFlight.name} (${selectedDepartureFlight.route})</span><span class="font-semibold">${formatPrice(selectedDepartureFlight.price)}</span></p>`; 
+            }
+            
+            if (selectedSeat) { 
+                totalPrice += selectedSeat.price; 
+                seatSection.innerHTML = `<h5 class="font-bold">Seat Selection</h5><p class="flex justify-between"><span>Seat ${selectedSeat.id} (${selectedSeat.class})</span><span class="font-semibold">${formatPrice(selectedSeat.price)}</span></p>`; 
+                seatSection.classList.remove('hidden'); 
+            } else { 
+                seatSection.innerHTML = ''; 
+                seatSection.classList.add('hidden'); 
+            }
+            
+            document.getElementById('summaryTotalPrice').textContent = formatPrice(totalPrice); 
+            document.getElementById('paymentAmountDisplay').textContent = formatPrice(totalPrice);
         }
+        
         function resetPaymentPage() {
             document.getElementById('seatSelectionContainer').classList.remove('hidden');
             document.getElementById('paymentDetailsContainer').classList.add('hidden');
+            document.getElementById('paymentStatus').classList.add('hidden');
         }
-        function finalizeBooking() {
-            const fullName = document.getElementById('fullName').value, email = document.getElementById('email').value;
-            if (!fullName || !email) { alert('Please fill passenger details.'); return; }
-            let totalPrice = selectedDepartureFlight.price + (selectedReturnFlight ? selectedReturnFlight.price : 0) + (selectedSeat ? selectedSeat.price : 0);
-            // --- YEH FUNCTION AB SAHI HAI ---
-            let flightDetails = `${selectedDepartureFlight.name} (${selectedDepartureFlight.route})`;
-            if(selectedReturnFlight) { flightDetails += ` & ${selectedReturnFlight.name} (${selectedReturnFlight.route})`; }
+        
+        // --- UPDATED: finalizeBooking (Sends new data) ---
+        async function finalizeBooking() {
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const finalizeBtn = document.getElementById('finalizeBookingBtn');
             
-            const paymentData = { amount: totalPrice, card_number: document.getElementById('cardNumber').value, email: email };
+            if (!fullName || !email || !cardNumber || cardNumber.length < 16) { 
+                showMessage('Please fill all passenger and valid payment details.', 'error'); 
+                return; 
+            }
+            if (!selectedSeat) {
+                showMessage('Please go back and select a seat.', 'error');
+                return;
+            }
+            
+            let totalPrice = selectedDepartureFlight.price + selectedSeat.price;
+            let flightName = selectedDepartureFlight.name; // Use the specific flight name
+            
+            const paymentData = { 
+                amount: totalPrice, 
+                card_number: cardNumber, 
+                email: email,
+                
+                // NAYA: Data for Payment service to forward
+                flight: flightName,
+                flight_date: departureDate,
+                seat_number: selectedSeat.id
+            };
+            
             const paymentStatusEl = document.getElementById('paymentStatus');
-            paymentStatusEl.textContent = 'Processing...'; paymentStatusEl.classList.remove('hidden');
-            fetch(getApiUrl('/api/payment', 5003), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(paymentData) })
-                .then(res => res.ok ? res.json() : Promise.reject('Payment Failed'))
-                .then(paymentResult => {
-                    const bookingData = { flight: flightDetails, seat: selectedSeat ? selectedSeat.id : 'Not Selected', price: totalPrice, transaction_id: paymentResult.transaction_id, user_email: paymentResult.user_email };
-                    return fetch(getApiUrl('/book', 5000), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bookingData) });
-                }).then(res => res.ok ? res.json() : Promise.reject('Booking Failed'))
-                .then(bookingResult => {
-                    document.getElementById('confFlights').textContent = flightDetails; document.getElementById('confSeat').textContent = selectedSeat ? selectedSeat.id : 'Not Selected';
-                    document.getElementById('confRef').textContent = bookingResult.booking_reference; document.getElementById('confPrice').textContent = formatPrice(totalPrice);
-                    document.getElementById('confEmailStatus').textContent = bookingResult.email_status; document.getElementById('bookingConfirmedModal').classList.remove('hidden');
-                }).catch(err => { 
-                    console.error(err); 
-                    // --- YEH FUNCTION AB SAHI HAI ---
-                    paymentStatusEl.textContent = `Error: ${err}.`; 
+            paymentStatusEl.textContent = 'Processing Payment...';
+            paymentStatusEl.className = 'mt-6 text-center text-lg font-semibold text-blue-600';
+            paymentStatusEl.classList.remove('hidden');
+            finalizeBtn.disabled = true;
+            
+            try {
+                // --- STEP 1: PAYMENT ---
+                const paymentResponse = await fetch(getApiUrl('/api/payment', 5003), { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(paymentData) 
                 });
+                
+                const paymentResult = await paymentResponse.json();
+                if (!paymentResponse.ok) {
+                    throw new Error(paymentResult.message || 'Payment Failed');
+                }
+                
+                paymentStatusEl.textContent = 'Payment Successful! Finalizing booking...';
+                paymentStatusEl.className = 'mt-6 text-center text-lg font-semibold text-green-600';
+
+                // --- STEP 2: BOOKING ---
+                // Data ab paymentResult se aa raha hai
+                const bookingData = { 
+                    flight: paymentResult.flight, 
+                    seat_number: paymentResult.seat_number, 
+                    price: totalPrice, // Price ko locally calculate karke bhejein
+                    transaction_id: paymentResult.transaction_id, 
+                    user_email: paymentResult.user_email,
+                    flight_date: paymentResult.flight_date
+                };
+                
+                const bookingResponse = await fetch(getApiUrl('/book', 5000), { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify(bookingData) 
+                });
+                
+                const bookingResult = await bookingResponse.json();
+                if (!bookingResponse.ok) {
+                    // NAYA: Handle 409 Conflict (Seat Taken)
+                    if(bookingResponse.status === 409) {
+                        throw new Error(bookingResult.message || 'That seat was just taken. Please select another.');
+                    }
+                    throw new Error(bookingResult.message || 'Booking Failed');
+                }
+                
+                // --- STEP 3: SUCCESS ---
+                document.getElementById('confFlights').textContent = `${bookingData.flight} (${selectedDepartureFlight.route})`;
+                document.getElementById('confSeat').textContent = bookingData.seat_number;
+                document.getElementById('confRef').textContent = bookingResult.booking_reference; 
+                document.getElementById('confPrice').textContent = formatPrice(bookingData.price);
+                document.getElementById('confEmailStatus').textContent = bookingResult.email_status; 
+                document.getElementById('bookingConfirmedModal').classList.remove('hidden');
+                
+            } catch (err) {
+                console.error(err); 
+                paymentStatusEl.textContent = `Error: ${err.message}`;
+                paymentStatusEl.className = 'mt-6 text-center text-lg font-semibold text-red-600';
+                
+                // NAYA: If seat was taken, send user back to seat map
+                if (err.message.includes("seat")) {
+                    document.getElementById('seatSelectionContainer').classList.remove('hidden');
+                    document.getElementById('paymentDetailsContainer').classList.add('hidden');
+                    renderSeatMap(); // Refresh seat map to show the booked seat
+                }
+            } finally {
+                finalizeBtn.disabled = false;
+            }
         }
+        
+        // --- NAYA: Show/Hide Message Box ---
+        function showMessage(message, type = 'info') {
+            messageBox.innerHTML = message;
+            messageBox.className = 'message-box'; // Reset classes
+            if (type === 'success') {
+                messageBox.classList.add('message-success');
+            } else if (type === 'error') {
+                messageBox.classList.add('message-error');
+            } else {
+                 messageBox.classList.add('message-info');
+            }
+            messageBox.style.display = 'block';
+            window.scrollTo(0, 0); // Scroll to top to show message
+        }
+        function hideMessage() {
+            messageBox.style.display = 'none';
+        }
+        
+        // --- NAYA: Cancellation Logic ---
+        async function handleCancelBooking(e) {
+            e.preventDefault();
+            hideMessage();
+            const bookingRef = document.getElementById('cancelBookingRef').value;
+            const email = document.getElementById('cancelEmail').value;
+            const cancelBtn = document.getElementById('cancelBookingBtn');
+
+            if (!bookingRef || !email) {
+                showMessage("Please fill in both Booking Reference and Email.", "error");
+                return;
+            }
+            
+            const cancelData = {
+                booking_reference: bookingRef,
+                user_email: email
+            };
+            
+            showMessage("Processing cancellation...", "info");
+            cancelBtn.disabled = true;
+            
+            try {
+                const response = await fetch(`${getApiUrl('/cancel', 5000)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cancelData)
+                });
+                
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message || "Cancellation request failed.");
+                }
+                
+                showMessage(`Booking ${result.booking_reference} cancelled. A refund of ${formatPrice(result.refund_amount)} will be processed.`, "success");
+                cancelForm.reset();
+                
+            } catch (err) {
+                console.error(err);
+                showMessage(err.message, "error");
+            } finally {
+                cancelBtn.disabled = false;
+            }
+        }
+
+        // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
             updateDestinationDropdowns();
             document.querySelectorAll('input[name="flightType"]').forEach(r => r.addEventListener('change', updateDestinationDropdowns));
-            document.querySelectorAll('input[name="tripType"]').forEach(r => r.addEventListener('change', () => { document.getElementById('returnDateContainer').style.display = document.querySelector('input[name="tripType"]:checked').value === 'roundTrip' ? 'block' : 'none'; }));
-            document.getElementById('searchFlightsBtn').addEventListener('click', () => searchFlights(false));
-            document.getElementById('modifySearchBtn').addEventListener('click', () => showPage('homePage'));
-            document.getElementById('confirmSeatBtn').addEventListener('click', () => { if(!selectedSeat) { alert('Please select a seat.'); return; } updatePaymentSummary(); document.getElementById('seatSelectionContainer').classList.add('hidden'); document.getElementById('paymentDetailsContainer').classList.remove('hidden'); });
+            
+            // REMOVED: tripType listener
+            
+            document.getElementById('searchFlightsBtn').addEventListener('click', () => {
+                hideMessage();
+                searchFlights();
+            });
+            document.getElementById('modifySearchBtn').addEventListener('click', () => {
+                hideMessage();
+                showPage('homePage');
+            });
+            document.getElementById('confirmSeatBtn').addEventListener('click', () => { 
+                if(!selectedSeat) { 
+                    showMessage('Please select a seat.', 'error'); // Use new message system
+                    return; 
+                } 
+                hideMessage();
+                updatePaymentSummary(); 
+                document.getElementById('seatSelectionContainer').classList.add('hidden'); 
+                document.getElementById('paymentDetailsContainer').classList.remove('hidden'); 
+            });
             document.getElementById('finalizeBookingBtn').addEventListener('click', finalizeBooking);
-            document.getElementById('goToHomeBtn').addEventListener('click', () => { document.getElementById('bookingConfirmedModal').classList.add('hidden'); showPage('homePage'); });
-            document.getElementById('travelEaseLogo').addEventListener('click', (e) => { e.preventDefault(); showPage('homePage'); });
+            document.getElementById('goToHomeBtn').addEventListener('click', () => { 
+                document.getElementById('bookingConfirmedModal').classList.add('hidden'); 
+                showPage('homePage'); 
+                // Reset search form
+                document.getElementById('departureDate').value = '';
+            });
+            document.getElementById('travelEaseLogo').addEventListener('click', (e) => { 
+                e.preventDefault(); 
+                hideMessage();
+                showPage('homePage'); 
+            });
+            
+            // NAYA: Cancel form listener
+            cancelForm.addEventListener('submit', handleCancelBooking);
+            
+            // NAYA: Set min date for departure
+             document.getElementById('departureDate').min = new Date().toISOString().split('T')[0];
         });
     </script>
 </body>
 </html>
+
