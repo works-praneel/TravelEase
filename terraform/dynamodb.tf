@@ -1,8 +1,9 @@
-# 1. Flights Table
+# 1. Flights Table (Isse populate_flights_db.py bharega)
 resource "aws_dynamodb_table" "flights_table" {
+  provider       = aws.primary
   name           = "TravelEase-Flights"
   billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "flight_id" # Primary Key
+  hash_key       = "flight_id" 
 
   attribute {
     name = "flight_id"
@@ -20,11 +21,12 @@ resource "aws_dynamodb_table" "flights_table" {
   tags = { Name = "${var.project_name}-flights-table" }
 }
 
-# 2. Bookings Table
-resource "aws_dynamodb_table" "bookings_table" {
-  name           = "TravelEase-Bookings"
+# 2. Bookings Table (Isse Booking Service istemaal karegi)
+resource "aws_dynamodb_table" "bookings_db" {
+  provider       = aws.primary
+  name           = "BookingsDB"  # <-- Hum is naam ka istemaal karenge
   billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "booking_reference" # Primary Key
+  hash_key       = "booking_reference"
 
   attribute {
     name = "booking_reference"
@@ -33,25 +35,20 @@ resource "aws_dynamodb_table" "bookings_table" {
   tags = { Name = "${var.project_name}-bookings-table" }
 }
 
-# 3. Seat Inventory Table
-resource "aws_dynamodb_table" "seat_inventory_table" {
-  name           = "TravelEase-SeatInventory"
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "flight_id"   # Partition Key
-  range_key      = "seat_number" # Sort Key
+# 3. Smart Trips Table (Isse Smart Trip feature istemaal karega)
+resource "aws_dynamodb_table" "smart_trips_db" {
+  provider     = aws.primary
+  name         = "SmartTripsDB" # <-- Hum is naam ka istemaal karenge
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "trip_id"
 
   attribute {
-    name = "flight_id"
+    name = "trip_id"
     type = "S"
   }
-  attribute {
-    name = "seat_number"
-    type = "S"
-  }
-  tags = { Name = "${var.project_name}-seats-table" }
 }
 
-# 4. IAM Policy jo ECS Tasks ko in tables ko access karne deti hai
+# 4. IAM Policy (Sahi ki hui)
 resource "aws_iam_policy" "dynamodb_access_policy" {
   name        = "${var.project_name}-DynamoDB-Access-Policy"
   description = "Allows ECS tasks to access TravelEase DynamoDB tables"
@@ -71,8 +68,8 @@ resource "aws_iam_policy" "dynamodb_access_policy" {
         ],
         Resource = [
           aws_dynamodb_table.flights_table.arn,
-          aws_dynamodb_table.bookings_table.arn,
-          aws_dynamodb_table.seat_inventory_table.arn,
+          aws_dynamodb_table.bookings_db.arn,     # <-- Sahi naam
+          aws_dynamodb_table.smart_trips_db.arn,  # <-- Sahi naam
           "${aws_dynamodb_table.flights_table.arn}/index/route-index"
         ]
       }
