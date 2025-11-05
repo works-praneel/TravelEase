@@ -1,307 +1,312 @@
-import os
-import boto3
-import uuid
+# works-praneel/travelease/TravelEase-main/Booking_Service/Booking_Service_App.py
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-# This import now matches the function names in the email sender file
-from email_sender_gmail import send_confirmation_email, send_cancellation_email
+import boto3
+from boto3.dynamodb.conditions import Key, Attr  # <-- FIX: Added Attr
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key, Attr # Import Attr for scanning
-from datetime import datetime
+import os
+import uuid
+import json
+from decimal import Decimal
 
-# AWS DynamoDB Setup
-# These table names come from your dynamodb.tf file
-dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
-bookings_table = dynamodb.Table('BookingsDB') 
-trips_table = dynamodb.Table('SmartTripsDB') 
+# Import your custom email function
+# This assumes email_sender_gmail.py is in the same directory
+try:
+    from email_sender_gmail import send_booking_confirmation, send_cancellation_confirmation
+except ImportError:
+    print("Warning: email_sender_gmail.py not found. Email notifications will be disabled.")
+    # Create dummy functions so the app doesn't crash
+    def send_booking_confirmation(email, booking_ref, flight_details, seat, price):
+        print(f"DUMMY_EMAIL: Sending booking confirmation to {email} for {booking_ref}")
+        return "Email service is not configured."
+    
+    def send_cancellation_confirmation(email, booking_ref, refund_amount):
+        print(f"DUMMY_EMAIL: Sending cancellation confirmation to {email} for {booking_ref}")
+        return "Email service is not configured."
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)  # This will enable CORS for all routes
 
+# --- DynamoDB Setup ---
+# We use a Boto3 resource which is high-level
+try:
+    if os.environ.get('AWS_SAM_LOCAL'):
+        # For local SAM testing
+        dynamodb = boto3.resource('dynamodb', endpoint_url="http://host.docker.internal:8000")
+    else:
+        # For production (deployed to ECS)
+        dynamodb = boto3.resource('dynamodb')
+except Exception as e:
+    print(f"Error initializing DynamoDB resource: {e}")
+    dynamodb = None
 
-# -------------------------------------
-# UPDATED MOCK RECOMMENDATION DATA
-# (2 Hotels + 1 Cab per destination)
-# -------------------------------------
-MOCK_RECOMMENDATIONS = {
-    # Domestic
-    "DEL": [
-        {"suggestion_type": "hotel", "name": "The Oberoi, Delhi", "description": "Luxury stay near city center", "price": 15000},
-        {"suggestion_type": "hotel", "name": "Radisson Blu Plaza", "description": "Close to the airport", "price": 8000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 850}
-    ],
-    "BOM": [
-        {"suggestion_type": "hotel", "name": "The Taj Mahal Palace", "description": "Iconic sea-facing hotel", "price": 22000},
-        {"suggestion_type": "hotel", "name": "Trident Nariman Point", "description": "Stunning marine drive views", "price": 12000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 700}
-    ],
-    "CCU": [
-        {"suggestion_type": "hotel", "name": "ITC Sonar, Kolkata", "description": "A luxury collection hotel", "price": 9000},
-        {"suggestion_type": "hotel", "name": "The Oberoi Grand", "description": "Colonial-era luxury", "price": 11000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 600}
-    ],
-    "MAA": [
-        {"suggestion_type": "hotel", "name": "Le Royal Meridien", "description": "5-star hotel in Chennai", "price": 7500},
-        {"suggestion_type": "hotel", "name": "Taj Coromandel", "description": "Luxury in the heart of the city", "price": 10000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 650}
-    ],
-    "GOI": [
-        {"suggestion_type": "hotel", "name": "Taj Exotica Resort & Spa", "description": "Luxury beach resort", "price": 18000},
-        {"suggestion_type": "hotel", "name": "W Goa", "description": "Vibrant stay on Vagator beach", "price": 25000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 1200}
-    ],
-    "HYD": [
-        {"suggestion_type": "hotel", "name": "Taj Falaknuma Palace", "description": "A palace hotel", "price": 30000},
-        {"suggestion_type": "hotel", "name": "ITC Kohenur", "description": "Luxury hotel in HITEC City", "price": 12000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 900}
-    ],
-    # International
-    "HKT": [
-        {"suggestion_type": "hotel", "name": "Keemala Phuket", "description": "Unique pool villas", "price": 45000},
-        {"suggestion_type": "hotel", "name": "The Shore at Katathani", "description": "Adults-only beach resort", "price": 30000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 1500}
-    ],
-    "SUB": [
-        {"suggestion_type": "hotel", "name": "JW Marriott Hotel Surabaya", "description": "Luxury hotel in city center", "price": 10000},
-        {"suggestion_type": "hotel", "name": "Shangri-La Surabaya", "description": "5-star accommodation", "price": 9000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 1300}
-    ],
-    "NRT": [
-        {"suggestion_type": "hotel", "name": "Hotel Nikko Narita", "description": "Convenient airport hotel", "price": 8000},
-        {"suggestion_type": "hotel", "name": "Narita Tobu Hotel Airport", "description": "Shuttle service included", "price": 7000},
-        {"suggestion_type": "cab", "name": "Airport to Tokyo Center", "description": "Fixed fare taxi", "price": 15000}
-    ],
-    "HND": [
-        {"suggestion_type": "hotel", "name": "The Royal Park Hotel Tokyo Haneda", "description": "Directly connected to terminal", "price": 12000},
-        {"suggestion_type": "hotel", "name": "Haneda Excel Hotel Tokyu", "description": "Connected to Terminal 2", "price": 11000},
-        {"suggestion_type": "cab", "name": "Airport to Tokyo Center", "description": "Fixed fare taxi", "price": 7000}
-    ],
-    "DXB": [
-        {"suggestion_type": "hotel", "name": "Burj Al Arab Jumeirah", "description": "Iconic 7-star hotel", "price": 150000},
-        {"suggestion_type": "hotel", "name": "Atlantis, The Palm", "description": "Luxury resort with waterpark", "price": 40000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 1000}
-    ],
-    "SYD": [
-        {"suggestion_type": "hotel", "name": "Park Hyatt Sydney", "description": "Views of the Opera House", "price": 60000},
-        {"suggestion_type": "hotel", "name": "Four Seasons Hotel Sydney", "description": "Luxury by the harbour", "price": 25000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 2500}
-    ],
-    "MEL": [
-        {"suggestion_type": "hotel", "name": "Crown Towers Melbourne", "description": "Luxury on the Yarra River", "price": 30000},
-        {"suggestion_type": "hotel", "name": "The Langham, Melbourne", "description": "5-star elegance", "price": 22000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 2400}
-    ],
-    "AKL": [
-        {"suggestion_type": "hotel", "name": "SkyCity Grand Hotel", "description": "Luxury in the city center", "price": 18000},
-        {"suggestion_type": "hotel", "name": "Cordis, Auckland", "description": "Elegant rooms and suites", "price": 15000},
-        {"suggestion_type": "cab", "name": "Airport to Hotel Cab", "description": "Reliable city taxi", "price": 2800}
-    ],
-    "DEFAULT": [
-        {"suggestion_type": "hotel", "name": "Grand Default Hotel", "description": "Reliable comfort", "price": 6000},
-        {"suggestion_type": "hotel", "name": "City Inn", "description": "Clean and affordable", "price": 4000},
-        {"suggestion_type": "cab", "name": "Airport Taxi", "description": "Standard city fare", "price": 1000}
-    ]
-}
+# Get table names from Environment Variables set in Terraform
+BOOKINGS_TABLE_NAME = os.environ.get('BOOKINGS_TABLE_NAME', 'BookingsDB')
+SEAT_TABLE_NAME = os.environ.get('SEAT_TABLE_NAME', 'SeatInventory')
+SMART_TRIPS_TABLE_NAME = "SmartTripsDB"  # <-- FIX: Added SmartTripsDB table
 
+try:
+    bookings_table = dynamodb.Table(BOOKINGS_TABLE_NAME)
+    seat_table = dynamodb.Table(SEAT_TABLE_NAME)
+    smart_trips_table = dynamodb.Table(SMART_TRIPS_TABLE_NAME) # <-- FIX: Added table object
+except Exception as e:
+    print(f"Error connecting to tables: {e}")
+    bookings_table = None
+    seat_table = None
+    smart_trips_table = None
 
-@app.route('/')
-def home():
-    return "Booking Service (Main Branch with DynamoDB) is up!", 200
+# Helper for JSON encoding Decimals
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return int(obj)
+        return super(DecimalEncoder, self).default(obj)
 
+app.json_encoder = DecimalEncoder
 
-@app.route('/ping')
+# --- Routes ---
+
+@app.route('/ping', methods=['GET'])
 def ping():
-    return "OK", 200
+    """ A simple health check endpoint. """
+    return jsonify({"message": "Booking Service is running!"}), 200
 
-
-# ---------------------------
-# BOOKING ENDPOINT (Corrected)
-# ---------------------------
 @app.route('/book', methods=['POST'])
-def book():
-    data = request.get_json(force=True)
-    transaction_id = data.get('transaction_id', 'N/A')
-    flight_name = data.get('flight', 'Unknown Flight') # From payment service
-    price = data.get('price', 0)
-    recipient_email = data.get('user_email', 'default@example.com')
-    selected_seat = data.get('seat_number', 'N/A') # From payment service
-    flight_id = data.get('flight_id', 'N/A') # From payment service
-    
-    booking_reference = "BK-" + str(uuid.uuid4()).split('-')[1]
-    booking_timestamp = datetime.utcnow().isoformat()
-
+def book_flight():
+    """
+    Handles the booking of a flight.
+    This is a 2-step process:
+    1. Try to reserve the seat (PutItem with ConditionExpression)
+    2. If seat reservation is successful, create the booking.
+    """
     try:
-        # --- Check if seat is already booked (Atomic Check) ---
-        # We try to put the item, but only if an item with the same
-        # flight_id AND selected_seat does not already exist.
-        bookings_table.put_item(
-            Item={
-                'booking_reference': booking_reference,
-                'user_email': recipient_email,
-                'transaction_id': transaction_id,
-                'flight_name': flight_name, 
-                'flight_id': flight_id, # e.g., "6E-123_2025-11-06"
-                'price': price,
-                'selected_seat': selected_seat,
-                'booking_status': 'CONFIRMED',
-                'created_at': booking_timestamp
-            },
-            # This is the "Conditional Expression"
-            # It ensures this write only succeeds if no other item
-            # has this combination of flight_id and selected_seat.
-            # We need a GSI on (flight_id, selected_seat) for this,
-            # but for now, we'll rely on the /get_seats check
-            # and this put_item will just create the booking.
-            # A more robust solution would use DynamoDB Transactions.
-        )
-    except ClientError as e:
-        print(f"Boto3 Error: {e.response['Error']['Message']}")
-        return jsonify({"message": "Booking failed: Database error."}), 500
+        data = request.get_json()
+        if not data:
+            return jsonify({"message": "No input data provided"}), 400
+
+        required_fields = ['flight_id', 'seat_number', 'price', 'transaction_id', 'user_email', 'flight_details']
+        if not all(field in data for field in required_fields):
+            return jsonify({"message": "Missing required booking information"}), 400
+
+        flight_id = data['flight_id']
+        seat_number = data['seat_number']
+        user_email = data['user_email']
+        price = Decimal(str(data['price']))
+        booking_reference = f"BK-{str(uuid.uuid4())[:6].upper()}"
+
+        # Step 1: Try to reserve the seat in the SeatInventory table.
+        # This operation is conditional (ConditionExpression) and atomic.
+        # It will FAIL if an item with the same flight_id and seat_number already exists.
+        seat_reservation = {
+            'flight_id': flight_id,
+            'seat_number': seat_number,
+            'booking_reference': booking_reference,
+            'user_email': user_email
+        }
+
+        try:
+            seat_table.put_item(
+                Item=seat_reservation,
+                ConditionExpression="attribute_not_exists(flight_id) AND attribute_not_exists(seat_number)"
+            )
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
+                print(f"SEAT CONFLICT: Seat {seat_number} on flight {flight_id} is already booked.")
+                return jsonify({"message": "That seat was just taken. Please select another."}), 409
+            else:
+                print(f"Error reserving seat in DynamoDB: {e}")
+                raise
+
+        # Step 2: If seat reservation was successful, create the booking.
+        booking_details = {
+            'booking_reference': booking_reference,
+            'flight_id': flight_id,
+            'seat_number': seat_number,
+            'flight_details': data['flight_details'],
+            'price': price,
+            'transaction_id': data['transaction_id'],
+            'user_email': user_email,
+            'booking_status': 'CONFIRMED'
+        }
+
+        bookings_table.put_item(Item=booking_details)
+
+        # Step 3: Send confirmation email
+        email_status = "Skipped"
+        try:
+            email_status = send_booking_confirmation(
+                email=user_email,
+                booking_ref=booking_reference,
+                flight_details=data['flight_details'],
+                seat=seat_number,
+                price=str(price)
+            )
+        except Exception as email_error:
+            print(f"CRITICAL: Booking {booking_reference} confirmed but email failed: {email_error}")
+            email_status = f"Failed: {email_error}"
+
+        return jsonify({
+            "message": "Booking successful!",
+            "booking_reference": booking_reference,
+            "email_status": email_status
+        }), 201
+
     except Exception as e:
-        print(f"General Error: {str(e)}")
-        return jsonify({"message": f"Booking failed: {str(e)}"}), 500
+        print(f"Error in /book route: {e}")
+        return jsonify({"message": "Booking failed due to an internal error.", "error": str(e)}), 500
 
-    email_success = send_confirmation_email(recipient_email, {
-        "booking_reference": booking_reference,
-        "flight": flight_name,
-        "price": price,
-        "seat": selected_seat,
-        "transaction_id": transaction_id
-    })
-
-    return jsonify({
-        "message": "Booking successfully finalized!",
-        "booking_reference": booking_reference,
-        "flight": flight_name,
-        "email_status": "Real Email Sent" if email_success else "Email Failed"
-    }), 200
-
-
-# ---------------------------
-# NAYA: GET SEATS ENDPOINT
-# ---------------------------
-@app.route('/api/get_seats', methods=['GET'])
-def get_seats():
-    flight_id = request.args.get('flight_id')
-    if not flight_id:
-        return jsonify({"message": "Missing flight_id parameter"}), 400
-
-    try:
-        # Scan the table for all items matching the flight_id
-        # and a 'CONFIRMED' status.
-        response = bookings_table.scan(
-            FilterExpression=Attr('flight_id').eq(flight_id) & Attr('booking_status').eq('CONFIRMED')
-        )
-        
-        items = response.get('Items', [])
-        
-        # Extract just the seat numbers
-        booked_seats = [item['selected_seat'] for item in items]
-        
-        return jsonify({"booked_seats": booked_seats}), 200
-        
-    except ClientError as e:
-        print(f"Boto3 Error: {e.response['Error']['Message']}")
-        return jsonify({"message": "Could not fetch seats: Database error."}), 500
-    except Exception as e:
-        print(f"General Error: {str(e)}")
-        return jsonify({"message": f"Could not fetch seats: {str(e)}"}), 500
-
-
-# ---------------------------
-# CANCELLATION ENDPOINT (with Refund Logic)
-# ---------------------------
 @app.route('/cancel', methods=['POST'])
 def cancel_booking():
-    data = request.get_json(force=True)
-    booking_reference = data.get('booking_reference')
-    email = data.get('user_email')
-
-    if not booking_reference or not email:
-        return jsonify({"message": "Missing booking reference or email"}), 400
-
+    """
+    Cancels a booking.
+    1. Fetches the booking to verify email and get seat details.
+    2. Deletes the booking from the BookingsDB.
+    3. Deletes the seat reservation from the SeatInventoryDB (making it available).
+    4. Sends a cancellation email.
+    """
     try:
-        response = bookings_table.update_item(
-            Key={'booking_reference': booking_reference},
-            UpdateExpression="set booking_status = :s",
-            ExpressionAttributeValues={':s': 'CANCELLED'},
-            ReturnValues="ALL_OLD" # Get the old item to fetch price for refund
+        data = request.get_json()
+        if not data or 'booking_reference' not in data or 'user_email' not in data:
+            return jsonify({"message": "Booking reference and email are required."}), 400
+
+        booking_ref = data['booking_reference']
+        user_email = data['user_email']
+
+        # Step 1: Get the booking
+        response = bookings_table.get_item(Key={'booking_reference': booking_ref})
+        booking = response.get('Item')
+
+        if not booking:
+            return jsonify({"message": "Booking not found."}), 404
+
+        # Step 2: Verify user email
+        if booking['user_email'] != user_email:
+            return jsonify({"message": "Unauthorized. Email does not match booking."}), 403
+
+        # Step 3: Get details needed for deletion
+        flight_id = booking['flight_id']
+        seat_number = booking['seat_number']
+        price = booking.get('price', 0)
+        
+        # Step 4: Delete booking and seat reservation in a transaction (or sequentially)
+        # We will do it sequentially for simplicity.
+
+        # 4a. Delete seat reservation
+        try:
+            seat_table.delete_item(
+                Key={
+                    'flight_id': flight_id,
+                    'seat_number': seat_number
+                }
+            )
+        except ClientError as e:
+            print(f"Warning: Could not delete seat {seat_number} for flight {flight_id}. It might have been deleted already. {e}")
+
+        # 4b. Delete booking
+        bookings_table.delete_item(
+            Key={'booking_reference': booking_ref}
         )
         
-        old_booking = response.get('Attributes', {})
-        if not old_booking:
-            return jsonify({"message": "Booking reference not found"}), 404
-
-        original_price = old_booking.get('price', 0)
-        
-        # Calculate the 55% refund
-        refund_amount = float(original_price) * 0.55
-        
-        send_cancellation_email(email, {
-            "booking_reference": booking_reference,
-            "flight": old_booking.get('flight_name', 'N/A'),
-            "price": original_price
-        }, refund_amount)
-        
-        return jsonify({
-            "message": "Booking successfully cancelled!",
-            "booking_reference": booking_reference,
-            "new_status": "CANCELLED",
-            "refund_amount": refund_amount
-        }), 200
-
-    except ClientError as e:
-        print(e.response['Error']['Message'])
-        return jsonify({"message": f"Cancellation failed: {str(e)}"}), 500
-
-
-# ------------------------------------
-# SMART TRIP (Mock Data Logic)
-# ------------------------------------
-@app.route('/smart-trip', methods=['POST'])
-def smart_trip():
-    """Creates a new trip and gives smart hotel/cab suggestions."""
-    try:
-        data = request.get_json(force=True)
-    except Exception:
-        return jsonify({"message": "Invalid JSON format"}), 400
-
-    destination = data.get('destination') 
-    email = data.get('user_email')
-    start_date = data.get('start_date')
-    end_date = data.get('end_date')
-
-    if not destination or not email:
-        return jsonify({"message": "Missing destination or email"}), 400
-
-    try:
-        trip_id = str(uuid.uuid4())
-        
-        # Use the updated recommendations dictionary
-        mock_recs = MOCK_RECOMMENDATIONS.get(destination, MOCK_RECOMMENDATIONS["DEFAULT"])
-
-        # 'SmartTripsDB' mein save karein
-        trips_table.put_item(
-            Item={
-                'trip_id': trip_id,
-                'user_email': email,
-                'destination': destination,
-                'start_date': start_date,
-                'end_date': end_date,
-                'recommendations': mock_recs
-            }
-        )
+        # Step 5: Send cancellation email
+        # In a real app, you'd trigger a refund via the payment service first.
+        refund_amount = price * Decimal('0.9') # Simulate a 10% cancellation fee
+        email_status = "Skipped"
+        try:
+            email_status = send_cancellation_confirmation(
+                email=user_email,
+                booking_ref=booking_ref,
+                refund_amount=str(refund_amount)
+            )
+        except Exception as email_error:
+            print(f"Warning: Cancellation for {booking_ref} processed but email failed: {email_error}")
+            email_status = f"Failed: {email_error}"
 
         return jsonify({
-            "message": "Smart Trip created successfully!",
-            "trip_id": trip_id,
-            "destination": destination,
-            "recommendations": mock_recs
+            "message": "Booking successfully cancelled.",
+            "booking_reference": booking_ref,
+            "refund_amount": float(refund_amount),
+            "email_status": email_status
         }), 200
 
     except Exception as e:
-        return jsonify({"message": f"Database error: {str(e)}"}), 500
+        print(f"Error in /cancel route: {e}")
+        return jsonify({"message": "Cancellation failed due to an internal error.", "error": str(e)}), 500
+
+@app.route('/api/get_seats', methods=['GET'])
+def get_booked_seats():
+    """
+    Gets all booked seats for a specific flight_id.
+    flight_id is passed as a query parameter (e.g., ?flight_id=AI202_2025-10-20)
+    """
+    flight_id = request.args.get('flight_id')
+    if not flight_id:
+        return jsonify({"message": "flight_id query parameter is required."}), 400
+
+    try:
+        # We use query() because flight_id is the hash key of the seat_table
+        response = seat_table.query(
+            KeyConditionExpression=Key('flight_id').eq(flight_id),
+            ProjectionExpression='seat_number' # Only get the seat_number
+        )
+        
+        booked_seats = [item['seat_number'] for item in response.get('Items', [])]
+        
+        return jsonify({
+            "flight_id": flight_id,
+            "booked_seats": booked_seats
+        }), 200
+
+    except Exception as e:
+        print(f"Error in /api/get_seats route: {e}")
+        return jsonify({"message": "Could not retrieve seat map.", "error": str(e)}), 500
+
+@app.route('/smart-trip', methods=['POST'])
+def get_smart_trip_recommendations():
+    """
+    Scans the SmartTripsDB for recommendations matching a destination.
+    This new function handles the "Smart Trip" button presses.
+    """
+    try:
+        data = request.get_json()
+        if not data or 'destination' not in data:
+            return jsonify({"message": "Destination code is required."}), 400
+
+        destination_code = data.get('destination')
+
+        # We must use a Scan operation because the table's hash key is trip_id,
+        # but we are searching by a non-key attribute 'destination_code'.
+        # This is not efficient on large tables, but works for this design.
+        if not smart_trips_table:
+            raise Exception("Smart Trips table is not initialized.")
+            
+        response = smart_trips_table.scan(
+            FilterExpression=Attr('destination_code').eq(destination_code)
+        )
+
+        items = response.get('Items', [])
+        
+        # Convert DynamoDB Decimal types to standard numbers
+        recommendations = []
+        for item in items:
+            recommendations.append({
+                "trip_id": item.get('trip_id'),
+                "name": item.get('name'),
+                "description": item.get('description'),
+                "price": int(item.get('price', 0)), # Use int() to convert Decimal
+                "suggestion_type": item.get('suggestion_type', 'Activity'),
+                "destination_code": item.get('destination_code')
+            })
+
+        return jsonify({"recommendations": recommendations}), 200
+
+    except Exception as e:
+        print(f"Error in /smart-trip: {e}")
+        return jsonify({"message": "Could not retrieve smart trip recommendations.", "error": str(e)}), 500
 
 
+# --- Main ---
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    # Set a default port 5000, which matches your Dockerfile and ALB
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)

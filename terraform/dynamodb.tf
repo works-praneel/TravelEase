@@ -76,3 +76,21 @@ resource "aws_iam_policy" "dynamodb_access_policy" {
     ]
   })
 }
+# 5. Seat Inventory Table (Isse Booking Service istemaal karegi)
+resource "aws_dynamodb_table" "seat_inventory_table" {
+  provider       = aws.primary
+  name           = "SeatInventory"
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "flight_id"    # e.g., "AI202_2025-12-01"
+  range_key      = "seat_number"  # e.g., "3A"
+
+  attribute {
+    name = "flight_id"
+    type = "S"
+  }
+  attribute {
+    name = "seat_number"
+    type = "S"
+  }
+  tags = { Name = "${var.project_name}-seat-inventory-table" }
+}

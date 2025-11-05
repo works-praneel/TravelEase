@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "booking_service_task" {
       essential = true
       portMappings = [{ containerPort = 5000, hostPort = 5000 }]
       environment = [
-        { name = "BOOKINGS_TABLE_NAME", value = aws_dynamodb_table.bookings_table.name },
+        { name = "BOOKINGS_TABLE_NAME", value = aws_dynamodb_table.bookings_db.name }, # <-- FIX
         { name = "SEAT_TABLE_NAME", value = aws_dynamodb_table.seat_inventory_table.name }
       ]
       logConfiguration = {

@@ -92,15 +92,13 @@ resource "aws_lb_listener_rule" "booking_rule" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.booking_tg.arn
   }
-
   condition {
     path_pattern {
       # FIXED: Naye paths add kiye gaye hain
-      values = ["/book*", "/ping", "/cancel*", "/api/get_seats*"]
+      values = ["/book*", "/ping", "/cancel*", "/api/get_seats*", "/smart-trip*"] # <-- FIX
     }
   }
 }
-
 resource "aws_lb_listener_rule" "flight_rule" {
   listener_arn = aws_lb_listener.http.arn
   priority     = 20
