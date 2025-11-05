@@ -4,7 +4,7 @@ resource "random_id" "suffix" {
 
 resource "aws_s3_bucket" "frontend_bucket" {
   bucket        = "travelease-frontend-ui-${random_id.suffix.hex}"
-  force_destroy = true
+  force_destroy = true # Zaroori hai taaki 'terraform destroy' fail na ho
 
   tags = {
     Name = "TravelEaseFrontendBucket"

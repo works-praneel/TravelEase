@@ -12,7 +12,7 @@ resource "aws_lb" "alb" {
 
 resource "aws_lb_target_group" "booking_tg" {
   name        = "booking-tg"
-  port        = 5000 # App port
+  port        = 5000 # FIXED: Port 80 se 5000
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "booking_tg" {
 
 resource "aws_lb_target_group" "flight_tg" {
   name        = "flight-tg"
-  port        = 5002 # App port
+  port        = 5002 # FIXED: Port 80 se 5002
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
@@ -46,7 +46,7 @@ resource "aws_lb_target_group" "flight_tg" {
 
 resource "aws_lb_target_group" "payment_tg" {
   name        = "payment-tg"
-  port        = 5003 # App port
+  port        = 5003 # FIXED: Port 80 se 5003
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
   target_type = "ip"
@@ -95,7 +95,7 @@ resource "aws_lb_listener_rule" "booking_rule" {
 
   condition {
     path_pattern {
-      # UPDATED: Naye paths add kiye gaye hain
+      # FIXED: Naye paths add kiye gaye hain
       values = ["/book*", "/ping", "/cancel*", "/api/get_seats*"]
     }
   }
