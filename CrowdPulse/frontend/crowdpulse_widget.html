@@ -7,162 +7,234 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    :root{
-      --blue-start:#3B82F6; --blue-end:#60A5FA; --card:#fff;
+    :root {
+      --blue-start:#3B82F6;
+      --blue-end:#60A5FA;
+      --card:#fff;
     }
-    body{font-family:Inter, sans-serif; background:#f1f5f9; margin:0}
-    .header-bar{background:linear-gradient(90deg,var(--blue-start),var(--blue-end)); color:#fff; padding:18px 12px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.08)}
-    .header-bar h2{font-weight:800; margin:0; font-size:1.4rem}
-    .header-bar p{margin:6px 0 0; font-size:0.9rem; opacity:0.95}
-    .widget-wrap{max-width:1100px; margin:22px auto; padding:26px; border-radius:12px; background:#fff; box-shadow:0 12px 30px rgba(2,6,23,0.06)}
-    .grid{display:flex; gap:18px; flex-wrap:wrap; justify-content:center}
-    .city-card{width:220px; background:var(--card); border-radius:12px; padding:14px; text-align:center; box-shadow:0 8px 20px rgba(59,130,246,0.08); transition:transform .18s,box-shadow .18s}
-    .city-card:hover{transform:translateY(-6px); box-shadow:0 18px 36px rgba(59,130,246,0.12)}
-    .city-name{font-weight:700; color:#0f172a; margin-top:8px}
-    .mood-index{color:#334155; margin-top:6px; font-weight:600}
-    .meta-row{margin-top:10px; font-size:0.85rem; color:#475569}
-    .footer-row{margin-top:12px; text-align:center; color:#64748b; font-size:0.9rem}
-    .error-note{color:#b45309; display:flex; align-items:center; gap:8px; justify-content:center; margin-top:12px}
-    canvas{display:block; margin:0 auto}
+
+    body {
+      font-family: Inter, sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .header-bar {
+      background: linear-gradient(90deg, var(--blue-start), var(--blue-end));
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .header-bar h2 {
+      font-weight: 800;
+      font-size: 1.6rem;
+      margin: 0;
+    }
+
+    .header-bar p {
+      font-size: 0.9rem;
+      margin: 0.3rem 0 0;
+      opacity: 0.9;
+    }
+
+    /* Horizontal scroll strip without scrollbar */
+    .scroll-wrapper {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      background: #f8fafc;
+      padding: 1.5rem 0;
+      position: relative;
+    }
+
+    .scroll-strip {
+      display: inline-flex;
+      gap: 18px;
+      animation: scroll-left 100s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .city-card {
+      background: var(--card);
+      border-radius: 1rem;
+      padding: 1rem;
+      width: 220px;
+      flex-shrink: 0;
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(59,130,246,0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .city-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(59,130,246,0.25);
+    }
+
+    .city-name {
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 0.5rem;
+    }
+
+    .mood-index {
+      font-weight: 600;
+      color: #334155;
+      margin-top: 0.3rem;
+    }
+
+    .meta-row {
+      font-size: 0.85rem;
+      color: #475569;
+      margin-top: 0.5rem;
+    }
+
+    .footer-row {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.9rem;
+      margin: 10px 0;
+    }
+
+    .error-note {
+      color: #b45309;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="header-bar">
     <h2>🌍 Live CrowdPulse — Global Travel Mood Index</h2>
-    <p id="subtext">Powered by YouTube travel insights · Auto-updates every 60 s</p>
+    <p>Powered by YouTube Travel Insights · Auto-updates every 60 s</p>
   </div>
 
-  <div class="widget-wrap">
-    <div id="grid" class="grid" aria-live="polite"></div>
-
-    <div class="footer-row" id="lastUpdated">Last updated: --:--:--</div>
-    <div id="note" style="display:none" class="error-note">⚠️ Data temporarily unavailable. Showing last update time.</div>
+  <div class="scroll-wrapper">
+    <div id="scrollContent" class="scroll-strip"></div>
   </div>
+
+  <div class="footer-row" id="lastUpdated">Last updated: --:--:--</div>
+  <div id="note" style="display:none" class="error-note">⚠️ Data temporarily unavailable</div>
 
   <script>
-    // Local default endpoint. Change if your backend runs elsewhere.
     const API_URL = "http://127.0.0.1:5010/api/crowdpulse/all";
-    const REFRESH_MS = 60_000; // 60s
+    const REFRESH_MS = 60_000;
 
-    // Keep last successful data to show if fetch fails
     let lastSuccessful = { time: null, cities: [] };
     let chartRefs = new Map();
 
-    function timeNowStr() {
-      const d = new Date();
-      return d.toLocaleTimeString();
-    }
-
-    function safeNumber(v) {
-      const n = Number(v);
-      return Number.isFinite(n) ? n : 0;
-    }
+    const safe = n => Number.isFinite(+n) ? +n : 0;
+    const now = () => new Date().toLocaleTimeString();
 
     async function fetchCrowdPulseData() {
-      const noteEl = document.getElementById('note');
+      const noteEl = document.getElementById("note");
       try {
         const res = await fetch(API_URL, { cache: "no-store" });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const payload = await res.json();
-        const cities = Array.isArray(payload.data) ? payload.data : (payload.data || []);
+        const cities = Array.isArray(payload.data) ? payload.data : [];
         renderCities(cities);
-        lastSuccessful.time = new Date();
-        lastSuccessful.cities = cities;
-        document.getElementById('lastUpdated').textContent = `Last updated: ${timeNowStr()}`;
-        noteEl.style.display = 'none';
-      } catch (err) {
-        console.warn("CrowdPulse fetch failed:", err);
-        // If we have last successful data, render it (no stale error message)
-        if (lastSuccessful.cities && lastSuccessful.cities.length) {
-          renderCities(lastSuccessful.cities);
-        }
-        // Always show last-updated time (either last success or current time)
-        const t = lastSuccessful.time ? lastSuccessful.time.toLocaleTimeString() : timeNowStr();
-        document.getElementById('lastUpdated').textContent = `Last updated: ${t}`;
-        noteEl.style.display = 'flex';
+        lastSuccessful = { time: new Date(), cities };
+        document.getElementById("lastUpdated").textContent = `Last updated: ${now()}`;
+        noteEl.style.display = "none";
+      } catch (e) {
+        console.warn("CrowdPulse fetch failed:", e);
+        if (lastSuccessful.cities.length) renderCities(lastSuccessful.cities);
+        const t = lastSuccessful.time ? lastSuccessful.time.toLocaleTimeString() : now();
+        document.getElementById("lastUpdated").textContent = `Last updated: ${t}`;
+        noteEl.style.display = "flex";
       }
     }
 
     function clearCharts() {
-      // destroy Chart.js instances to avoid memory leak
-      for (const ch of chartRefs.values()) {
-        try { ch.destroy(); } catch (e) {}
-      }
+      for (const ch of chartRefs.values()) try { ch.destroy(); } catch {}
       chartRefs.clear();
     }
 
     function renderCities(cities) {
-      const grid = document.getElementById('grid');
+      const container = document.getElementById("scrollContent");
       clearCharts();
-      grid.innerHTML = '';
+      container.innerHTML = "";
 
-      // if backend returns an object with key 'data' containing objects, ensure we have array
-      const list = Array.isArray(cities) ? cities : Object.values(cities);
-
-      if (list.length === 0) {
-        grid.innerHTML = '<div style="width:100%; text-align:center; color:#64748b">No city data available yet.</div>';
+      if (!cities.length) {
+        container.innerHTML = '<div style="padding:1rem;color:#64748b;">No data available</div>';
         return;
       }
 
-      // Render each city
-      list.forEach((c, idx) => {
-        const city = c.city || c.name || `City ${idx+1}`;
-        const pos = safeNumber(c.positive_pct);
-        const neg = safeNumber(c.negative_pct);
-        const neu = ('neutral_pct' in c) ? safeNumber(c.neutral_pct) : Math.max(0, 100 - (pos + neg));
-        const mood = ('mood_index' in c) ? safeNumber(c.mood_index) : Math.round(Math.max(0, Math.min(100, 50 + (pos - neg)/2))*100)/100;
+      // Duplicate list once for smooth infinite scroll illusion
+      const doubled = [...cities, ...cities];
 
-        const card = document.createElement('div');
-        card.className = 'city-card';
+      doubled.forEach((c, i) => {
+        const name = c.city || `City ${i+1}`;
+        const pos = safe(c.positive_pct);
+        const neg = safe(c.negative_pct);
+        const neu = safe(c.neutral_pct ?? Math.max(0, 100 - (pos + neg)));
+        const mood = safe(c.mood_index ?? (50 + (pos - neg) / 2));
 
-        const canvas = document.createElement('canvas');
-        canvas.width = 180; canvas.height = 180;
+        const card = document.createElement("div");
+        card.className = "city-card";
 
-        const name = document.createElement('div');
-        name.className = 'city-name';
-        name.textContent = city;
+        const canvas = document.createElement("canvas");
+        canvas.width = 160; 
+        canvas.height = 160;
 
-        const moodText = document.createElement('div');
-        moodText.className = 'mood-index';
-        moodText.textContent = `${mood}% mood`;
+        const cityEl = document.createElement("div");
+        cityEl.className = "city-name";
+        cityEl.textContent = name;
 
-        const meta = document.createElement('div');
-        meta.className = 'meta-row';
-        meta.textContent = `${Math.round(pos)}% pos · ${Math.round(neg)}% neg · ${Math.round(neu)}% neu`;
+        const moodEl = document.createElement("div");
+        moodEl.className = "mood-index";
+        moodEl.textContent = `${mood.toFixed(1)}% mood`;
 
-        card.appendChild(canvas);
-        card.appendChild(name);
-        card.appendChild(moodText);
-        card.appendChild(meta);
+        const metaEl = document.createElement("div");
+        metaEl.className = "meta-row";
+        metaEl.textContent = `${Math.round(pos)}% pos · ${Math.round(neg)}% neg · ${Math.round(neu)}% neu`;
 
-        grid.appendChild(card);
+        card.append(canvas, cityEl, moodEl, metaEl);
+        container.appendChild(card);
 
-        // Chart
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         const chart = new Chart(ctx, {
-          type: 'doughnut',
+          type: "doughnut",
           data: {
-            labels: ['Positive','Negative','Neutral'],
+            labels: ["Positive", "Negative", "Neutral"],
             datasets: [{
               data: [pos, neg, neu],
-              backgroundColor: ['#22c55e','#ef4444','#cbd5e1'],
+              backgroundColor: ["#22c55e", "#ef4444", "#cbd5e1"],
               borderWidth: 0
             }]
           },
           options: {
-            cutout: '78%',
+            cutout: "78%",
             plugins: { legend: { display: false } },
             animation: { duration: 800 },
             maintainAspectRatio: false,
             responsive: false
           }
         });
-
-        chartRefs.set(city + idx, chart);
+        chartRefs.set(name + i, chart);
       });
     }
 
-    // initial fetch + schedule
     fetchCrowdPulseData();
     setInterval(fetchCrowdPulseData, REFRESH_MS);
   </script>
