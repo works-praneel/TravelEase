@@ -44,6 +44,9 @@ resource "aws_ecs_service" "payment_service" {
   task_definition = aws_ecs_task_definition.payment_service_task.arn
   desired_count   = 1
   launch_type     = "FARGATE"
+  
+  # 🟢 FIX ADDED: Set grace period to 300 seconds (5 minutes) to ensure stabilization.
+  health_check_grace_period_seconds = 300 
 
   network_configuration {
     subnets          = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
