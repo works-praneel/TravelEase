@@ -1,12 +1,13 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 # ==========================================================
 # 🛑🛑🛑 YAHAN APNE CREDENTIALS ZAROOR DAALO 🛑🛑🛑
 # ==========================================================
-GMAIL_USER = "dynoc845@gmail.com"        # <-- Apni Gmail ID
-GMAIL_APP_PASSWORD = "bfwy axdd xwdl nimn" # <-- Google ka 16-digit App Password
+GMAIL_USER = "dynoc845@gmail.com"        
+GMAIL_APP_PASSWORD = "bfwy axdd xwdl nimn" 
 # ==========================================================
 
 def send_confirmation_email_via_gmail(recipient_email, booking_details):

@@ -10,19 +10,24 @@ from decimal import Decimal
 # Import Prometheus metrics if you use them (from your requirements.txt)
 try:
     from prometheus_flask_exporter import PrometheusMetrics
-    metrics = PrometheusMetrics(app)
+    # Create a placeholder to hold the class/instance, we define the app instance later
+    metrics_class = PrometheusMetrics 
 except ImportError:
     print("PrometheusMetrics not found. /metrics endpoint will be basic.")
     # Define a dummy metrics object if not found
     class DummyMetrics:
         def init_app(self, app): pass
-    metrics = DummyMetrics()
+    metrics_class = DummyMetrics
 
-app = Flask(__name__)
+app = Flask(__name__) # <<< FIX: MOVED APP DEFINITION HERE
+
 # Enable CORS for all routes
 CORS(app)
-# Initialize metrics
-metrics.init_app(app)
+
+# Initialize metrics now that 'app' is defined
+# We use metrics_class here to handle both Prometheus and Dummy case
+metrics = metrics_class(app) 
+metrics.init_app(app) # Added for full compatibility, though may be redundant with PrometheusMetrics(app)
 
 @app.route('/')
 def payment_home():

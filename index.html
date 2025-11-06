@@ -298,7 +298,7 @@
             // return `http://127.0.0.1:${port}${path}`; 
             
             // AWS ke liye (Neeche waali line ko uncomment karein aur APNA ALB URL daalein)
-            const ALB_URL = "http://travelease-ALB-118726615.eu-north-1.elb.amazonaws.com";            return `${ALB_URL}${path}`;
+            const ALB_URL = "http://travelease-ALB-940686932.eu-north-1.elb.amazonaws.com";            return `${ALB_URL}${path}`;
         }
 
         function showPage(pageId) { 
@@ -529,7 +529,7 @@
                 // --- STEP 2: BOOKING ---
                 const bookingData = { 
                     flight_id: paymentResult.flight_id, 
-                    flight_details: paymentResult.flight_details,
+                    flight_details: paymentResult.flight_details, // <<< FIX: ENSURES THE FIELD IS SENT TO BOOKING SERVICE
                     seat_number: paymentResult.seat_number, 
                     price: totalPrice, 
                     transaction_id: paymentResult.transaction_id, 
