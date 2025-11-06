@@ -1,0 +1,12 @@
+[
+  {"text": "Snowfall at Solang Valley felt magical.", "sentiment": "positive"},
+  {"text": "Rohtang Pass closed due to landslide.", "sentiment": "negative"},
+  {"text": "Paragliding was a once-in-a-lifetime experience.", "sentiment": "positive"},
+  {"text": "Hot chocolate in Old Manali cafes was perfect.", "sentiment": "positive"},
+  {"text": "Traffic jam near tunnel ruined half the day.", "sentiment": "negative"},
+  {"text": "Hadimba Temple peaceful as always.", "sentiment": "positive"},
+  {"text": "Hotel prices high in peak season.", "sentiment": "neutral"},
+  {"text": "Beas River walk very calming.", "sentiment": "positive"},
+  {"text": "Cable car ride overpriced.", "sentiment": "negative"},
+  {"text": "Locals friendly and helpful.", "sentiment": "positive"}
+]

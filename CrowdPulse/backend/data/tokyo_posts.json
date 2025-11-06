@@ -1,0 +1,12 @@
+[
+  {"text": "Shibuya crossing surreal to watch.", "sentiment": "positive"},
+  {"text": "Sushi in Tsukiji best ever.", "sentiment": "positive"},
+  {"text": "Trains extremely punctual.", "sentiment": "positive"},
+  {"text": "Hotel rooms smaller than expected.", "sentiment": "negative"},
+  {"text": "Cherry blossoms in Ueno Park magical.", "sentiment": "positive"},
+  {"text": "Language barrier manageable.", "sentiment": "neutral"},
+  {"text": "Akihabara heaven for tech lovers.", "sentiment": "positive"},
+  {"text": "Weather humid during summer.", "sentiment": "neutral"},
+  {"text": "Temples clean and peaceful.", "sentiment": "positive"},
+  {"text": "Prices high in Shinjuku.", "sentiment": "negative"}
+]

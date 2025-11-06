@@ -1,0 +1,12 @@
+[
+  {"text": "London Eye view was spectacular.", "sentiment": "positive"},
+  {"text": "Rainy weather every other day.", "sentiment": "negative"},
+  {"text": "Loved walking around Hyde Park.", "sentiment": "positive"},
+  {"text": "Big Ben renovation still ongoing.", "sentiment": "neutral"},
+  {"text": "Fish and chips were delicious.", "sentiment": "positive"},
+  {"text": "Tube delays wasted my morning.", "sentiment": "negative"},
+  {"text": "Camden Market had great vibes.", "sentiment": "positive"},
+  {"text": "Thames river cruise relaxing.", "sentiment": "positive"},
+  {"text": "Accommodation very expensive.", "sentiment": "negative"},
+  {"text": "Museum entries mostly free.", "sentiment": "positive"}
+]

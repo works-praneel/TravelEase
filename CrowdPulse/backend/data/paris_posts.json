@@ -1,0 +1,12 @@
+[
+  {"text": "Eiffel Tower looks better at night.", "sentiment": "positive"},
+  {"text": "Croissants and coffee divine.", "sentiment": "positive"},
+  {"text": "Too many people at Louvre.", "sentiment": "negative"},
+  {"text": "Seine river cruise was peaceful.", "sentiment": "positive"},
+  {"text": "Taxi drivers overcharge tourists.", "sentiment": "negative"},
+  {"text": "Montmartre full of artists and charm.", "sentiment": "positive"},
+  {"text": "Language barrier made things tricky.", "sentiment": "neutral"},
+  {"text": "Notre Dame still under restoration.", "sentiment": "neutral"},
+  {"text": "Loved the street musicians.", "sentiment": "positive"},
+  {"text": "City feels magical at night.", "sentiment": "positive"}
+]
