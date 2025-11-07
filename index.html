@@ -35,8 +35,8 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-        /* Cancel Button Style from first file */
-        .btn-red-gradient {
+         /* NAYA: Cancel Button */
+         .btn-red-gradient {
             background: linear-gradient(to right, #EF4444, #F59E0B);
             color: #fff; font-weight: bold; padding: 0.75rem 2rem; border-radius: 9999px;
             box-shadow: 0 10px 15px -3px rgba(239,68,68,0.1), 0 4px 6px -4px rgba(239,68,68,0.1);
@@ -67,7 +67,6 @@
         .seat.premium { background-color: #d1fae5; color: #065f46; }
         .seat.business { background-color: #fef9c3; color: #854d0e; }
         .seat.selected { background-color: #2563eb; color: white; border-color: #1d4ed8; transform: scale(1.1); }
-        /* Using 'booked' from the first file's logic */
         .seat.booked { background-color: #e5e7eb; color: #9ca3af; cursor: not-allowed; border-color: #d1d5db; }
         .seat-row { display: flex; gap: 8px; justify-content: center; }
         .seat-row .aisle { width: 24px; }
@@ -77,8 +76,7 @@
             color: #fff;
         }
         .destination-card h4 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
-        /* Message Box Styles from first file */
-        .message-box {
+         .message-box {
             display: none; /* hidden by default */
             padding: 1rem;
             margin-top: 1.5rem;
@@ -95,11 +93,49 @@
             color: #991b1b; /* red-800 */
             border: 1px solid #fca5a5; /* red-300 */
         }
-        .message-info {
+         .message-info {
             background-color: #dbeafe; /* blue-100 */
             color: #1e40af; /* blue-800 */
             border: 1px solid #93c5fd; /* blue-300 */
         }
+
+        /* NAYA: CROWDPULSE CSS */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            padding-top: 50px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover, .close-btn:focus {
+            color: black;
+            text-decoration: none;
+        }
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -108,7 +144,7 @@
     <header class="main-header text-white py-4 px-8 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#" id="travelEaseLogo" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity duration-200">
-                <img src="https://placehold.co/100x40/ffffff/3B82F6?text=TravelEase&font=inter" alt="TravelEase Logo" class="h-10 rounded">
+                <img src="images/travelease_logo.png" alt="TravelEase Logo" class="h-10">
                 <span class="text-3xl font-bold">TravelEase</span>
             </a>
             <nav class="text-sm font-semibold space-x-6">
@@ -126,8 +162,7 @@
                 <h3 class="text-3xl font-semibold text-gray-800 mb-6">Find Your Perfect Flight</h3>
                 
                 <div class="flex justify-center gap-4 mb-6">
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="tripType" value="oneWay" class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">One Way</span></label>
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="tripType" value="roundTrip" checked class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">Round Trip</span></label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="tripType" value="oneWay" class="form-radio h-5 w-5 text-blue-600" checked readonly> <span class="text-lg">One Way</span></label>
                 </div>
                 
                 <div class="flex justify-center gap-6 mb-8">
@@ -135,16 +170,15 @@
                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="flightType" value="international" class="form-radio h-5 w-5 text-blue-600"> <span class="text-lg">International</span></label>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
                     <div><label for="fromDestination" class="block text-left text-sm font-semibold mb-2">From</label><select id="fromDestination" class="input-field"></select></div>
                     <div><label for="toDestination" class="block text-left text-sm font-semibold mb-2">To</label><select id="toDestination" class="input-field"></select></div>
+                    <div><label for="departureDate" class="block text-left text-sm font-semibold mb-2">Departure Date</label><input type="date" id="departureDate" class="input-field dark-input" required></div>
                     
                     <div>
                         <label for="searchEmail" class="block text-left text-sm font-semibold mb-2">Your Email (for Recs)</label>
                         <input type="email" id="searchEmail" class="input-field" placeholder="you@example.com">
                     </div>
-                    <div><label for="departureDate" class="block text-left text-sm font-semibold mb-2">Departure Date</label><input type="date" id="departureDate" class="input-field dark-input" required></div>
-                    <div id="returnDateContainer"><label for="returnDate" class="block text-left text-sm font-semibold mb-2">Return Date</label><input type="date" id="returnDate" class="input-field dark-input"></div>
                 </div>
 
                 <div class="flex justify-center gap-4 mt-10">
@@ -154,12 +188,17 @@
                             class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-shadow duration-300">
                         ✨ Get Smart Trip Ideas!
                     </button>
+                    
+                    <button type="button" id="showCrowdPulseWidget"
+                            class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-shadow duration-300">
+                        🌍 See CrowdPulse
+                    </button>
                 </div>
 
                 <div id="smart-trip-recommendations" class="hidden mt-6 p-6 bg-gray-100 rounded-xl max-w-3xl mx-auto text-left">
                     <h3 class="text-2xl font-bold mb-4 text-gray-800">Your Smart Trip Suggestions!</h3>
                     <ul id="recommendations-list" class="list-disc pl-5 space-y-3">
-                        </ul>
+                    </ul>
                 </div>
             </div>
             
@@ -196,33 +235,15 @@
                     <div class="scroll-item gradient-card-red"><h5 class="text-xl font-bold mb-2">New Routes</h5><p>Direct flights to Tokyo and Sydney now available.</p></div>
                     <div class="scroll-item gradient-card-teal"><h5 class="text-xl font-bold mb-2">Weekend Getaways</h5><p>Special prices on short trips to Goa and Bangkok.</p></div>
                     <div class="scroll-item gradient-card-purple"><h5 class="text-xl font-bold mb-2">Exclusive Offer</h5><p>Save up to 30% on Business Class tickets!</p></div>
-                    <div class="scroll-item gradient-card-red"><h5 class="text-xl font-bold mb-2">New Routes</h5><p>Direct flights to Tokyo and Sydney now available.</p></div>
-                    <div class="scroll-item gradient-card-teal"><h5 class="text-xl font-bold mb-2">Weekend Getaways</h5><p>Special prices on short trips to Goa and Bangkok.</p></div>
                 </div>
             </div>
-
-            <section id="crowdpulse-section" class="mt-20 text-center max-w-6xl mx-auto">
-                <h3 class="text-3xl font-semibold mb-4 text-gray-800">🌍 Live Crowd Pulse</h3>
-                <p class="text-gray-600 mb-6">Live sentiment feed from travelers around the world</p>
-                <iframe 
-                    src="crowdpulse_widget.html" 
-                    width="100%" 
-                    height="380" 
-                    frameborder="0" 
-                    scrolling="no" 
-                    style="border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                </iframe>
-            </section>
-            </section>
+        </section>
 
         <section id="flightSelectionPage" class="hidden">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="flightSelectionTitle" class="text-3xl font-bold text-gray-800">Available Flights</h3>
-                
                 <button id="modifySearchBtn" class="btn-blue-gradient">Modify Search</button>
-
             </div>
-            <div id="departureFlightSummary" class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md mb-6 hidden"></div>
             <div id="flightsList" class="space-y-6"></div>
         </section>
 
@@ -233,8 +254,7 @@
                     <div class="bg-white p-6 rounded-xl shadow-lg">
                         <h4 class="text-2xl font-bold mb-4 border-b pb-3">Your Trip Summary</h4>
                         <div id="summaryDepartureSection" class="space-y-2"></div>
-                        <div id="summaryReturnSection" class="space-y-2 mt-4 border-t pt-4 hidden"></div>
-                        <div id="summarySeatSection" class="space-y-2 mt-4 border-t pt-4 hidden"></div>
+                        <div id="summarySeatSection" class="space-y-2 mt-4 border-t pt-4"></div>
                         <p class="flex justify-between items-center border-t pt-3 font-bold text-xl mt-4"><span>Total Price:</span><span id="summaryTotalPrice" class="text-red-500"></span></p>
                     </div>
                 </div>
@@ -252,15 +272,15 @@
                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#fef9c3] border border-yellow-400"></div> Business</span>
                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#d1fae5] border border-green-400"></div> Premium</span>
                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#dbeafe] border border-blue-400"></div> Economy</span>
-                             <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#e5e7eb] border border-gray-400"></div> Booked</span>
+                            <span class="flex items-center gap-2"><div class="w-4 h-4 rounded bg-[#e5e7eb] border border-gray-400"></div> Booked</span>
                         </div>
                         <div id="seatMap" class="flex flex-col items-center gap-4">
                             <div id="seatMapSpinner" class="text-center p-4">
-                                 <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                 </svg>
-                                 <p class="mt-2 text-blue-600 font-medium">Loading available seats...</p>
+                                <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <p class="mt-2 text-blue-600 font-medium">Loading available seats...</p>
                             </div>
                         </div>
                         <button id="confirmSeatBtn" class="btn-blue-gradient w-full mt-6">Confirm Seat</button>
@@ -295,6 +315,14 @@
                 <button id="goToHomeBtn" class="btn-blue-gradient">Go to Home</button>
             </div>
         </div>
+
+        <div id="crowdPulseModal" class="modal">
+            <div class="modal-content">
+                <span id="closeCrowdPulseBtn" class="close-btn">&times;</span>
+                <div id="crowdPulseWidgetContainer">
+                    </div>
+            </div>
+        </div>
     </main>
     
     <footer class="main-header text-white py-4 px-8 mt-auto">
@@ -305,51 +333,30 @@
         document.addEventListener('mousemove', e => { document.documentElement.style.setProperty('--mouse-x', (e.clientX / window.innerWidth) * 100 + '%'); document.documentElement.style.setProperty('--mouse-y', (e.clientY / window.innerHeight) * 100 + '%'); });
         
         // --- Global State ---
-        let allFetchedFlights = [], selectedDepartureFlight = null, selectedReturnFlight = null, selectedSeat = null;
-        // Adjusted to use all necessary global variables
-        let from, to, departureDate, returnDate, tripType, flightType; 
+        let allFetchedFlights = [], selectedDepartureFlight = null, selectedSeat = null;
+        let from, to, departureDate, flightType;
         
         const seatFees = { business: 1500, premium: 600, economy: 250 };
         const destinations = { domestic: [ { code: 'DEL', name: 'Delhi' }, { code: 'BOM', name: 'Mumbai' }, { code: 'CCU', name: 'Kolkata' }, { code: 'MAA', name: 'Chennai' }, { code: 'GOI', name: 'Goa' }, { code: 'HYD', name: 'Hyderabad' }], international: [ { code: 'HKT', name: 'Phuket' }, { code: 'SUB', name: 'Juanda' }, { code: 'NRT', name: 'Narita' }, { code: 'HND', name: 'Haneda' }, { code: 'DXB', name: 'Dubai' }, { code: 'SYD', name: 'Sydney' }, { code: 'MEL', name: 'Melbourne' }, { code: 'AKL', name: 'Auckland' }] };
         
         const messageBox = document.getElementById('messageBox');
         const cancelForm = document.getElementById('cancelForm');
-
-        // --- API URL FUNCTION (Using the robust version) ---
-        // NOTE: You must update the ALB_URL variable after deployment.
-        const PROD_ALB_URL = "http://travelease-ALB-1382098556.eu-north-1.elb.amazonaws.com"; 
-        const LOCAL_BOOKING_URL = "http://127.0.0.1:5000"; 
-        const LOCAL_FLIGHT_URL = "http://127.0.0.1:5002"; 
-        const LOCAL_PAYMENT_URL = "http://127.0.0.1:5003"; 
-        const LOCAL_CROWDPULSE_URL = "http://127.0.0.1:5010"; 
-        const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-
-        function getApiUrl(path) {
-            // Note: This function combines the service path logic but assumes all services run under the same ALB
-            const ALB_URL = "http://travelease-ALB-825161025.eu-north-1.elb.amazonaws.com"; // Your AWS ALB URL
-            if (isLocal) {
-                if (path.startsWith('/api/flights')) return `${LOCAL_FLIGHT_URL}${path}`;
-                if (path.startsWith('/api/payment')) return `${LOCAL_PAYMENT_URL}${path}`;
-                if (path.startsWith('/api/crowdpulse')) return `${LOCAL_CROWDPULSE_URL}${path}`;
-                return `${LOCAL_BOOKING_URL}${path}`;
-            } else {
-                return `${ALB_URL}${path}`;
-            }
-        }
         
+        // NAYA: CROWDPULSE WIDGET URL
+        const CROWDPULSE_URL = 'crowdpulse_widget.html'; // Path to the widget
+
+        // --- API URL FUNCTION ---
+        function getApiUrl(path, port) { 
+            // This is your latest working ALB URL
+            const ALB_URL = "http://travelease-project-ALB-720876672.eu-north-1.elb.amazonaws.com";            
+            return `${ALB_URL}${path}`;
+        }
+
         function showPage(pageId) { 
             ['homePage', 'flightSelectionPage', 'paymentServicePage'].forEach(id => document.getElementById(id).classList.add('hidden')); 
             document.getElementById(pageId).classList.remove('hidden'); 
             window.scrollTo(0, 0);
             hideMessage(); 
-            // Reset visibility for multi-step elements
-            if (pageId === 'homePage') {
-                document.getElementById('smart-trip-recommendations').classList.add('hidden');
-                document.getElementById('recommendations-list').innerHTML = '';
-            }
-            if (pageId === 'flightSelectionPage') {
-                 document.getElementById('departureFlightSummary').classList.add('hidden');
-            }
         }
         
         function formatPrice(price) { return `₹${Number(price).toLocaleString('en-IN')}`; }
@@ -364,33 +371,24 @@
         
         function populateDropdown(dd, opts) { opts.forEach(o => { const el = document.createElement('option'); el.value = o.code; el.textContent = `${o.name} (${o.code})`; dd.appendChild(el); }); }
         
-        function searchFlights(isReturn = false) {
-            flightType = document.querySelector('input[name="flightType"]:checked').value; 
-            tripType = document.querySelector('input[name="tripType"]:checked').value;
+        function searchFlights() {
+            flightType = document.querySelector('input[name="flightType"]:checked').value;
+            from = document.getElementById('fromDestination').value; 
+            to = document.getElementById('toDestination').value;
+            departureDate = document.getElementById('departureDate').value; 
             
-            // Set global variables based on current selection (only done on initial departure search)
-            if (!isReturn) {
-                from = document.getElementById('fromDestination').value; 
-                to = document.getElementById('toDestination').value;
-                departureDate = document.getElementById('departureDate').value; 
-                returnDate = tripType === 'roundTrip' ? document.getElementById('returnDate').value : '';
-                
-                selectedDepartureFlight = null; 
-                selectedReturnFlight = null; // Important: reset return flight
-                selectedSeat = null;
-                
-                if (!departureDate) { showMessage("Please select a Departure Date.", 'error'); return; }
-                if (tripType === 'roundTrip' && !returnDate) { showMessage("Please select a Return Date.", 'error'); return; }
+            selectedDepartureFlight = null; 
+            selectedSeat = null;
+            
+            if (!departureDate) { 
+                showMessage('Please select a Departure Date.', 'error'); 
+                return; 
             }
+
+            document.getElementById('flightSelectionTitle').textContent = "Select Your Departure Flight";
             
-            const searchFrom = isReturn ? to : from;
-            const searchTo = isReturn ? from : to;
-            const searchDate = isReturn ? returnDate : departureDate;
-            
-            document.getElementById('flightSelectionTitle').textContent = isReturn ? "Select Your Return Flight" : "Select Your Departure Flight";
-            
-            // Note: Updated port parameter in getApiUrl call to be omitted/handled by routing logic
-            const apiUrl = `${getApiUrl('/api/flights')}?type=${flightType}&from=${searchFrom}&to=${searchTo}&date=${searchDate}`;
+            // Flight Service ko call karein
+            const apiUrl = `${getApiUrl('/api/flights', 5002)}?type=${flightType}&from=${from}&to=${to}&date=${departureDate}`;
             const flightsList = document.getElementById('flightsList'); 
             flightsList.innerHTML = `<p class="text-center text-xl text-blue-600">Searching...</p>`;
             
@@ -399,11 +397,11 @@
                 .then(data => { 
                     allFetchedFlights = data.flights || []; 
                     renderFlights(allFetchedFlights); 
-                    if (!isReturn) showPage('flightSelectionPage'); 
+                    showPage('flightSelectionPage'); 
                 })
                 .catch(err => { 
-                    console.error("Flight Search Error:", err); 
-                    flightsList.innerHTML = `<p class="text-center text-xl text-red-500">Could not fetch flights. Is the Flight Service running?</p>`; 
+                    console.error(err); 
+                    flightsList.innerHTML = `<p class="text-center text-xl text-red-500">Could not fetch flights. Is the server running?</p>`; 
                 });
         }
         
@@ -413,64 +411,46 @@
             if (flights.length === 0) { flightsList.innerHTML = '<p class="text-center text-lg text-gray-500">No flights found.</p>'; return; }
             flights.forEach(flight => flightsList.appendChild(createFlightCard(flight)));
         }
-
+        
         function createFlightCard(flight) {
             const card = document.createElement('div'); card.className = 'flight-item-card'; 
             const flightData = JSON.stringify(flight).replace(/"/g, '&quot;');
             card.innerHTML = `<div><h4 class="text-xl font-bold">${flight.name} - ${flight.flightNumber}</h4><p class="font-semibold">${flight.departureTime} → ${flight.arrivalTime} (${flight.duration})</p><p class="text-sm text-gray-500">${flight.route}</p></div><div class="mt-4 md:mt-0 text-right"><p class="text-2xl font-extrabold text-red-500">${formatPrice(flight.price)}</p><button data-flight='${flightData}' class="btn-blue-gradient mt-2 select-flight-btn">Select</button></div>`;
-            card.querySelector('.select-flight-btn').addEventListener('click', handleFlightSelection); 
-            return card;
+            card.querySelector('.select-flight-btn').addEventListener('click', handleFlightSelection); return card;
         }
         
         function handleFlightSelection(event) {
-            const flight = JSON.parse(event.currentTarget.dataset.flight);
-            
-            // Logic supporting both one-way (from first file) and round-trip (from second file)
-            if (tripType === 'oneWay') { 
-                selectedDepartureFlight = flight; 
-            } 
-            else { 
-                if (!selectedDepartureFlight) { 
-                    selectedDepartureFlight = flight; 
-                    const summaryDiv = document.getElementById('departureFlightSummary'); 
-                    summaryDiv.innerHTML = `<strong>Departure:</strong> ${flight.name} for ${formatPrice(flight.price)}`; 
-                    summaryDiv.classList.remove('hidden'); 
-                    searchFlights(true); // Search for return flight
-                    return; 
-                } 
-                else { 
-                    selectedReturnFlight = flight; 
-                } 
-            }
-            // Proceed to Payment/Seat Selection
+            selectedDepartureFlight = JSON.parse(event.currentTarget.dataset.flight);
             updatePaymentSummary(); 
             renderSeatMap(); 
             resetPaymentPage(); 
-            showPage('paymentServicePage');
+            showPage('paymentServicePage'); 
         }
-
+        
         async function renderSeatMap() {
             const seatMap = document.getElementById('seatMap');
             const spinner = document.getElementById('seatMapSpinner');
             seatMap.innerHTML = ''; 
             spinner.style.display = 'block'; 
             
-            // Use Departure Flight ID for seat map
+            // Flight ID (jo seat table mein check hogi)
             const flight_id = `${selectedDepartureFlight.flightNumber}_${departureDate}`;
             let bookedSeats = [];
 
             try {
-                // Note: Updated port parameter in getApiUrl call to be omitted/handled by routing logic
-                const response = await fetch(`${getApiUrl('/api/get_seats')}?flight_id=${flight_id}`);
+                // Booking Service se booked seats laayein
+                const response = await fetch(`${getApiUrl('/api/get_seats', 5000)}?flight_id=${flight_id}`);
                 if (response.ok) {
                     const data = await response.json();
                     bookedSeats = data.booked_seats || [];
+                    console.log("Booked seats for " + flight_id + ":", bookedSeats);
                 } else {
                     console.error("Could not fetch booked seats.");
+                    showMessage("Could not load seat map. Please try again.", "error");
                 }
             } catch (e) {
                 console.error("Error fetching seats:", e);
-                // Fail silently but allow user to proceed
+                showMessage("Could not load seat map. Please try again.", "error");
             }
             
             spinner.style.display = 'none'; 
@@ -492,8 +472,7 @@
                         seat.id = `seat-${seatId}`; seat.textContent = seatId;
                         
                         const isBooked = bookedSeats.includes(seatId);
-                        // Using 'booked' class which maps to unavailable styling
-                        seat.className = isBooked ? `seat booked` : `seat ${section.class}`; 
+                        seat.className = isBooked ? `seat booked` : `seat ${section.class}`;
                         
                         if (!isBooked) { 
                             seat.dataset.seatId = seatId; 
@@ -511,37 +490,23 @@
         function selectSeat(seatId, seatClass, seatPrice) {
             if (selectedSeat) {
                 const oldSeatEl = document.getElementById(`seat-${selectedSeat.id}`);
-                if (oldSeatEl) { 
-                    oldSeatEl.classList.remove('selected'); 
-                    oldSeatEl.classList.add(selectedSeat.class); 
-                }
+                if (oldSeatEl) { oldSeatEl.classList.remove('selected'); oldSeatEl.classList.add(selectedSeat.class); }
             }
             const newSeatEl = document.getElementById(`seat-${seatId}`);
             newSeatEl.classList.remove(seatClass);
             newSeatEl.classList.add('selected');
             selectedSeat = { id: seatId, class: seatClass, price: seatPrice };
-            updatePaymentSummary();
+            console.log("Selected seat:", selectedSeat);
         }
         
         function updatePaymentSummary() {
             let totalPrice = 0; 
             const depSection = document.getElementById('summaryDepartureSection');
-            const retSection = document.getElementById('summaryReturnSection');
             const seatSection = document.getElementById('summarySeatSection');
             
             if (selectedDepartureFlight) { 
                 totalPrice += selectedDepartureFlight.price; 
-                depSection.innerHTML = `<h5 class="font-bold">Departure (${departureDate})</h5><p class="flex justify-between"><span>${selectedDepartureFlight.name} (${selectedDepartureFlight.route})</span><span class="font-semibold">${formatPrice(selectedDepartureFlight.price)}</span></p>`; 
-            }
-            
-            // Round Trip Summary
-            if (selectedReturnFlight) { 
-                totalPrice += selectedReturnFlight.price; 
-                retSection.innerHTML = `<h5 class="font-bold">Return (${returnDate})</h5><p class="flex justify-between"><span>${selectedReturnFlight.name} (${selectedReturnFlight.route})</span><span class="font-semibold">${formatPrice(selectedReturnFlight.price)}</span></p>`; 
-                retSection.classList.remove('hidden'); 
-            } else { 
-                retSection.innerHTML = ''; 
-                retSection.classList.add('hidden'); 
+                depSection.innerHTML = `<h5 class="font-bold">Departure</h5><p class="flex justify-between"><span>${selectedDepartureFlight.name} (${selectedDepartureFlight.route})</span><span class="font-semibold">${formatPrice(selectedDepartureFlight.price)}</span></p>`; 
             }
             
             if (selectedSeat) { 
@@ -578,21 +543,16 @@
                 return;
             }
             
-            let totalPrice = selectedDepartureFlight.price + (selectedReturnFlight ? selectedReturnFlight.price : 0) + selectedSeat.price;
-            
-            // Build Flight Details for booking summary
-            let flightDetails = `${selectedDepartureFlight.name} (${selectedDepartureFlight.route}) on ${departureDate}`;
-            if(selectedReturnFlight) { flightDetails += ` & ${selectedReturnFlight.name} (${selectedReturnFlight.route}) on ${returnDate}`; }
+            let totalPrice = selectedDepartureFlight.price + selectedSeat.price;
+            let flightId = `${selectedDepartureFlight.flightNumber}_${departureDate}`;
             
             const paymentData = { 
                 amount: totalPrice, 
                 card_number: cardNumber, 
                 email: email,
-                flight_id: `${selectedDepartureFlight.flightNumber}_${departureDate}`,
-                flight_details: flightDetails,
-                seat_number: selectedSeat.id,
-                // Include return flight details for comprehensive transaction logging
-                return_flight_id: selectedReturnFlight ? `${selectedReturnFlight.flightNumber}_${returnDate}` : null
+                flight_id: flightId,
+                flight_details: `${selectedDepartureFlight.name} (${selectedDepartureFlight.route})`,
+                seat_number: selectedSeat.id
             };
             
             const paymentStatusEl = document.getElementById('paymentStatus');
@@ -603,8 +563,7 @@
             
             try {
                 // --- STEP 1: PAYMENT ---
-                // Note: Removed port parameter from getApiUrl
-                const paymentResponse = await fetch(getApiUrl('/api/payment'), { 
+                const paymentResponse = await fetch(getApiUrl('/api/payment', 5003), { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify(paymentData) 
@@ -621,17 +580,17 @@
                 // --- STEP 2: BOOKING ---
                 const bookingData = { 
                     flight_id: paymentResult.flight_id, 
-                    flight_details: paymentResult.flight_details,
+                    flight_details: paymentResult.flight_details, // <<< FIX: ENSURES THE FIELD IS SENT TO BOOKING SERVICE
                     seat_number: paymentResult.seat_number, 
                     amount_paid: totalPrice, 
-                    price: totalPrice,
+                    amount:totalPrice,
+                    price:totalPrice,
                     transaction_id: paymentResult.transaction_id, 
                     user_email: paymentResult.user_email,
-                    return_flight_id: paymentResult.return_flight_id || null
+                    flight: paymentResult.flight_details // Original booking service compatibility
                 };
                 
-                 // Note: Removed port parameter from getApiUrl
-                const bookingResponse = await fetch(getApiUrl('/book'), { 
+                const bookingResponse = await fetch(getApiUrl('/book', 5000), { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify(bookingData) 
@@ -652,9 +611,6 @@
                 document.getElementById('confPrice').textContent = formatPrice(bookingData.price);
                 document.getElementById('confEmailStatus').textContent = bookingResult.email_status; 
                 document.getElementById('bookingConfirmedModal').classList.remove('hidden');
-                
-                // Note: The Smart Trip functionality is not required to run after booking anymore, but keeping the call
-                fetchSmartTripRecommendations(); 
                 
             } catch (err) {
                 console.error(err); 
@@ -684,7 +640,6 @@
             messageBox.style.display = 'block';
             window.scrollTo(0, 0); 
         }
-        
         function hideMessage() {
             messageBox.style.display = 'none';
         }
@@ -710,8 +665,7 @@
             cancelBtn.disabled = true;
             
             try {
-                 // Note: Removed port parameter from getApiUrl
-                const response = await fetch(`${getApiUrl('/cancel')}`, {
+                const response = await fetch(`${getApiUrl('/cancel', 5000)}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(cancelData)
@@ -722,6 +676,7 @@
                     throw new Error(result.message || "Cancellation request failed.");
                 }
                 
+                // Assuming cancel API returns refund_amount, if not, adjust text
                 const refundAmount = result.refund_amount ? formatPrice(result.refund_amount) : "A refund";
                 showMessage(`Booking ${result.booking_reference} cancelled. ${refundAmount} will be processed.`, "success");
                 cancelForm.reset();
@@ -758,36 +713,35 @@
             console.log("Smart Trip button clicked!");
             hideMessage();
 
-            // Get the selected "To" option code (e.g. MAA)
+            // Get the selected "To" option text, then extract the code between parentheses e.g. "Chennai (MAA)"
             const toDropdown = document.getElementById('toDestination');
-            const destination_code = toDropdown.value; 
+            const toText = toDropdown?.options[toDropdown.selectedIndex]?.text || '';
+            const match = toText.match(/\(([^)]+)\)/);    // grabs text inside parentheses
+            const destination_key = match ? match[1] : '';   // e.g. MAA
 
             const user_email = document.getElementById('searchEmail')?.value?.trim() || '';
             const start_date = document.getElementById('departureDate')?.value?.trim() || null;
-            const end_date = document.querySelector('input[name="tripType"]:checked').value === 'roundTrip' ? document.getElementById('returnDate')?.value?.trim() || null : null;
-
 
             if (!user_email) {
                 showMessage('Please enter your email address to get smart recommendations.', 'error');
                 return;
             }
-            if (!destination_code) {
+            if (!destination_key) {
                 showMessage('Please select a "To" destination first.', 'error');
                 return;
             }
 
-             // Note: Removed port parameter from getApiUrl
-            const apiUrl = getApiUrl('/smart-trip');
+            const apiUrl = getApiUrl('/smart-trip', 5000);
 
             try {
                 const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        destination_code: destination_code, // Use code
+                        destination_code: destination_key,
                         user_email: user_email,
                         start_date: start_date || null,
-                        end_date: end_date // Pass null if one way
+                        end_date: null
                     })
                 });
 
@@ -797,33 +751,167 @@
                 displayRecommendations(data.recommendations);
             } catch (error) {
                 console.error('Fetch error:', error);
-                showMessage(`Error getting recommendations: ${error.message}`, 'error');
+                showMessage(`Error: ${error.message}`, 'error');
             }
         }
+
+        // --- NAYA: CROWDPULSE WIDGET FUNCTION ---
+        async function showCrowdPulseWidget() {
+            const modal = document.getElementById('crowdPulseModal');
+            const container = document.getElementById('crowdPulseWidgetContainer');
+            
+            // Get the 'to' destination code
+            const toDropdown = document.getElementById('toDestination');
+            const toText = toDropdown?.options[toDropdown.selectedIndex]?.text || '';
+            const match = toText.match(/\(([^)]+)\)/);
+            const destination_key = match ? match[1] : null;
+
+            if (!destination_key) {
+                showMessage("Please select a 'To' destination to see CrowdPulse data.", 'error');
+                return;
+            }
+
+            container.innerHTML = '<p class="text-center text-blue-600">Loading CrowdPulse...</p>';
+            modal.style.display = 'block';
+            hideMessage();
+
+            try {
+                const response = await fetch(CROWDPULSE_URL);
+                if (!response.ok) throw new Error('Could not load CrowdPulse widget. (Is crowdpulse_widget.html in the S3 bucket?)');
+                
+                const widgetHtml = await response.text();
+                container.innerHTML = widgetHtml;
+                
+                // --- FIX IS HERE ---
+                // The 'initCrowdPulse' function is now part of this main script,
+                // so this 'if' statement will pass.
+                if (window.initCrowdPulse) {
+                    window.initCrowdPulse(container, getApiUrl, destination_key);
+                } else {
+                    // This error should not happen anymore
+                    console.error("initCrowdPulse function not found in widget. Widget may not be interactive.");
+                }
+
+            } catch (err) {
+                container.innerHTML = `<p class="text-center text-red-500">Error: ${err.message}</p>`;
+            }
+        }
+
+
+        // --- 🟢 SCRIPT MOVED HERE 🟢 ---
+        // This function used to be in crowdpulse_widget.html
+        // We moved it here so it runs when index.html loads.
+        window.initCrowdPulse = (container, getApiUrl, destination_code) => {
+            
+            // This endpoint is from your backend code.
+            const API_ENDPOINT = "http://travelease-project-ALB-720876672.eu-north-1.elb.amazonaws.com";
+
+            const titleEl = container.querySelector('#cp-widget-title');
+            const loaderEl = container.querySelector('#cp-widget-loader');
+            const errorEl = container.querySelector('#cp-widget-error');
+            const contentEl = container.querySelector('#cp-widget-content');
+            const socialPostsContainer = container.querySelector('#cp-social-posts-container');
+            const videoListContainer = container.querySelector('#cp-video-list-container');
+
+            // 1. Helper function to show errors
+            function showError(message) {
+                titleEl.textContent = 'CrowdPulse Error';
+                loaderEl.style.display = 'none';
+                contentEl.style.display = 'none';
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+            }
+
+            // 2. Helper function to render social posts
+            function renderSocialPosts(posts) {
+                if (!posts || posts.length === 0) {
+                    socialPostsContainer.innerHTML = '<p>No recent social media posts found.</p>';
+                    return;
+                }
+                socialPostsContainer.innerHTML = ''; // Clear
+                posts.forEach(post => {
+                    const postEl = document.createElement('div');
+                    postEl.className = 'cp-post-card';
+                    postEl.innerHTML = `
+                        <p>"${post.text}"</p>
+                        <div class="cp-post-source">${post.source} - ${post.sentiment}</div>
+                    `;
+                    socialPostsContainer.appendChild(postEl);
+                });
+            }
+
+            // 3. Helper function to render videos
+            function renderVideos(videos) {
+                if (!videos || videos.length === 0) {
+                    videoListContainer.innerHTML = '<p>No recent vlogs found.</p>';
+                    return;
+                }
+                videoListContainer.innerHTML = ''; // Clear
+                videos.forEach(video => {
+                    const videoEl = document.createElement('div');
+                    videoEl.className = 'cp-video-card';
+                    videoEl.innerHTML = `
+                        <a href="${video.url}" target="_blank" rel="noopener noreferrer">
+                            <img src="${video.thumbnail}" alt="Video thumbnail">
+                            <div class="cp-video-title">${video.title}</div>
+                        </a>
+                    `;
+                    videoListContainer.appendChild(videoEl);
+                });
+            }
+
+            // 4. Main function to fetch data and render
+            async function loadCrowdPulseData() {
+                if (!destination_code) {
+                    showError('No destination selected.');
+                    return;
+                }
+
+                // Use the getApiUrl function passed from the parent (which is this file!)
+                const apiUrl = typeof getApiUrl === 'function' 
+                    ? getApiUrl(`/api/crowdpulse/${destination_code}`, 5010)
+                    : `${API_ENDPOINT}/api/crowdpulse/${destination_code}`;
+
+                try {
+                    titleEl.textContent = `CrowdPulse for ${destination_code}`;
+                    loaderEl.style.display = 'block';
+                    contentEl.style.display = 'none';
+                    errorEl.style.display = 'none';
+
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Failed to fetch CrowdPulse data.');
+                    }
+
+                    // Render content
+                    renderSocialPosts(data.social_media_posts);
+                    renderVideos(data.youtube_videos);
+
+                    // Show content
+                    loaderEl.style.display = 'none';
+                    contentEl.style.display = 'block';
+
+                } catch (err) {
+                    console.error('Error in CrowdPulse widget:', err);
+                    showError(err.message);
+                }
+            }
+
+            // 5. Run the fetch
+            loadCrowdPulseData();
+        };
+
 
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
             updateDestinationDropdowns();
-            
-            // Handle Flight Type (Domestic/International) change
             document.querySelectorAll('input[name="flightType"]').forEach(r => r.addEventListener('change', updateDestinationDropdowns));
             
-            // Handle Trip Type (One Way/Round Trip) change
-            document.querySelectorAll('input[name="tripType"]').forEach(r => r.addEventListener('change', () => { 
-                tripType = document.querySelector('input[name="tripType"]:checked').value;
-                document.getElementById('returnDateContainer').style.display = tripType === 'roundTrip' ? 'block' : 'none'; 
-            }));
-            
-            // Ensure initial state reflects checked radio button (Round Trip by default)
-            document.getElementById('returnDateContainer').style.display = document.querySelector('input[name="tripType"]:checked').value === 'roundTrip' ? 'block' : 'none';
-
-            // Min date for departure
-            document.getElementById('departureDate').min = new Date().toISOString().split('T')[0];
-
-            // Core Button Listeners
             document.getElementById('searchFlightsBtn').addEventListener('click', () => {
                 hideMessage();
-                searchFlights(false);
+                searchFlights();
             });
             document.getElementById('modifySearchBtn').addEventListener('click', () => {
                 hideMessage();
@@ -843,7 +931,6 @@
             document.getElementById('goToHomeBtn').addEventListener('click', () => { 
                 document.getElementById('bookingConfirmedModal').classList.add('hidden'); 
                 showPage('homePage'); 
-                // Reset form fields on returning home from success
                 document.getElementById('departureDate').value = '';
                 document.getElementById('searchEmail').value = ''; 
             });
@@ -856,6 +943,15 @@
             cancelForm.addEventListener('submit', handleCancelBooking);
             
             document.getElementById('smart-trip-button').addEventListener('click', fetchSmartTripRecommendations);
+            
+            // NAYA: CROWDPULSE LISTENERS
+            document.getElementById('showCrowdPulseWidget').addEventListener('click', showCrowdPulseWidget);
+            document.getElementById('closeCrowdPulseBtn').addEventListener('click', () => {
+                document.getElementById('crowdPulseModal').style.display = 'none';
+                document.getElementById('crowdPulseWidgetContainer').innerHTML = ''; // Clear content
+            });
+            
+             document.getElementById('departureDate').min = new Date().toISOString().split('T')[0];
         });
     </script>
 </body>

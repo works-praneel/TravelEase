@@ -1,3 +1,5 @@
+# [File: terraform/alb.tf]
+
 resource "aws_lb" "alb" {
   name               = "${var.project_name}-ALB"
   internal           = false
@@ -60,6 +62,25 @@ resource "aws_lb_target_group" "payment_tg" {
     matcher             = "200-399"
   }
 }
+
+# --- NEWLY ADDED ---
+resource "aws_lb_target_group" "crowdpulse_tg" {
+  name        = "crowdpulse-tg"
+  port        = 5010 # <-- Port for CrowdPulse backend
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
+
+  health_check {
+    path                = "/api/crowdpulse/health" # From crowdpulse_app.py
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200"
+  }
+}
+# -------------------
 
 # --------------------
 # Listener + Default Action
@@ -130,3 +151,21 @@ resource "aws_lb_listener_rule" "payment_rule" {
     }
   }
 }
+
+# --- NEWLY ADDED ---
+resource "aws_lb_listener_rule" "crowdpulse_rule" {
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 40 # After payment rule (priority 30)
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.crowdpulse_tg.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/api/crowdpulse*"] # Route for CrowdPulse API
+    }
+  }
+}
+# -------------------

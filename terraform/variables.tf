@@ -1,17 +1,20 @@
+variable "aws_region" {
+  description = "The AWS region to deploy infrastructure"
+  default     = "eu-north-1"
+}
+
 variable "project_name" {
   description = "The name of the project"
-  type        = string
-  default     = "travelease"
+  default     = "travelease-project"
 }
 
-variable "aws_region" {
-  description = "The AWS region to deploy to"
-  type        = string
-  default     = "eu-north-1" # Aapke provider.tf se match
+variable "primary_region" {
+  description = "The primary AWS region for the provider"
+  default     = "eu-north-1"
 }
 
-variable "aws_account_id" {
-  description = "Your AWS Account ID"
-  type        = string
-  default     = "904233121598" # Aapki file se
+variable "aws_profile" {
+  description = "The AWS CLI profile to use"
+  default     = "default"
 }
+

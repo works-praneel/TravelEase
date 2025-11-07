@@ -91,3 +91,13 @@ resource "aws_security_group_rule" "egress_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "Allow all outbound traffic"
 }
+
+resource "aws_security_group_rule" "ingress_crowdpulse_service" {
+  type                     = "ingress"
+  from_port                = 5010 
+  to_port                  = 5010
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.ecs_sg.id
+  source_security_group_id = aws_security_group.alb_sg.id 
+  description              = "Allow ALB to talk to CrowdPulse service on 5010"
+}
