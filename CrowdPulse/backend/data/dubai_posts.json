@@ -1,0 +1,12 @@
+[
+  {"text": "Burj Khalifa view left me speechless.", "sentiment": "positive"},
+  {"text": "Desert safari was thrilling.", "sentiment": "positive"},
+  {"text": "Taxi fares are too expensive.", "sentiment": "negative"},
+  {"text": "Shopping malls huge and clean.", "sentiment": "positive"},
+  {"text": "Too hot to walk during daytime.", "sentiment": "negative"},
+  {"text": "Loved the Dubai Fountain show.", "sentiment": "positive"},
+  {"text": "Metro easy to use and cheap.", "sentiment": "positive"},
+  {"text": "Atlantis waterpark fun but crowded.", "sentiment": "neutral"},
+  {"text": "Palm Jumeirah stunning from above.", "sentiment": "positive"},
+  {"text": "Airport security queue long.", "sentiment": "negative"}
+]

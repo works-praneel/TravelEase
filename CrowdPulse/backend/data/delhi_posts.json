@@ -1,0 +1,12 @@
+[
+  {"text": "India Gate lit up beautifully at night.", "sentiment": "positive"},
+  {"text": "Chandni Chowk food never disappoints.", "sentiment": "positive"},
+  {"text": "Too much traffic around Connaught Place.", "sentiment": "negative"},
+  {"text": "Metro is clean and convenient.", "sentiment": "positive"},
+  {"text": "Weather unbearable in summer.", "sentiment": "negative"},
+  {"text": "Red Fort tour was informative.", "sentiment": "positive"},
+  {"text": "Lodhi Garden peaceful for a morning walk.", "sentiment": "positive"},
+  {"text": "Air pollution remains a problem.", "sentiment": "negative"},
+  {"text": "Street shopping at Sarojini was fun.", "sentiment": "positive"},
+  {"text": "Airport facilities excellent.", "sentiment": "positive"}
+]

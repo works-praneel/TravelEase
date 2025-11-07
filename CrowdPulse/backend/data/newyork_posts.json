@@ -1,0 +1,12 @@
+[
+  {"text": "Times Square energy unmatched.", "sentiment": "positive"},
+  {"text": "Central Park was relaxing.", "sentiment": "positive"},
+  {"text": "Subway delays continue daily.", "sentiment": "negative"},
+  {"text": "Statue of Liberty ferry smooth.", "sentiment": "positive"},
+  {"text": "Weather chilly but clear.", "sentiment": "neutral"},
+  {"text": "Broadway shows are worth every dollar.", "sentiment": "positive"},
+  {"text": "Crowded near Rockefeller Center.", "sentiment": "negative"},
+  {"text": "Empire State view amazing.", "sentiment": "positive"},
+  {"text": "Taxis too costly.", "sentiment": "negative"},
+  {"text": "Loved exploring Brooklyn Bridge.", "sentiment": "positive"}
+]

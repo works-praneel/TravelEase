@@ -1,0 +1,7 @@
+flask
+flask-cors
+praw
+vaderSentiment
+google-api-python-client 
+python-dotenv
+textblob

@@ -1,0 +1,12 @@
+[
+  {"text": "Marine Drive lights were mesmerizing.", "sentiment": "positive"},
+  {"text": "Too crowded at Gateway of India.", "sentiment": "negative"},
+  {"text": "Vada pav at Dadar was the best snack.", "sentiment": "positive"},
+  {"text": "Local train rush hour chaos.", "sentiment": "negative"},
+  {"text": "Sunset from Bandra Fort peaceful.", "sentiment": "positive"},
+  {"text": "Auto rickshaw drivers refuse short rides.", "sentiment": "negative"},
+  {"text": "Juhu Beach felt nostalgic.", "sentiment": "positive"},
+  {"text": "Bollywood tours are fun but short.", "sentiment": "neutral"},
+  {"text": "Rain made everything green and fresh.", "sentiment": "positive"},
+  {"text": "Traffic took hours to clear.", "sentiment": "negative"}
+]

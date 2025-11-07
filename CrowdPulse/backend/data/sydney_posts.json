@@ -1,0 +1,12 @@
+[
+  {"text": "Opera House looked beautiful at dusk.", "sentiment": "positive"},
+  {"text": "Bondi Beach waves huge today.", "sentiment": "positive"},
+  {"text": "Too windy near Darling Harbour.", "sentiment": "neutral"},
+  {"text": "Harbour Bridge climb thrilling.", "sentiment": "positive"},
+  {"text": "Public transport efficient.", "sentiment": "positive"},
+  {"text": "Food prices steep downtown.", "sentiment": "negative"},
+  {"text": "Zoo had a great collection.", "sentiment": "positive"},
+  {"text": "Weather pleasant this week.", "sentiment": "positive"},
+  {"text": "Traffic moderate during rush hour.", "sentiment": "neutral"},
+  {"text": "Friendly locals everywhere.", "sentiment": "positive"}
+]

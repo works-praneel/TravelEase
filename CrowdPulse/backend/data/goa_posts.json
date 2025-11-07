@@ -1,0 +1,12 @@
+[
+  {"text": "Baga beach was buzzing with music.", "sentiment": "positive"},
+  {"text": "Calangute was too crowded this weekend.", "sentiment": "negative"},
+  {"text": "Sunset at Chapora Fort was stunning.", "sentiment": "positive"},
+  {"text": "Fish curry rice at local shack tasted great.", "sentiment": "positive"},
+  {"text": "Anjuna flea market was overpriced.", "sentiment": "negative"},
+  {"text": "Water sports at Candolim were thrilling.", "sentiment": "positive"},
+  {"text": "Weather too humid during the day.", "sentiment": "neutral"},
+  {"text": "Loved the Portuguese churches and vibes.", "sentiment": "positive"},
+  {"text": "Nightlife in Tito’s lane still rocks.", "sentiment": "positive"},
+  {"text": "Taxi fares are ridiculously high.", "sentiment": "negative"}
+]
